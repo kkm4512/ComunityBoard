@@ -2,8 +2,19 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
+  css: [
+    '~/assets/css/main.css',
+  ],  
+
   typescript: {
     shim: false
-  }
+  },
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
     
 })
