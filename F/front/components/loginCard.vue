@@ -27,49 +27,19 @@
         <input
           type="password"
           id="first_name"
-          class="bg-gray-50 
-          border 
-          border-gray-300 
-          text-gray-900 
-          text-sm 
-          rounded-lg 
-          focus:ring-blue-500 
-          focus:border-blue-500 
-          block 
-          w-full 
-          p-2.5 
-          dark:bg-gray-700 
-          dark:border-gray-600 
-          dark:placeholder-gray-400 
-          dark:text-white 
-          dark:focus:ring-blue-500 
-          dark:focus:border-blue-500"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="*********"
-          required
-        />
-      </div>
-      <div class="mt-8">
-        <label
-          for="Nickname"
-          class="block mb-2 text-sm font-medium  text-gray-900 dark:text-white"
-          >Nickname</label
-        >
-        <input
-          type="text"
-          id="first_name"
-          class="bg-gray-50 border border-gray  -300 t  ext-gray-90 0 text-sm rounded-  lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-          placeholder="John"
           required
         />
       </div>
       <div class="flex justify-between p-2">
         <NuxtLink to="/passwordFind">
-          <div class="text-white cursor-pointer hover:text-blue-300">
+          <div class="text-white cursor-pointer hover:text-blue-300 mt-5">
             비밀번호찾기
           </div>
         </NuxtLink>
         <NuxtLink to="/signUp">
-          <div class="text-white cursor-pointer hover:text-blue-300">
+          <div class="text-white cursor-pointer hover:text-blue-300 mt-5">
             회원가입
           </div>
         </NuxtLink>

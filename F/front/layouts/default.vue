@@ -1,9 +1,9 @@
 <template>
   <div class="bg-slate-300">
-    <head>
-      <Header />
-    </head>
+    <Header />
+
     <slot />
+
     <Footer />
   </div>
 </template>
