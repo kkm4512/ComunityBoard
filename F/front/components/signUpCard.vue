@@ -11,6 +11,7 @@
           >Email</label
         >
         <input
+          v-model="userEmail"
           type="text"
           id="first_name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -25,6 +26,7 @@
           >Password</label
         >
         <input
+          v-model="userPassword"
           type="password"
           id="first_name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -39,6 +41,7 @@
           >Nickname</label
         >
         <input
+          v-model="userNickname"
           type="text"
           id="first_name"
           class="bg-gray-50 border border-gray -300 t ext-gray-90 0 text-sm rounded- lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -59,14 +62,37 @@
         </NuxtLink>
       </div>
       <div
-        class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
+        class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5 cursor-pointer"
+        @click="checked"
       >
-        로그인
+        회원가입하기
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const userEmail = ref("");
+const userPassword = ref("");
+const userNickname = ref("");
+
+const checked = async () => {
+  try {
+    const userInfo = {
+      email: userEmail.value,
+      password: userPassword.value,
+      nickname: userNickname.value,
+    };
+
+    const response = await $fetch("/user", {
+      baseURL: "http://localhost:3001",
+      method: "POST",
+      body: userInfo,
+    });
+  } catch (error) {
+    alert(error);
+  }
+};
+</script>
 
 <style lang="scss" scoped></style>

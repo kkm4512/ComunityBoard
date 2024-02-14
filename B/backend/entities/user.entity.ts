@@ -1,4 +1,4 @@
-import { IsEmail } from "class-validator";
+import { IsEmail, IsNotEmpty } from "class-validator";
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('user')
@@ -8,13 +8,16 @@ export class UserEntity {
 
     @Column()
     @IsEmail()
-    Email: String;
+    @IsNotEmpty()
+    email: String;
 
     @Column()
-    Password: String;
+    @IsNotEmpty()
+    password: String;
 
     @Column()
-    Nickname: String;
+    @IsNotEmpty()
+    nickname: String;
 
     @CreateDateColumn()
     createAt: Date;
