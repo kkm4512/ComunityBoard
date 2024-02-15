@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserEntity } from 'entities/user.entity';
 
@@ -7,7 +7,9 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post()
-  signUp(user:UserEntity){
+  signUp(
+    @Body() user:UserEntity
+    ){
     console.log(user)
     return this.userService.registerUser(user)
   }

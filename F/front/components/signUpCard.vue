@@ -84,11 +84,16 @@ const checked = async () => {
       nickname: userNickname.value,
     };
 
-    const response = await $fetch("/user", {
+    const response = await $fetch("user", {
       baseURL: "http://localhost:3001",
       method: "POST",
+      headers: {
+        'Content-Type' : 'application/json'
+      },
       body: userInfo,
     });
+    console.log(response)
+    
   } catch (error) {
     alert(error);
   }
