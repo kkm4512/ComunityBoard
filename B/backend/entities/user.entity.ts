@@ -9,15 +9,15 @@ export class UserEntity {
     @Column()
     @IsEmail()
     @IsNotEmpty()
-    email: String;
+    email: string;
 
     @Column()
     @IsNotEmpty()
-    password: String;
+    password: string;
 
     @Column()
     @IsNotEmpty()
-    nickname: String;
+    nickname: string;
 
     @CreateDateColumn()
     createAt: Date;

@@ -27,8 +27,7 @@ export class UserService {
       throw new UnauthorizedException('중복된 이메일 입니다.');
     }
 
-    const createUser = this.userRepository.create(user)
-    this.userRepository.save(createUser)
+    this.userRepository.save(user)
 
     return true;
   }
