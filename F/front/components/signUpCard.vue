@@ -75,6 +75,7 @@
 const userEmail = ref("");
 const userPassword = ref("");
 const userNickname = ref("");
+const router = useRouter();
 
 const checked = async () => {
   try {
@@ -88,14 +89,15 @@ const checked = async () => {
       baseURL: "http://localhost:3001",
       method: "POST",
       headers: {
-        'Content-Type' : 'application/json'
+        "Content-Type": "application/json",
       },
       body: userInfo,
     });
-    console.log(response)
-    
-  } catch (error) {
-    alert(error);
+    console.log(response);
+  } catch (e) {
+    const emit = defineEmits(["errorMessage"]);
+    emit("errorValue", "아이디가 중복되었습니다");
+    router.push("error");
   }
 };
 </script>

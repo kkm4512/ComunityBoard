@@ -1,9 +1,10 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { UserEntity } from 'entities/user.entity';
 
 function ormConfig(): TypeOrmModuleOptions {
   const commonConf = {
     SYNCRONIZE: true,
-    ENTITIES: [__dirname + '/../entities/*{.ts,.js}'],
+    ENTITIES: [UserEntity],
   };
 
   return {

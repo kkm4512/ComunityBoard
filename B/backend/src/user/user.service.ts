@@ -17,7 +17,7 @@ export class UserService {
    */
 
   async registerUser(user: UserEntity): Promise<boolean> {
-    const userFind = this.userRepository.findOne({
+    const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
       },
