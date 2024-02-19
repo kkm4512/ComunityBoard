@@ -16,7 +16,7 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserEntity): Promise<boolean> {
+  async registerUser(user: UserEntity): Promise<boolean | any> {
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -24,11 +24,45 @@ export class UserService {
     });
 
     if (userFind) {
-      throw new UnauthorizedException('중복된 이메일 입니다.');
+      return {
+        name: 'Unauthorized',
+        status: 401,
+        error: '중복된 이메일 입니다.',
+      };
     }
 
-    this.userRepository.save(user)
+    await this.userRepository.save(user);
 
-    return true;
+    const data = {
+      boolean: true,
+    };
+
+    return data;
+  }
+  /**
+   * 1. 사용자가 로그인을 요청한다.
+   * 2. db에서 사용자의 이메일로 조회
+   * 3. 중복되면 에러 던지기, 아니면 sucecss
+   */
+  async checkedUserSignIn(user: Pick<UserEntity, 'email' | 'password'>) {
+    const userFind = this.userRepository.findOne({
+      where: {
+        email: user.email,
+      },
+    });
+
+    if (!userFind) {
+      const data = {
+        name: 'Unauthorized',
+        status: 401,
+        error: '아이디 또는 비밀번호가 일치하지 않습니다.',
+      };
+      return data;
+    } else {
+      const data = {
+        boolean: true,
+      };
+      return data;
+    }
   }
 }

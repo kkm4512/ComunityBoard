@@ -71,33 +71,46 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const userEmail = ref("");
 const userPassword = ref("");
 const userNickname = ref("");
 const router = useRouter();
 
-const checked = async () => {
-  try {
-    const userInfo = {
-      email: userEmail.value,
-      password: userPassword.value,
-      nickname: userNickname.value,
-    };
+interface Response {
+  error: string;
+  status: number;
+  boolean: Boolean;
+}
 
-    const response = await $fetch("user", {
-      baseURL: "http://localhost:3001",
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: userInfo,
+const checked = async () => {
+  const userInfo = {
+    email: userEmail.value,
+    password: userPassword.value,
+    nickname: userNickname.value,
+  };
+
+  const response: Response = await $fetch("user", {
+    baseURL: "http://localhost:3001",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: userInfo,
+  });
+
+  console.log(response.boolean)
+
+  if (response.boolean === true) {
+    router.push({
+      name: "success",
+      query: { successMessage: "회원가입에 성공하였습니다." },
     });
-    console.log(response);
-  } catch (e) {
-    const emit = defineEmits(["errorMessage"]);
-    emit("errorValue", "아이디가 중복되었습니다");
-    router.push("error");
+  } else if (response.status === 401){
+    router.push({
+      name: "error",
+      query: { errorMessage: response.error },
+    });
   }
 };
 </script>

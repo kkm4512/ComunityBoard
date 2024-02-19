@@ -1,13 +1,11 @@
 <template>
-    <div>
-        <signUp />
-    </div>
+  <div>
+    <signUp />
+  </div>
 </template>
 
 <script setup>
-import signUp from '~/components/signUpCard.vue';
+import signUp from "~/components/signUpCard.vue";
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

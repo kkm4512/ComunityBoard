@@ -1,15 +1,11 @@
 <template>
-    <div>
-        <loginCard />
-    </div>
+  <div>
+    <loginCard />
+  </div>
 </template>
 
 <script setup>
-
-    import loginCard from '~/components/loginCard.vue';
-
+import loginCard from "~/components/loginCard.vue";
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
