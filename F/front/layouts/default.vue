@@ -1,8 +1,8 @@
 <template>
-  <div class="bg-slate-300">
+  <div class="bg-slate-300 flex flex-col min-h-screen">
     <Header />
 
-    <slot />
+    <NuxtPage />
 
     <Footer />
   </div>

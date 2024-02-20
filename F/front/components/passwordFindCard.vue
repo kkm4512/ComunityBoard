@@ -11,6 +11,7 @@
           >Email</label
         >
         <input
+          v-model="email"
           type="text"
           id="first_name"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -31,17 +32,34 @@
           </div>
         </NuxtLink>
       </div>
-      <NuxtLink to="passwordChange">
-        <div
-          class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
-        >
-          확인
-        </div>
-      </NuxtLink>
+      <div
+        class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5 cursor-pointer"
+        @click="checked(email)"
+      >
+        확인
+      </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+const router = useRouter();
+
+const checked = async (email) => {
+  const userInfo = {
+    email,
+  };
+
+  try {
+    const response = await Fetch("user/passwordFind", userInfo);
+    
+    success(response,router,"비밀번호 찾기에 성공하였습니다.","passwordChange")
+
+  } catch (error) {
+    console.log(response)
+    error(response,router,response.error,"error")
+  }
+};
+</script>
 
 <style lang="scss" scoped></style>

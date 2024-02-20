@@ -57,15 +57,9 @@
 </template>
 
 <script setup lang="ts">
-import { errorORsucecss } from "~/composable/routerPushError";
+import { errorORsucecss } from "~/composables/errorORsuccess";
 import { useRouter } from "vue-router";
-import type { BaseResponse } from "~/composable/routerPushError";
-
-interface Response {
-  error: string;
-  statused: number;
-  boolean: Boolean;
-}
+import type { BaseResponse } from "~/composables/errorORsuccess";
 
 const email = ref("");
 const password = ref("");
@@ -76,16 +70,18 @@ const checked = async () => {
     email: email.value,
     password: password.value,
   };
+  console.log(userInfo)
 
-  const response: BaseResponse<success | statusCode | error> =
-    await $fetch("user/login", {
-      baseURL: "http://localhost:3001",
-      method: "POST",
-      body: userInfo,
-    });
+  const response: BaseResponse = await $fetch("user/login", {
+    baseURL: "http://localhost:3001",
+    method: "POST",
+    body: userInfo,
+  });
 
-  errorORsucecss(response.boolean, router);
+
+  errorORsucecss(response, router,"로그인에 성공하였습니다.");
 };
 </script>
 
 <style lang="scss" scoped></style>
+~/composables/errorORsuccess~/composables/errorORsuccess

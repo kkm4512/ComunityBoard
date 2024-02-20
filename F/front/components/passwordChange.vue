@@ -49,10 +49,15 @@
 <script setup>
 const firstPasswrod = ref("");
 const secondPasswrod = ref("");
+const router = useRouter()
+const route = useRoute()
 
 const check = () => {
-    if (firstPasswrod.value !== secondPasswrod.value && firstPasswrod.value ==='' || secondPasswrod.value === ''){
+    if (firstPasswrod.value !== secondPasswrod.value || firstPasswrod.value ==='' || secondPasswrod.value === ''){
         alert('다시한번 비밀번호를 확인해주세요')
+        firstPasswrod.value = '';
+        secondPasswrod.value = '';
+        router.push(`/${route?.referrer}`)
     } else {
         console.log(firstPasswrod.value,secondPasswrod.value)
     }

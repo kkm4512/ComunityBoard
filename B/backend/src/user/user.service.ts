@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from 'entities/user.entity';
+import { ErrorData, successData } from 'type/base.type';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -16,28 +17,27 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserEntity): Promise<boolean | any> {
+  async registerUser(user: UserEntity): Promise<boolean | ErrorData> {
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
       },
     });
 
-    if (userFind) {
+    if (!userFind) {
+      await this.userRepository.save(user);
+      const data: successData = {
+        success: true,
+      };
+
+      return data;
+    } else {
       return {
         name: 'Unauthorized',
         status: 401,
         error: '중복된 이메일 입니다.',
       };
     }
-
-    await this.userRepository.save(user);
-
-    const data = {
-      boolean: true,
-    };
-
-    return data;
   }
   /**
    * 1. 사용자가 로그인을 요청한다.
@@ -45,7 +45,7 @@ export class UserService {
    * 3. 중복되면 에러 던지기, 아니면 sucecss
    */
   async checkedUserSignIn(user: Pick<UserEntity, 'email' | 'password'>) {
-    const userFind = this.userRepository.findOne({
+    const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
       },
@@ -57,12 +57,37 @@ export class UserService {
         status: 401,
         error: '아이디 또는 비밀번호가 일치하지 않습니다.',
       };
+
       return data;
     } else {
       const data = {
-        boolean: true,
+        success: true,
       };
       return data;
+    }
+  }
+
+  /**
+   * 1. 이메일로 db조회
+   * 2. 있으면 true던지기
+   * 3. 없으면 error
+   */
+
+  async passwordFindByEmail(user:Pick<UserEntity,"email">): Promise<ErrorData | successData>{
+    const userFind = await this.userRepository.findOne({
+      where: {email: user.email}
+    })
+
+    if (!userFind){
+      return {
+        name: "NotFound",
+        error: "요청하신 이메일이 조회되지 않습니다.",
+        status: 404
+      }
+    } else {
+      return {
+        success: true
+      }
     }
   }
 }

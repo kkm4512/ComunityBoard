@@ -53,22 +53,19 @@
         <div
           class="flex items-center p-4 md:p-1 border-t border-gray-200 rounded-b dark:border-gray-600"
         ></div>
-        <div class="text-white flex justify-between px-20 my-2">
+        <div class="text-white flex justify-center px-20 my-2">
           <div class="my-6">
-            <button
-              type="button"
-              class="focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-green-700 dark:focus:ring-green-800"
-            >
-              확인
-            </button>
+            <NuxtLink to="/">
+              <button
+                type="button"
+                class="focus:outline-none text-white hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
+                확인
+              </button>
+            </NuxtLink>
           </div>
           <div class="my-6">
-            <button
-              type="button"
-              class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-700 dark:hover:bg-red-700 dark:focus:ring-red-900"
-            >
-              취소
-            </button>
+ 
           </div>
         </div>
       </div>

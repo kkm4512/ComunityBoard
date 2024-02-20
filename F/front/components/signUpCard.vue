@@ -99,19 +99,8 @@ const checked = async () => {
     body: userInfo,
   });
 
-  console.log(response.boolean)
-
-  if (response.boolean === true) {
-    router.push({
-      name: "success",
-      query: { successMessage: "회원가입에 성공하였습니다." },
-    });
-  } else if (response.status === 401){
-    router.push({
-      name: "error",
-      query: { errorMessage: response.error },
-    });
-  }
+  
+  errorORsucecss(response, router, "회원가입에 성공하였습니다");
 };
 </script>
 
