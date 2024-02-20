@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import { errorORsucecss } from "~/composables/errorORsuccess";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/composables/errorORsuccess";
 
@@ -70,7 +69,6 @@ const checked = async () => {
     email: email.value,
     password: password.value,
   };
-  console.log(userInfo)
 
   const response: BaseResponse = await $fetch("user/login", {
     baseURL: "http://localhost:3001",
@@ -79,9 +77,8 @@ const checked = async () => {
   });
 
 
-  errorORsucecss(response, router,"로그인에 성공하였습니다.");
+  success(response, router,"로그인에 성공하였습니다.","sucecss");
 };
 </script>
 
 <style lang="scss" scoped></style>
-~/composables/errorORsuccess~/composables/errorORsuccess

@@ -34,7 +34,7 @@
       </div>
       <div
         class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5 cursor-pointer"
-        @click="checked(email)"
+        @click="checked()"
       >
         확인
       </div>
@@ -45,21 +45,27 @@
 <script setup>
 const router = useRouter();
 
-const checked = async (email) => {
+const email = ref('');
+
+
+const checked = async ()=> {
   const userInfo = {
-    email,
+    email:email.value
   };
 
-  try {
-    const response = await Fetch("user/passwordFind", userInfo);
+  const response = await Fetch("user/passwordFind", userInfo);
+  
     
-    success(response,router,"비밀번호 찾기에 성공하였습니다.","passwordChange")
+    // 요청한 email로 계정 조회후, 없으면 error 있으면 true
+      success(response,router,"비밀번호 찾기에 성공하였습니다.","passwordChange")
+      error(response, router, "error");
 
-  } catch (error) {
-    console.log(response)
-    error(response,router,response.error,"error")
-  }
+
 };
+
+/**
+   2. catch구문 작동안됨
+ */
 </script>
 
 <style lang="scss" scoped></style>

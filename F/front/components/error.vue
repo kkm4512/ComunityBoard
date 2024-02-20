@@ -46,6 +46,7 @@
             class="text-base leading-relaxed text-gray-500 dark:text-gray-400 text-center"
           >
             <!-- 자식한테 받을 에러명을 여기에 표기 -->
+            
             {{ errorMessage }}
           </p>
         </div>

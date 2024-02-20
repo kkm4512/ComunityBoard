@@ -1,7 +1,8 @@
 export interface BaseResponse {
-  error?: string | undefined;
-  statusCode?: number | undefined;
-  success?: Boolean | undefined;
+  name?: string
+  error?: string
+  statusCode?: number
+  success?: Boolean
 }
 
 export function errorORsucecss(
@@ -23,8 +24,9 @@ export function errorORsucecss(
   }
 }
 
-export function error(response: BaseResponse, router: any, errorMessage: string,path:string) {
-  if (!response.success) {
+export function error(response: BaseResponse, router: any,path:string) {
+  if (response.error) {
+    console.log(response)
     router.push({
       name: path,
       query: { errorMessage: response.error },
@@ -40,3 +42,5 @@ export function success(response: BaseResponse, router: any, successMessage: str
     });
   }
 }
+
+
