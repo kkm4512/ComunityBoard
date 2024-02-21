@@ -1,6 +1,6 @@
 import type { Course } from '~/data/coursestype';
 
-const courses: Course[] = [
+export const courses: Course[] = [
   {
     courseSlug: 'html-css',
     title: '입문자를 위한, HTML&CSS 웹 개발 입문',
