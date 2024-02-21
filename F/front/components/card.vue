@@ -23,16 +23,34 @@
       {{ content }}
     </p>
 
-    <div class="flex justify-between mt-5 mb-2">
-      <div class="cursor-pointer hover:bg-gray-300">좋아요</div>
-      <div class="cursor-pointer hover:bg-gray-300">댓글</div>
-      <div class="cursor-pointer hover:bg-gray-300">공유</div>
-      <div class="cursor-pointer hover:bg-gray-300">북마크</div>
+    <div class="flex justify-between mt-7 mb-2">
+      <div
+        class="cursor-pointer hover:bg-gray-300 ml-2"
+        v-for="icon in mdiIconAllPath"
+        :key="i"
+      >
+        <svg-icon type="mdi" :path="icon" class="w-[20px]"></svg-icon>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import SvgIcon from "@jamescoyle/vue-icon";
+import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
+
+const mdiThumbUpPath = ref(mdiThumbUp);
+const mdiCommentPath = ref(mdiComment);
+const mdiSharePath = ref(mdiShare);
+const mdiBookMarkerPath = ref(mdiBookMarker);
+
+const mdiIconAllPath = [
+  mdiThumbUpPath.value,
+  mdiCommentPath.value,
+  mdiSharePath.value,
+  mdiBookMarkerPath.value,
+];
+
 defineProps({
   title: String,
   content: String,
