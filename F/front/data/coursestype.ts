@@ -1,5 +1,6 @@
 export interface Course {
     title: string;
+    profileName: string;
     subtitle: string;
     courseSlug: string;
     content: string;
