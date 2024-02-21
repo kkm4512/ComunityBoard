@@ -73,21 +73,46 @@ export class UserService {
    * 3. 없으면 error
    */
 
-  async passwordFindByEmail(user:Pick<UserEntity,"email">): Promise<ErrorData | successData>{
+  async passwordFindByEmail(
+    user: Pick<UserEntity, 'email'>,
+  ): Promise<ErrorData | successData> {
     const userFind = await this.userRepository.findOne({
-      where: {email: user.email}
-    })
+      where: { email: user.email },
+    });
 
-    if (!userFind){
+    if (!userFind) {
       return {
-        name: "NotFound",
-        error: "요청하신 이메일이 조회되지 않습니다.",
-        status: 404
-      }
+        name: 'NotFound',
+        error: '요청하신 이메일이 조회되지 않습니다.',
+        status: 404,
+      };
     } else {
       return {
-        success: true
-      }
+        success: true,
+        email: user.email,
+      };
     }
+  }
+
+  /**
+   * 1. 프론트로부터 이메일과 비밀번호를 받는다.
+   * 2. 이메일로 사용자를 먼저 찾고 (사용자는 무조건 있음)
+   * 3. 그 사용자에대한 비밀번호를 변경시킨다.
+   */
+
+  async userPasswordChange(user: UserEntity): Promise<successData> {
+    const userFind: UserEntity = await this.userRepository.findOne({
+      where: { email: user.email },
+    });
+
+    const newUser = Object.assign(userFind, {
+      password: user.password,
+    });
+
+    await this.userRepository.save(newUser);
+
+    return {
+      success: true,
+    };
   }
 }

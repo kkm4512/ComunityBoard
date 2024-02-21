@@ -1,16 +1,10 @@
-export interface BaseResponse {
-  name?: string
-  error?: string
-  statusCode?: number
-  success?: Boolean
-}
+import type { BaseResponse } from "~/types/basetype";
 
 export function errorORsucecss(
   response: BaseResponse,
   router: any,
   success: string
 ) {
-
   if (response.success === true) {
     router.push({
       name: "success",
@@ -24,17 +18,14 @@ export function errorORsucecss(
   }
 }
 
-export function error(response: BaseResponse, router: any,path:string) {
-  if (response.error) {
-    console.log(response)
-    router.push({
-      name: path,
-      query: { errorMessage: response.error },
-    });
-  }
-}
-
-export function success(response: BaseResponse, router: any, successMessage: string,path:string) {
+//성공시 a라우터로 보내기
+export function success(
+  response: BaseResponse,
+  
+  router: any,
+  successMessage: string,
+  path: string
+) {
   if (response.success) {
     router.push({
       name: path,
@@ -43,4 +34,28 @@ export function success(response: BaseResponse, router: any, successMessage: str
   }
 }
 
+//실패시 a라우터로 보내기
+export function error(response: BaseResponse, router: any, path: string) {
+  if (response.error) {
+    console.log(response);
+    router.push({
+      name: path,
+      query: { errorMessage: response.error },
+    });
+  }
+}
 
+//성공시 a라우터로 보내는데 어떤 query 보내고싶을때
+export function successQuery(
+  response: BaseResponse,
+  router: any,
+  queryVal: string,
+  path: string
+) {
+  if (response.success) {
+    router.push({
+      name: path,
+      query: { queryKey: queryVal },
+    });
+  }
+}

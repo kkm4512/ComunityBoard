@@ -10,3 +10,4 @@ export const Fetch = async(endPoint:string,bodyData:Object) => {
 
   return response
 };
+

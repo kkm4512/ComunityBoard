@@ -6,5 +6,6 @@ export interface ErrorData  {
 }
 
 export interface successData {
-    success: boolean
+    success?: boolean
+    email?: string
 }

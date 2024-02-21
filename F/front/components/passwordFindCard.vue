@@ -54,10 +54,11 @@ const checked = async ()=> {
   };
 
   const response = await Fetch("user/passwordFind", userInfo);
+  console.log(response)
   
     
     // 요청한 email로 계정 조회후, 없으면 error 있으면 true
-      success(response,router,"비밀번호 찾기에 성공하였습니다.","passwordChange")
+    successQuery(response,router,response.email,"passwordChange")
       error(response, router, "error");
 
 

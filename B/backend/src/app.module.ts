@@ -3,6 +3,7 @@ import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from 'ormconfig';
+import { BoardModule } from './board/board.module';
 
 
 @Module({
@@ -12,7 +13,8 @@ import { ormConfig } from 'ormconfig';
     TypeOrmModule.forRootAsync({ useFactory: ormConfig }),
     ConfigModule.forRoot({
       isGlobal: true
-    }),    
+    }),
+    BoardModule,    
   ],
   controllers: [],
   providers: [],

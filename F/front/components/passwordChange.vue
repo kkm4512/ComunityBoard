@@ -46,13 +46,20 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { BaseResponse } from "~/types/basetype";
+
 const firstPasswrod = ref("");
 const secondPasswrod = ref("");
 const router = useRouter();
 const route = useRoute();
 
-const check = () => {
+const check = async () => {
+  const userInfo = {
+    email: route.query.queryKey,
+    password: firstPasswrod.value,
+  };
+
   if (
     firstPasswrod.value !== secondPasswrod.value ||
     firstPasswrod.value === "" ||
@@ -61,9 +68,9 @@ const check = () => {
     alert("다시한번 비밀번호를 확인해주세요");
     firstPasswrod.value = "";
     secondPasswrod.value = "";
-    router.push(`/${route?.referrer}`);
   } else {
-    Fetch("user/passwordChange");//여기 해야함
+    const response: BaseResponse = await Fetch("user/passwordChange", userInfo) as BaseResponse
+    success(response,router,"비밀번호 변경에 성공하였습니다.","success")
   }
 };
 </script>
