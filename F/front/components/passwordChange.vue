@@ -3,7 +3,7 @@
     <div
       class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 w-3/12 p-12"
     >
-      <h1 class="text-white flex justify-center text-3xl">passwordChange</h1>
+      <h1 class="text-black flex justify-center text-3xl">passwordChange</h1>
       <div class="mt-8">
         <label
           for="Password"
@@ -34,14 +34,12 @@
           required
         />
       </div>
-      <NuxtLink to="/login">
-        <div
-          class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-7"
-          @click="check"
-        >
-          확인
-        </div>
-      </NuxtLink>
+      <div
+        class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-7 cursor-pointer"
+        @click="check"
+      >
+        확인
+      </div>
     </div>
   </div>
 </template>
@@ -69,8 +67,11 @@ const check = async () => {
     firstPasswrod.value = "";
     secondPasswrod.value = "";
   } else {
-    const response: BaseResponse = await Fetch("user/passwordChange", userInfo) as BaseResponse
-    success(response,router,"비밀번호 변경에 성공하였습니다.","success")
+    const response: BaseResponse = (await Fetch(
+      "user/passwordChange",
+      userInfo
+    )) as BaseResponse;
+    success(response, router, "비밀번호 변경에 성공하였습니다.", "success");
   }
 };
 </script>

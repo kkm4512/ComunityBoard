@@ -3,7 +3,7 @@
     <div
       class="bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 w-3/12 p-12"
     >
-      <h1 class="text-white flex justify-center text-3xl">Login</h1>
+      <h1 class="text-black flex justify-center text-3xl">Login</h1>
       <div class="mt-8">
         <label
           for="Email"
@@ -47,7 +47,7 @@
         </NuxtLink>
       </div>
       <div
-        class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
+        class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5 cursor-pointer"
         @click="checked"
       >
         로그인
@@ -70,14 +70,14 @@ const checked = async () => {
     password: password.value,
   };
 
-  const response: BaseResponse = await $fetch("user/login", {
-    baseURL: "http://localhost:3001",
-    method: "POST",
-    body: userInfo,
-  });
-
-
-  success(response, router,"로그인에 성공하였습니다.","sucecss");
+  try {
+    const response: BaseResponse = await $fetch("user/login", {
+      baseURL: "http://localhost:3001",
+      method: "POST",
+      body: userInfo,
+    });
+    success(response, router, "로그인에 성공하였습니다.", "sucecss");
+  } catch (error) {}
 };
 </script>
 
