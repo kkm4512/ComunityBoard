@@ -21,7 +21,7 @@ export function errorORsucecss(
 //성공시 a라우터로 보내기
 export function success(
   response: BaseResponse,
-  
+
   router: any,
   successMessage: string,
   path: string

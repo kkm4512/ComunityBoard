@@ -70,14 +70,11 @@ const checked = async () => {
     password: password.value,
   };
 
-  try {
-    const response: BaseResponse = await $fetch("user/login", {
-      baseURL: "http://localhost:3001",
-      method: "POST",
-      body: userInfo,
-    });
-    success(response, router, "로그인에 성공하였습니다.", "sucecss");
-  } catch (error) {}
+  const response: BaseResponse = await Fetch(
+    "user/login",
+    userInfo
+  ) as BaseResponse;
+  // success(response, router, "로그인에 성공하였습니다.", "sucecss");
 };
 </script>
 
