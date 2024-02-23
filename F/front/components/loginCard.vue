@@ -36,18 +36,18 @@
       </div>
       <div class="flex justify-between p-2">
         <NuxtLink to="/passwordFind">
-          <div class="text-white cursor-pointer hover:text-blue-300 mt-5">
+          <div class="text-black cursor-pointer hover:text-blue-300 mt-5">
             비밀번호찾기
           </div>
         </NuxtLink>
         <NuxtLink to="/signUp">
-          <div class="text-white cursor-pointer hover:text-blue-300 mt-5">
+          <div class="text-black cursor-pointer hover:text-blue-300 mt-5">
             회원가입
           </div>
         </NuxtLink>
       </div>
       <div
-        class="text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
+        class="text-black focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-5"
         @click="checked"
       >
         로그인
@@ -58,7 +58,7 @@
 
 <script setup lang="ts">
 import { useRouter } from "vue-router";
-import type { BaseResponse } from "~/composables/errorORsuccess";
+import type { BaseResponse } from "~/types/basetype";
 
 const email = ref("");
 const password = ref("");
