@@ -55,14 +55,11 @@ export class UserService {
       throw new UnauthorizedException(
         '아이디 또는 비밀번호가 일치하지 않습니다.',
       );
-      // const data = {
-      //   name: 'Unauthorized',
-      //   status: 401,
-      //   error: '아이디 또는 비밀번호가 일치하지 않습니다.',
-      // };
+
     } else {
       const data = {
         success: true,
+        message: "로그인에 성공하였습니다."
       };
       return data;
     }

@@ -1,35 +1,11 @@
 import type { BaseResponse } from "~/types/basetype";
 
-export function errorORsucecss(
-  response: BaseResponse,
-  router: any,
-  success: string
-) {
-  if (response.success === true) {
-    router.push({
-      name: "success",
-      query: { successMessage: success },
-    });
-  } else {
-    router.push({
-      name: "error",
-      query: { errorMessage: response.error },
-    });
-  }
-}
-
 //성공시 a라우터로 보내기
-export function success(
-  response: BaseResponse,
-
-  router: any,
-  successMessage: string,
-  path: string
-) {
+export function success(response: BaseResponse, router: any, path: string) {
   if (response.success) {
     router.push({
       name: path,
-      query: { successMessage: successMessage },
+      query: { successMessage: response.message },
     });
   }
 }
@@ -40,7 +16,7 @@ export function error(response: BaseResponse, router: any, path: string) {
     console.log(response);
     router.push({
       name: path,
-      query: { errorMessage: response.error },
+      query: { errorMessage: response.message },
     });
   }
 }

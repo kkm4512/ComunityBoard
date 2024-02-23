@@ -12,8 +12,17 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
     });
 
     return response;
+
   } catch (error: unknown) {
-    console.error("Fetch error:", error0); // 로깅을 위해 콘솔에 에러 출력
-    console.log("errorResponse: ",error.response)
+    
+    if (error instanceof Error && 'response' in error){
+      const typedError = error.response as ErrorType
+      return {
+        error: typedError._data.error,
+        statusCode: typedError._data.statusCode,
+        message: typedError._data.message,
+      }
+    }
+    
   }
 };

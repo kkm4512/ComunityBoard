@@ -3,6 +3,7 @@ import { UserService } from './user.service';
 import { UserEntity } from 'entities/user.entity';
 import { Response } from 'express';
 
+
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -18,7 +19,7 @@ export class UserController {
     @Body() user: Pick<UserEntity, 'email' | 'password'>,
     @Res() res: Response,
   ) {
-    console.log( user )
+    
     const result = await this.userService.checkedUserSignIn(user);
     res.send(result);
   }

@@ -5,4 +5,6 @@ export interface BaseResponse {
     success?: Boolean;
     email?: string;
     password?: string;
+    message?: string;
+    data?: string
   }

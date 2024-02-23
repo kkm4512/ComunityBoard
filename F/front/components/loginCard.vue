@@ -70,11 +70,16 @@ const checked = async () => {
     password: password.value,
   };
 
-  const response: BaseResponse = await Fetch(
+  const response: BaseResponse = (await Fetch(
     "user/login",
     userInfo
-  ) as BaseResponse;
-  // success(response, router, "로그인에 성공하였습니다.", "sucecss");
+  )) as BaseResponse;
+
+  if (response.error) {
+    error(response, router, "error");
+  } else {
+    success(response, router, "success");
+  }
 };
 </script>
 
