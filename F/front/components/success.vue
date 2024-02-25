@@ -77,7 +77,7 @@
 import { useRoute } from "vue-router";
 const route = useRoute();
 
-const successMessage = route.query.successMessage;
+const successMessage = route.query.queryKey;
 
 definePageMeta({
   layout: false,

@@ -4,8 +4,3 @@ export interface ErrorData  {
     status?: number;
     success?: boolean;
 }
-
-export interface successData {
-    success?: boolean
-    email?: string
-}

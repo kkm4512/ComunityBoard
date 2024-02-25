@@ -55,24 +55,22 @@ const route = useRoute();
 const check = async () => {
   const userInfo = {
     email: route.query.queryKey,
-    password: firstPasswrod.value,
+    firstPassword: firstPasswrod.value,
+    secondPassword: secondPasswrod.value,
   };
 
-  if (
-    firstPasswrod.value !== secondPasswrod.value ||
-    firstPasswrod.value === "" ||
-    secondPasswrod.value === ""
-  ) {
-    alert("다시한번 비밀번호를 확인해주세요");
-    firstPasswrod.value = "";
-    secondPasswrod.value = "";
-  } else {
-    const response: BaseResponse = (await Fetch(
-      "user/passwordChange",
-      userInfo
-    )) as BaseResponse;
-    success(response, router, "비밀번호 변경에 성공하였습니다.", "success");
-  }
+  const response: BaseResponse = (await Fetch(
+    "user/passwordChange",
+    userInfo
+  )) as BaseResponse;
+  successError(
+    response,
+    router,
+    response.message,
+    "",
+    "입력하신 정보를 다시한번 확인해주세요.",
+    ""
+  );
 };
 </script>
 

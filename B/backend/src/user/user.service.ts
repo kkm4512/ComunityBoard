@@ -1,7 +1,12 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserDto, UserDtoFirstSecnodPasswordPlus } from 'dto/userDto';
 import { UserEntity } from 'entities/user.entity';
-import { ErrorData, successData } from 'type/base.type';
+import { ErrorData } from 'type/base.type';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -17,7 +22,7 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserEntity): Promise<boolean | ErrorData> {
+  async registerUser(user: UserDto) {
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -26,17 +31,12 @@ export class UserService {
 
     if (!userFind) {
       await this.userRepository.save(user);
-      const data: successData = {
-        success: true,
-      };
-
-      return data;
-    } else {
       return {
-        name: 'Unauthorized',
-        status: 401,
-        error: '중복된 이메일 입니다.',
+        success: true,
+        message: '회원가입에 성공 하였습니다.',
       };
+    } else {
+      throw new UnauthorizedException('중복된 이메일 입니다.');
     }
   }
   /**
@@ -44,7 +44,7 @@ export class UserService {
    * 2. db에서 사용자의 이메일로 조회
    * 3. 중복되면 에러 던지기, 아니면 sucecss
    */
-  async checkedUserSignIn(user: Pick<UserEntity, 'email' | 'password'>) {
+  async checkedUserSignIn(user: Pick<UserDto, 'email' | 'password'>) {
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -55,13 +55,11 @@ export class UserService {
       throw new UnauthorizedException(
         '아이디 또는 비밀번호가 일치하지 않습니다.',
       );
-
     } else {
-      const data = {
+      return {
         success: true,
-        message: "로그인에 성공하였습니다."
+        message: '로그인에 성공하였습니다.',
       };
-      return data;
     }
   }
 
@@ -71,19 +69,13 @@ export class UserService {
    * 3. 없으면 error
    */
 
-  async passwordFindByEmail(
-    user: Pick<UserEntity, 'email'>,
-  ): Promise<ErrorData | successData> {
+  async passwordFindByEmail(user: Pick<UserDto, 'email'>) {
     const userFind = await this.userRepository.findOne({
       where: { email: user.email },
     });
 
     if (!userFind) {
-      return {
-        name: 'NotFound',
-        error: '요청하신 이메일이 조회되지 않습니다.',
-        status: 404,
-      };
+      throw new UnauthorizedException('요청하신 이메일이 조회되지 않습니다.');
     } else {
       return {
         success: true,
@@ -98,19 +90,26 @@ export class UserService {
    * 3. 그 사용자에대한 비밀번호를 변경시킨다.
    */
 
-  async userPasswordChange(user: UserEntity): Promise<successData> {
-    const userFind: UserEntity = await this.userRepository.findOne({
+  async userPasswordChange(user: UserDtoFirstSecnodPasswordPlus) {
+    const userFind: UserDto = await this.userRepository.findOne({
       where: { email: user.email },
     });
+
+    if (!userFind) {
+      throw new NotFoundException('요청하신 이메일을 찾을 수 없습니다.');
+    }
 
     const newUser = Object.assign(userFind, {
       password: user.password,
     });
 
+    //여기 해야함
+
     await this.userRepository.save(newUser);
 
     return {
       success: true,
+      message: '비밀번호 변경에 성공하였습니다!',
     };
   }
 }

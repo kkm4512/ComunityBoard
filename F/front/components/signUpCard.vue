@@ -72,16 +72,12 @@
 </template>
 
 <script setup lang="ts">
+import type { BaseResponse } from "~/types/basetype";
+
 const userEmail = ref("");
 const userPassword = ref("");
 const userNickname = ref("");
 const router = useRouter();
-
-interface Response {
-  error: string;
-  status: number;
-  boolean: Boolean;
-}
 
 const checked = async () => {
   const userInfo = {
@@ -90,16 +86,21 @@ const checked = async () => {
     nickname: userNickname.value,
   };
 
-  const response: Response = await $fetch("user", {
-    baseURL: "http://localhost:3001",
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: userInfo,
-  });
+  const response: BaseResponse = (await Fetch(
+    "user/signUp",
+    userInfo
+  )) as BaseResponse;
 
-  errorORsucecss(response, router, "회원가입에 성공하였습니다");
+  console.log(response);
+
+  successError(
+    response,
+    router,
+    "회원가입에 성공했습니다.",
+    "success",
+    response.message,
+    "error"
+  );
 };
 </script>
 

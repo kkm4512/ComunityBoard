@@ -62,7 +62,7 @@
 <script setup>
 const route = useRoute();
 
-const errorMessage = route.query.errorMessage;
+const errorMessage = route.query.queryKey;
 
 
 </script>

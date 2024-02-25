@@ -45,28 +45,24 @@
 <script setup>
 const router = useRouter();
 
-const email = ref('');
+const email = ref("");
 
-
-const checked = async ()=> {
+const checked = async () => {
   const userInfo = {
-    email:email.value
+    email: email.value,
   };
 
   const response = await Fetch("user/passwordFind", userInfo);
-  console.log(response)
-  
-    
-    // 요청한 email로 계정 조회후, 없으면 error 있으면 true
-    successQuery(response,router,response.email,"passwordChange")
-      error(response, router, "error");
 
-
+  // 요청한 email로 계정 조회후, 없으면 error 있으면 true
+  successError(
+    response,
+    router,
+    response.email,
+    "passwordChange",
+    "요청하신 이메일은 조회되지 않습니다."
+  );
 };
-
-/**
-   2. catch구문 작동안됨
- */
 </script>
 
 <style lang="scss" scoped></style>
