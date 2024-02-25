@@ -103,7 +103,7 @@ export class UserService {
       password: user.password,
     });
 
-    //여기 해야함
+    // first,secnod password 검증하는것도 여기서 진행 ㄱㄱ
 
     await this.userRepository.save(newUser);
 
