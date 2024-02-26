@@ -75,11 +75,17 @@ const checked = async () => {
     userInfo
   )) as BaseResponse;
 
-  if (response.error) {
-    error(response, router, "error");
-  } else {
-    success(response, router, "success");
-  }
+  getCookieFetch(response);
+  //순서
+
+  successError(
+    response,
+    router,
+    response.message,
+    "success",
+    response.message,
+    "error"
+  );
 };
 </script>
 

@@ -91,14 +91,16 @@ const checked = async () => {
     userInfo
   )) as BaseResponse;
 
-  console.log(response);
+  getCookieFetch(response);
+  //순서
+  //로그인할때 accessToken뿌려주기
 
   successError(
     response,
     router,
     "회원가입에 성공했습니다.",
     "success",
-    response.message,
+    "이메일이 중복되었거나, 형식이 올바르지 않습니다.",
     "error"
   );
 };

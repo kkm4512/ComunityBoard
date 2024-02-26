@@ -1,19 +1,19 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserDto, UserDtoFirstSecnodPasswordPlus } from 'dto/userDto';
+import { Payload, UserDto, UserDtoFirstSecnodPassword } from 'dto/userDto';
 import { UserEntity } from 'entities/user.entity';
-import { ErrorData } from 'type/base.type';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
+
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
+    private jwtService: JwtService
   ) {}
 
   /**
@@ -29,11 +29,15 @@ export class UserService {
       },
     });
 
+    user.password = await bcrypt.hash(user.password, 10);
+
     if (!userFind) {
       await this.userRepository.save(user);
+      const accessToken = await this.createJwtToken(user)
       return {
         success: true,
         message: '회원가입에 성공 하였습니다.',
+        accessToken: accessToken
       };
     } else {
       throw new UnauthorizedException('중복된 이메일 입니다.');
@@ -51,16 +55,17 @@ export class UserService {
       },
     });
 
-    if (!userFind) {
+    const isCompared = await bcrypt.compare(user.password, userFind.password);
+
+    if (isCompared === false || user.email !== userFind.email) {
       throw new UnauthorizedException(
         '아이디 또는 비밀번호가 일치하지 않습니다.',
       );
-    } else {
-      return {
-        success: true,
-        message: '로그인에 성공하였습니다.',
-      };
     }
+    return {
+      success: true,
+      message: '로그인에 성공하였습니다.',
+    };
   }
 
   /**
@@ -90,20 +95,18 @@ export class UserService {
    * 3. 그 사용자에대한 비밀번호를 변경시킨다.
    */
 
-  async userPasswordChange(user: UserDtoFirstSecnodPasswordPlus) {
+  async userPasswordChange(user: UserDtoFirstSecnodPassword) {
     const userFind: UserDto = await this.userRepository.findOne({
       where: { email: user.email },
     });
 
-    if (!userFind) {
-      throw new NotFoundException('요청하신 이메일을 찾을 수 없습니다.');
+    if (user.firstPassword !== user.secondPassword) {
+      throw new UnauthorizedException('비밀번호가 서로 일치하지 않습니다.');
     }
 
     const newUser = Object.assign(userFind, {
-      password: user.password,
+      password: user.secondPassword,
     });
-
-    // first,secnod password 검증하는것도 여기서 진행 ㄱㄱ
 
     await this.userRepository.save(newUser);
 
@@ -112,4 +115,20 @@ export class UserService {
       message: '비밀번호 변경에 성공하였습니다!',
     };
   }
+
+  /**
+  *  1. 로그인 or 회원가입
+  *  2. jwt 토큰 프론트로 던져주는 함수작성
+  *  3. email,nickname을 받으면 jwt토큰을 생성해주는 로직
+  */
+
+  async createJwtToken(user:Payload): Promise<{}>{
+    const payload = { email : user.email, nickname: user.nickname }
+    const accessToken = await this.jwtService.signAsync(payload,{
+      secret: JWT_SCREATE_KEY
+    })
+    return accessToken
+  }
+
+
 }

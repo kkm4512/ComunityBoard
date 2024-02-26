@@ -63,13 +63,15 @@ const check = async () => {
     "user/passwordChange",
     userInfo
   )) as BaseResponse;
+
+
   successError(
     response,
     router,
     response.message,
-    "",
-    "입력하신 정보를 다시한번 확인해주세요.",
-    ""
+    "success",
+    response.message,
+    "error"
   );
 };
 </script>

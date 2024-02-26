@@ -14,7 +14,10 @@ export class UserDto {
   nickname?: string;
 }
 
-export class UserDtoFirstSecnodPasswordPlus extends UserDto {
+export class UserDtoFirstSecnodPassword extends UserDto {
   firstPassword: string;
   secondPassword: string;
+}
+
+export class Payload extends UserDto {
 }

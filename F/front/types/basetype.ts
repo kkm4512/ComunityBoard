@@ -7,4 +7,5 @@ export interface BaseResponse {
     password?: string;
     message?: string;
     data?: string
+    accessToken?: string; 
   }
