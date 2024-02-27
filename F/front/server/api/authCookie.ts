@@ -7,14 +7,13 @@
  * 5. 로그인/회원가입 부분이 -> 로그아웃 으로 보이게하기
  */
 
-
-import cookie from 'cookie';
-type Cookies = {accessToken?:string}
-export default defineEventHandler((e:any)=>{
-  const req = e.req
-  const cookies: Cookies = cookie.parse(req.headers.cookie || '')
-  const accessToken = cookies.accessToken
+import cookie from "cookie";
+type Cookies = { accessToken?: string };
+export default defineEventHandler((e: any) => {
+  const req = e.req;
+  const cookies: Cookies = cookie.parse(req.headers.cookie || "");
+  const accessToken = cookies.accessToken;
   const authStore = useAuthStore();
-  authStore.updateUser(accessToken,123)
-  console.log(authStore.userInfo)
-})
+  authStore.updateUser(accessToken, 123);
+  console.log(authStore.userInfo);
+});
