@@ -9,12 +9,17 @@
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
   },
+  "overrides": {
+    "vue": "latest"
+  },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
+    "@pinia/nuxt": "^0.5.1",
     "js-cookie": "^3.0.5",
     "nuxt": "^3.10.1",
+    "pinia": "^2.1.7",
     "unhead": "^1.8.10",
     "vue": "^3.4.15",
     "vue-router": "^4.2.5"
