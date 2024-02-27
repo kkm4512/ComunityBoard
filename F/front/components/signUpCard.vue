@@ -91,10 +91,6 @@ const checked = async () => {
     userInfo
   )) as BaseResponse;
 
-  getCookieFetch(response);
-  //순서
-  //로그인할때 accessToken뿌려주기
-
   successError(
     response,
     router,
@@ -104,6 +100,8 @@ const checked = async () => {
     "error"
   );
 };
+
+
 </script>
 
 <style lang="scss" scoped></style>

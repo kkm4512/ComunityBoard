@@ -7,13 +7,12 @@ import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
 import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
 
-
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private userRepository: Repository<UserEntity>,
-    private jwtService: JwtService
+    private jwtService: JwtService,
   ) {}
 
   /**
@@ -37,7 +36,7 @@ export class UserService {
       return {
         success: true,
         message: '회원가입에 성공 하였습니다.',
-        accessToken: accessToken
+        accessToken
       };
     } else {
       throw new UnauthorizedException('중복된 이메일 입니다.');
@@ -62,9 +61,12 @@ export class UserService {
         '아이디 또는 비밀번호가 일치하지 않습니다.',
       );
     }
+
+    const accessToken = await this.createJwtToken(user)
     return {
       success: true,
       message: '로그인에 성공하였습니다.',
+      accessToken
     };
   }
 
@@ -117,18 +119,16 @@ export class UserService {
   }
 
   /**
-  *  1. 로그인 or 회원가입
-  *  2. jwt 토큰 프론트로 던져주는 함수작성
-  *  3. email,nickname을 받으면 jwt토큰을 생성해주는 로직
-  */
+   *  1. 로그인 or 회원가입
+   *  2. jwt 토큰 프론트로 던져주는 함수작성
+   *  3. email,nickname을 받으면 jwt토큰을 생성해주는 로직
+   */
 
-  async createJwtToken(user:Payload): Promise<{}>{
-    const payload = { email : user.email, nickname: user.nickname }
-    const accessToken = await this.jwtService.signAsync(payload,{
-      secret: JWT_SCREATE_KEY
-    })
-    return accessToken
+  async createJwtToken(user: Payload): Promise<{}> {
+    const payload = { email: user.email, nickname: user.nickname };
+    const accessToken = await this.jwtService.signAsync(payload, {
+      secret: JWT_SCREATE_KEY,
+    });
+    return accessToken;
   }
-
-
 }

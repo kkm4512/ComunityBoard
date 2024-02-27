@@ -25,8 +25,25 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
-export const getCookieFetch = async (cookieResponse: BaseResponse) => {
-  const response = await $fetch("/api/cookie", {
+export const getCookieFetch = async (
+  cookieResponse: BaseResponse
+): Promise<void> => {
+  await $fetch("/api/cookie", {
+    baseURL: "http://localhost:3000",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    query: {
+      queryKey: cookieResponse.accessToken,
+    },
+  });
+};
+
+export const getCookieCheckFetch = async (
+  cookieResponse: BaseResponse
+): Promise<void> => {
+  await $fetch("/api/authCookie", {
     baseURL: "http://localhost:3000",
     method: "GET",
     headers: {

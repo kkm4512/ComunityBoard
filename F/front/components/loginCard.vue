@@ -75,9 +75,6 @@ const checked = async () => {
     userInfo
   )) as BaseResponse;
 
-  getCookieFetch(response);
-  //순서
-
   successError(
     response,
     router,
@@ -86,6 +83,8 @@ const checked = async () => {
     response.message,
     "error"
   );
+
+  
 };
 </script>
 

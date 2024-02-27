@@ -15,16 +15,10 @@ import { UserDtoFirstSecnodPassword } from 'dto/userDto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  //왜 클라이언트 쿠키에 안보이냐
-  //아니 어이없는게 postman에서는 잘보이냐 ㅅㅂ
   @Post('signUp')
   @UsePipes(new ValidationPipe())
   async signUp(@Body() user: UserEntity, @Res() res: Response) {
     const result = await this.userService.registerUser(user);
-    res.cookie('accessToken', result?.accessToken, {
-      maxAge: 60 * 60 * 24 * 1000,
-      httpOnly: true,
-    });
     res.send(result);
   }
 
