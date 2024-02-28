@@ -18,7 +18,6 @@
 <script setup>
 import card from "~/components/card.vue";
 import coursesData from "../data/coursesData";
-
 </script>
 
 <style lang="scss" scoped></style>
