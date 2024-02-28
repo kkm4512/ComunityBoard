@@ -54,12 +54,18 @@ export class UserService {
       },
     });
 
+    if (!userFind) {
+      throw new UnauthorizedException(
+        '조회되는 계정이 없습니다.',
+      );
+    }
+
     const isCompared = await bcrypt.compare(user.password, userFind.password);
 
-    if (isCompared === false || user.email !== userFind.email) {
+    if ( isCompared === false || user.email !== userFind.email ){
       throw new UnauthorizedException(
         '아이디 또는 비밀번호가 일치하지 않습니다.',
-      );
+      );      
     }
 
     const accessToken = await this.createJwtToken(user)

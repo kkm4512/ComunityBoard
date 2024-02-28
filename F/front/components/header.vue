@@ -72,7 +72,7 @@
               >로그인 / 회원가입</a
             >
             <a
-              v-if="accessToken"
+              v-if="accessToken !== undefined && accessToken"
               class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent cursor-pointer"
               @click="signOut"
               >로그아웃</a
@@ -87,9 +87,12 @@
 <script setup lang="ts">
 import { useCookieAccessTokenStore } from "~/stores/cookie";
 const cookieAccessTokenStore = useCookieAccessTokenStore();
-const accessToken = computed(() => cookieAccessTokenStore?.accessToken);
+const accessToken = computed(() => cookieAccessTokenStore.accessToken);
 
-//그럼 여기서 삭제하는게 아니라, pinia에 있는걸 삭제시켜볼까요? 굳
+/**
+ * 1. 로그인에 실패해도 쿠키에 accessToken 부분이 undefined로 채워짐
+ * 2. 로그인에 실패했을때 쿠키에 저장 아예 못시키게 하기
+ */
 const signOut = async () => {
   await removeCookieFetch();
   cookieAccessTokenStore.accessToken = "";

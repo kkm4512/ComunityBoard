@@ -13,8 +13,10 @@
       >
         <card :title="title" :content="content" :profileName="profileName" />
       </div>
+      <div>
+        <add-board-button />
+      </div>
     </div>
-    <add-board-button />
   </div>
 </template>
 
