@@ -91,6 +91,12 @@ const checked = async () => {
     userInfo
   )) as BaseResponse;
 
+  //쿠키 세팅
+  await setCookieFetch(response);
+
+  //쿠키 pinia 저장
+  await setCookieStore();
+
   successError(
     response,
     router,

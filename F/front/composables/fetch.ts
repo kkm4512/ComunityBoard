@@ -25,7 +25,8 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
-export const getCookieFetch = async (
+//쿠키 세팅
+export const setCookieFetch = async (
   cookieResponse: BaseResponse
 ): Promise<void> => {
   await $fetch("/api/cookie", {
@@ -40,17 +41,25 @@ export const getCookieFetch = async (
   });
 };
 
-export const getCookieCheckFetch = async (
-  cookieResponse: BaseResponse
-): Promise<void> => {
-  await $fetch("/api/authCookie", {
+//쿠키 가져오기
+export const getCookieFetch = async (): Promise<any> => {
+  const cookie = await $fetch("/api/getCookie", {
     baseURL: "http://localhost:3000",
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-    query: {
-      queryKey: cookieResponse.accessToken,
+  });
+  return cookie;
+};
+
+//쿠키삭제
+export const removeCookieFetch = async (): Promise<void> => {
+  await $fetch("/api/removeCookie", {
+    baseURL: "http://localhost:3000",
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
     },
   });
 };

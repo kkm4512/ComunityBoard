@@ -64,9 +64,7 @@
               </button>
             </NuxtLink>
           </div>
-          <div class="my-6">
- 
-          </div>
+          <div class="my-6"></div>
         </div>
       </div>
     </div>

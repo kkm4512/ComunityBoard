@@ -54,10 +54,14 @@ export async function successError(
       sucecssQueryVal ?? "성공",
       successPath ?? "success"
     );
-    await getCookieFetch(response);
-    getCookieCheckFetch(response)
 
   } else if (response.error) {
     error(response, router, errorQueryVal ?? "실패", errorPath ?? "error");
   }
+}
+
+export async function setCookieStore(){
+  const accessToken = await getCookieFetch();
+  const cookieAccessTokenStore = useCookieAccessTokenStore();
+  cookieAccessTokenStore.updateCookieAccessToken(accessToken);  
 }
