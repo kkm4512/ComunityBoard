@@ -2,12 +2,12 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  css: [
-    '~/assets/css/main.css',
-  ],  
+  extends: ["plugin:vue/vue3-essential"],
+
+  css: ["~/assets/css/main.css"],
 
   typescript: {
-    shim: false
+    shim: false,
   },
 
   postcss: {
@@ -18,6 +18,6 @@ export default defineNuxtConfig({
   },
   modules: [
     // ...
-    '@pinia/nuxt',
-  ],    
-})
+    "@pinia/nuxt",
+  ],
+});

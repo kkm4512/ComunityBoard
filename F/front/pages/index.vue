@@ -3,15 +3,18 @@
     1. 전체 db에있는 (현재는 local data로 대체) title,description등을 가져온다
     2. 루핑시킨다.
   -->
-  <br />
-  <div class="bg-slate-500">
-    <div
-      class="flex justify-center items-center mt-5 mb-5"
-      v-for="{ title, content, profileName } in coursesData"
-      :key="i"
-    >
-      <card :title="title" :content="content" :profileName="profileName" />
+  <div>
+    <div class="bg-slate-500">
+      <br />
+      <div
+        class="flex justify-center items-center mt-5 mb-5"
+        v-for="{ title, content, profileName } in coursesData"
+        :key="title"
+      >
+        <card :title="title" :content="content" :profileName="profileName" />
+      </div>
     </div>
+    <add-board-button />
   </div>
 </template>
 

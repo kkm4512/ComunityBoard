@@ -27,7 +27,7 @@
       <div
         class="cursor-pointer hover:bg-gray-300 ml-2"
         v-for="icon in mdiIconAllPath"
-        :key="i"
+        :key="iocn"
       >
         <svg-icon type="mdi" :path="icon" class="w-[20px]"></svg-icon>
       </div>
