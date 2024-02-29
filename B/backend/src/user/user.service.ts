@@ -32,11 +32,11 @@ export class UserService {
 
     if (!userFind) {
       await this.userRepository.save(user);
-      const accessToken = await this.createJwtToken(user)
+      const accessToken = await this.createJwtToken(user);
       return {
         success: true,
         message: '회원가입에 성공 하였습니다.',
-        accessToken
+        accessToken,
       };
     } else {
       throw new UnauthorizedException('중복된 이메일 입니다.');
@@ -55,24 +55,22 @@ export class UserService {
     });
 
     if (!userFind) {
-      throw new UnauthorizedException(
-        '조회되는 계정이 없습니다.',
-      );
+      throw new UnauthorizedException('조회되는 계정이 없습니다.');
     }
 
     const isCompared = await bcrypt.compare(user.password, userFind.password);
 
-    if ( isCompared === false || user.email !== userFind.email ){
+    if (isCompared === false || user.email !== userFind.email) {
       throw new UnauthorizedException(
         '아이디 또는 비밀번호가 일치하지 않습니다.',
-      );      
+      );
     }
 
-    const accessToken = await this.createJwtToken(user)
+    const accessToken = await this.createJwtToken(user);
     return {
       success: true,
       message: '로그인에 성공하였습니다.',
-      accessToken
+      accessToken,
     };
   }
 
