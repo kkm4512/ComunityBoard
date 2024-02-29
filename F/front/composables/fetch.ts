@@ -26,9 +26,13 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
 };
 
 //쿠키 세팅
+//accessToken값 받아오지 못하면 종료
 export const setCookieFetch = async (
   cookieResponse: BaseResponse
 ): Promise<void> => {
+  if (!cookieResponse.accessToken){
+    return
+  }
   await $fetch("/api/cookie", {
     baseURL: "http://localhost:3000",
     method: "GET",

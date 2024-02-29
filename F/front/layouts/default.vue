@@ -1,8 +1,11 @@
 <template>
-  <div class="bg-slate-500 flex flex-col min-h-screen">
+  <div class="bg-slate-500 flex flex-col min-h-screen border-red-500 border-2">
     <Header />
 
     <NuxtPage />
+    <div class="border-red-500 border-2 ml-[73%]">
+      <add-board-button />
+    </div>
 
     <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
       <div
@@ -47,7 +50,6 @@ import { useCookieAccessTokenStore } from "~/stores/cookie";
  * 5. default.vue에서는 리프레쉬를 해야 리렌더링을하고, 그래야 로그인이 되었다고 판단함
  * 6. 어떻하지?
  */
-
 </script>
 
 <style lang="scss" scoped></style>
