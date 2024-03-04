@@ -1,9 +1,11 @@
 <template>
-  <div class="bg-slate-500 flex flex-col min-h-screen border-red-500 border-2">
+  <div class="bg-slate-500 flex flex-col min-h-screen">
     <Header />
 
     <NuxtPage />
-    <div class="border-red-500 border-2 ml-[73%]">
+    <div class="ml-[73%] fixed translate-x-3"
+    :style="{ marginTop: mt }"
+    >
       <add-board-button />
     </div>
 
@@ -37,19 +39,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Header from "~/components/header.vue";
-import { useCookieAccessTokenStore } from "~/stores/cookie";
 
-/**
- * [ 지금 나의 문제점 ]
- * 1. server/api/getCookie에서 쿠키를 파싱해와서 저장함
- * 2. headerComponent에 해당 cookie값을 props로 보냄
- * 3. default.vue파일에서 해당 cookie값의 존재 유무에따라 로그인의 유무룰 판단함
- * 4. 근데 로그인하고 쿠키가 분명 박혔는데
- * 5. default.vue에서는 리프레쉬를 해야 리렌더링을하고, 그래야 로그인이 되었다고 판단함
- * 6. 어떻하지?
- */
+const mt = ref('400px')
+
 </script>
 
 <style lang="scss" scoped></style>

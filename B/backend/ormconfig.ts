@@ -1,10 +1,11 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { BoardEntity } from 'entities/board.entity';
 import { UserEntity } from 'entities/user.entity';
 
 function ormConfig(): TypeOrmModuleOptions {
   const commonConf = {
     SYNCRONIZE: true,
-    ENTITIES: [UserEntity],
+    ENTITIES: [UserEntity,BoardEntity],
   };
 
   return {
