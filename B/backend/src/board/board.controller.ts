@@ -13,4 +13,9 @@ export class BoardController {
     return this.boardService.boardCreateService(data)
   }
 
+  @Post('getBoards')
+  getBoards(){
+    return this.boardService.getBoardsService()
+  }
+
 }

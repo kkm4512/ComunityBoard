@@ -63,3 +63,33 @@ export async function setCookieStore(){
   const cookieAccessTokenStore = useCookieAccessTokenStore();
   cookieAccessTokenStore.updateCookieAccessToken(accessToken);  
 }
+
+// 쿠키 없을때 에러
+export async function cookieError(
+  cookie: string,
+  router: any,
+  queryVal: string,
+  path: string
+) {
+  if (!cookie) {
+    router.push({
+      name: path,
+      query: { queryKey: queryVal },
+    });
+  }
+}
+
+// 쿠키 있을때 성공
+export async function cookieSuccess(
+  cookie: string,
+  router: any,
+  queryVal: string,
+  path: string
+) {
+  if (!cookie) {
+    router.push({
+      name: path,
+      query: { queryKey: queryVal },
+    });
+  }
+}

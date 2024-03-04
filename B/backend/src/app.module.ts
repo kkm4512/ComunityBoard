@@ -6,6 +6,7 @@ import { ormConfig } from 'ormconfig';
 import { BoardModule } from './board/board.module';
 import { JwtModule } from '@nestjs/jwt';
 import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
+import { TokenModule } from './token/token.module';
 
 
 
@@ -22,7 +23,8 @@ import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
       secret: JWT_SCREATE_KEY,
       signOptions: { expiresIn: '60s' },
     }),
-    BoardModule,    
+    BoardModule,
+    TokenModule,    
   ],
   controllers: [],
   providers: [],

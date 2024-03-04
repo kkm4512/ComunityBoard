@@ -8,18 +8,36 @@
       <br />
       <div
         class="flex justify-center items-center mt-5 mb-5"
-        v-for="{ title, content, profileName } in coursesData"
+        v-for="{ title, description, selectedOption } in response"
         :key="title"
       >
-        <card :title="title" :content="content" :profileName="profileName" />
+        <card :title="title" :description="description" :selectedOption="selectedOption" />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import card from "~/components/card.vue";
-import coursesData from "../data/coursesData";
+
+
+interface responseBoard  {
+  title:string;
+  description:string;
+  selectedOption:string;
+}
+
+const response = ref({})
+
+const getBoards = async() => {
+  const response:responseBoard = await Fetch('board/getBoards',{}) as responseBoard
+  return response
+  
+}
+onMounted(async() => {
+   const getResponse:responseBoard = await getBoards()
+   response.value = getResponse
+})
 </script>
 
 <style lang="scss" scoped></style>

@@ -9,7 +9,7 @@
         alt="Rounded avatar"
       />
       <div class="text-black ml-2 text-sm">
-        {{ profileName }}
+        {{ selectedOption }}
         <p></p>
         블로그 쓰는 개발자
         <p></p>
@@ -20,7 +20,7 @@
       {{ title }}
     </h5>
     <p class="font-normal text-black dark:text-gray-700 mt-5">
-      {{ content }}
+      {{ description }}
     </p>
 
     <div class="flex justify-between mt-7 mb-2">
@@ -53,8 +53,8 @@ const mdiIconAllPath = [
 
 defineProps({
   title: String,
-  content: String,
-  profileName: String,
+  description: String,
+  selectedOption: String,
 });
 </script>
 

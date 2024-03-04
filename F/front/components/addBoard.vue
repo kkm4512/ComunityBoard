@@ -49,8 +49,9 @@
 </template>
 
 <script setup lang="ts">
-import { Router } from "vue-router";
-const router = Router();
+import type { BaseResponse } from '~/types/basetype';
+
+const router = useRouter();
 
 const title = ref("");
 const description = ref("");
@@ -63,8 +64,8 @@ const check = async () => {
     selectedOption: selectedOption.value,
   };
 
-  const response = await Fetch("board/create", data);
-  successError(response);
+  const response:BaseResponse = await Fetch("board/create", data) as BaseResponse;
+  successError(response,router,'정상적으로 생성 되었습니다.','success',"알 수 없는 오류로 실패 했습니다.","error");
 };
 </script>
 
