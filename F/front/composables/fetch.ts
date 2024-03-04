@@ -25,6 +25,29 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
+export const jwtFetch = async (endPoint: string, jwt: string) => {
+  try {
+    const response = await $fetch(endPoint, {
+      baseURL: "http://localhost:3001",
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${jwt}`,
+      },
+    });
+
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof Error && "response" in error) {
+      const typedError = error.response as ErrorType;
+      return {
+        error: typedError._data.error,
+        statusCode: typedError._data.statusCode,
+        message: typedError._data.message,
+      };
+    }
+  }
+};
+
 //쿠키 세팅
 //accessToken값 받아오지 못하면 종료
 export const setCookieFetch = async (

@@ -11,7 +11,11 @@
         v-for="{ title, description, selectedOption } in response"
         :key="title"
       >
-        <card :title="title" :description="description" :selectedOption="selectedOption" />
+        <card
+          :title="title"
+          :description="description"
+          :selectedOption="selectedOption"
+        />
       </div>
     </div>
   </div>
@@ -20,24 +24,22 @@
 <script setup lang="ts">
 import card from "~/components/card.vue";
 
-
-interface responseBoard  {
-  title:string;
-  description:string;
-  selectedOption:string;
+interface responseBoard {
+  title: string;
+  description: string;
+  selectedOption: string;
 }
 
-const response = ref({})
+const response = ref({});
 
-const getBoards = async() => {
-  const response:responseBoard = await Fetch('board/getBoards',{}) as responseBoard
-  return response
-  
-}
-onMounted(async() => {
-   const getResponse:responseBoard = await getBoards()
-   response.value = getResponse
-})
+const getBoards = async () => {
+  const response = (await Fetch("board/getBoards", {})) as responseBoard;
+  return response;
+};
+onMounted(async () => {
+  const getResponse = await getBoards();
+  response.value = getResponse;
+});
 </script>
 
 <style lang="scss" scoped></style>

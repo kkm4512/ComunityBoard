@@ -12,14 +12,21 @@
 </template>
 
 <script setup lang="ts">
+import type { BaseResponse } from '~/types/basetype';
+
 
 const router = useRouter()
 const check = async() => {
   const cookie = await getCookieFetch() 
 
-  const response = await Fetch('token/isValidToken',{cookie})
-  // getCookie === undefined ? cookieError(getCookie,router,"로그인 후 이용해주세요","error") : router.push('addBoard')
+  const response = await jwtFetch('token/isValidToken',cookie) as BaseResponse
+  successError(response,router,"","addBoard","로그인 되어있지않거나, 토큰이 만료되었습니다.","error");
 }
+
+/**
+ 
+ * 2. header에 담아서 잘 보낸거같은데 백엔드에서는 jwt 프로바이드 하라고함
+ */
 </script>
 
 <style lang="scss" scoped></style>
