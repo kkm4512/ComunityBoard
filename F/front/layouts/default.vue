@@ -9,7 +9,7 @@
       <add-board-button />
     </div>
 
-    <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800">
+    <footer class="bg-white rounded-lg shadow m-4 dark:bg-gray-800 fixed bottom-[0%] w-[98%] h-[5%]">
       <div
         class="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between"
       >

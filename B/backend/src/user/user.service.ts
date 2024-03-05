@@ -99,6 +99,7 @@ export class UserService {
    * 1. 프론트로부터 이메일과 비밀번호를 받는다.
    * 2. 이메일로 사용자를 먼저 찾고 (사용자는 무조건 있음)
    * 3. 그 사용자에대한 비밀번호를 변경시킨다.
+   * 4. 비밀번호 변경할때도 해싱해줘야지
    */
 
   async userPasswordChange(user: UserDtoFirstSecnodPassword) {
@@ -109,6 +110,8 @@ export class UserService {
     if (user.firstPassword !== user.secondPassword) {
       throw new UnauthorizedException('비밀번호가 서로 일치하지 않습니다.');
     }
+
+    user.secondPassword = await bcrypt.hash(user.secondPassword, 10);
 
     const newUser = Object.assign(userFind, {
       password: user.secondPassword,
@@ -130,8 +133,9 @@ export class UserService {
 
   async createJwtToken(user: Payload): Promise<{}> {
     const payload = { email: user.email, nickname: user.nickname };
-    const accessToken = await this.jwtService.signAsync(payload, {
+    const accessToken = this.jwtService.sign(payload, {
       secret: JWT_SCREATE_KEY,
+      expiresIn: '24h'
     });
     return accessToken;
   }

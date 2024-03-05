@@ -3,11 +3,13 @@ import type { BaseResponse } from "~/types/basetype";
 
 export const Fetch = async (endPoint: string, bodyData: Object) => {
   try {
+    const cookie = await getCookieFetch()
     const response = await $fetch(endPoint, {
       baseURL: "http://localhost:3001",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${cookie}`,
       },
       body: bodyData,
     });
@@ -25,13 +27,14 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
-export const jwtFetch = async (endPoint: string, jwt: string) => {
+export const jwtFetch = async (endPoint: string) => {
   try {
+    const cookie = await getCookieFetch()
     const response = await $fetch(endPoint, {
       baseURL: "http://localhost:3001",
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${jwt}`,
+        "Authorization": `Bearer ${cookie}`,
       },
     });
 

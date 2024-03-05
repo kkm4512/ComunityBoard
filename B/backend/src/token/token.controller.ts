@@ -1,20 +1,17 @@
 import {
-  Body,
   Controller,
   Post,
-  Req,
-  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { TokenService } from './token.service';
-import { AuthGuard } from './token.guard';
-import { Request } from 'express';
+import { TokenGuard } from './token.guard';
+
 
 @Controller('token')
 export class TokenController {
   constructor(private readonly tokenService: TokenService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(TokenGuard)
   @Post('isValidToken')
   isValidateToken() {
     return {

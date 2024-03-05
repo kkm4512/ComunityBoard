@@ -86,8 +86,7 @@
 
 <script setup lang="ts">
 import { useCookieAccessTokenStore } from "~/stores/cookie";
-const cookieAccessTokenStore = useCookieAccessTokenStore();
-const accessToken = computed(() => cookieAccessTokenStore.accessToken);
+const {accessToken,cookieAccessTokenStore} = piniaCookieCheck(useCookieAccessTokenStore)
 
 /**
  * 1. 로그인에 실패해도 쿠키에 accessToken 부분이 undefined로 채워짐

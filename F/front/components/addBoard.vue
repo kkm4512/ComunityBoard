@@ -49,6 +49,10 @@
 </template>
 
 <script setup lang="ts">
+
+/** 
+* 1. jwtFetch 할떄 보낼때 자동으로 헤더에 accessToken보낼수있게하기
+*/
 import type { BaseResponse } from '~/types/basetype';
 
 const router = useRouter();
@@ -65,7 +69,7 @@ const check = async () => {
   };
 
   const response:BaseResponse = await Fetch("board/create", data) as BaseResponse;
-  successError(response,router,'정상적으로 생성 되었습니다.','success',"알 수 없는 오류로 실패 했습니다.","error");
+  successError(response,router,'정상적으로 생성 되었습니다.','success',"로그인 되어있지않은 상태입니다.","error");
 };
 </script>
 

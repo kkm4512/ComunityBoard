@@ -17,9 +17,8 @@ import type { BaseResponse } from '~/types/basetype';
 
 const router = useRouter()
 const check = async() => {
-  const cookie = await getCookieFetch() 
 
-  const response = await jwtFetch('token/isValidToken',cookie) as BaseResponse
+  const response = await jwtFetch('token/isValidToken') as BaseResponse
   successError(response,router,"","addBoard","로그인 되어있지않거나, 토큰이 만료되었습니다.","error");
 }
 

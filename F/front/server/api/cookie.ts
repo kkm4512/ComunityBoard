@@ -6,6 +6,6 @@ export default defineEventHandler(async (event: any) => {
   const queryKey: string = getQuery(event).queryKey as string;
   setCookie(event, "accessToken", queryKey, {
     httpOnly: true,
-    maxAge: 60 * 60 * 24 * 1000,
+    maxAge: 60 * 60 * 24,
   });
 });
