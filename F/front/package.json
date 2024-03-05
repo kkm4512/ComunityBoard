@@ -10,7 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "overrides": {
-    "vue": "latest"
+    "vue": "^3.4.15"
   },
   "dependencies": {
     "@jamescoyle/vue-icon": "^0.1.2",

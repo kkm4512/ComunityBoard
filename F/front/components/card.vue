@@ -38,6 +38,7 @@
 <script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
+import type { responseBoard } from "~/types/boardtype";
 
 const mdiThumbUpPath = ref(mdiThumbUp);
 const mdiCommentPath = ref(mdiComment);
@@ -51,7 +52,7 @@ const mdiIconAllPath = [
   mdiBookMarkerPath.value,
 ];
 
-const props = defineProps<responseBoard>();
+// const props = defineProps<responseBoard>();
 </script>
 
 <style lang="scss" scoped></style>
