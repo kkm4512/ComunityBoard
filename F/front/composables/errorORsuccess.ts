@@ -17,6 +17,12 @@ export async function success(
   }
 }
 
+export function errorNoResponse(router: any, queryVal: string, path: string) {
+  router.push({
+    name: path,
+    query: { queryKey: queryVal },
+  });
+}
 //실패시 a라우터로 보내기
 export function error(
   response: BaseResponse,
@@ -52,16 +58,15 @@ export async function successError(
       sucecssQueryVal ?? "성공",
       successPath ?? "success"
     );
-
   } else if (response.error) {
     error(response, router, errorQueryVal ?? "실패", errorPath ?? "error");
   }
 }
 
-export async function setCookieStore(){
+export async function setCookieStore() {
   const accessToken = await getCookieFetch();
   const cookieAccessTokenStore = useCookieAccessTokenStore();
-  cookieAccessTokenStore.updateCookieAccessToken(accessToken);  
+  cookieAccessTokenStore.updateCookieAccessToken(accessToken);
 }
 
 // 쿠키 없을때 에러

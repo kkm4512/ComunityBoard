@@ -13,13 +13,18 @@
 
 <script setup lang="ts">
 import type { BaseResponse } from '~/types/basetype';
-
-
+import { useCookieAccessTokenStore } from '#imports';
 const router = useRouter()
-const check = async() => {
 
+const check = async() => {
+  const {cookieAccessTokenStore} = handlePiniaCookie(useCookieAccessTokenStore)
   const response = await jwtFetch('token/isValidToken') as BaseResponse
-  successError(response,router,"","addBoard","로그인 되어있지않거나, 토큰이 만료되었습니다.","error");
+
+  if (!cookieAccessTokenStore.accessToken) {
+    errorNoResponse(router,"로그인 되지않았습니다.","error")
+    return
+  }
+  successError(response,router,"","addBoard","로그인 되지않았습니다.","error");
 }
 
 /**

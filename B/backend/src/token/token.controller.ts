@@ -19,6 +19,7 @@ export class TokenController {
     };
   }
 
+  @UseGuards(TokenGuard)
   @Post('refreshToken')
   refreshToken() {}
 }

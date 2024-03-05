@@ -20,9 +20,11 @@ export class BoardEntity {
     @IsNotEmpty()
     description: string;
 
-    @Column()
-    @IsNotEmpty()
-    selectedOption: string;
+    @Column({
+        nullable:true,
+        default:'null'
+    })
+    selectedOption: string | null
 
     @CreateDateColumn()
     createAt: Date;

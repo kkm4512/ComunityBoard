@@ -9,18 +9,18 @@
         alt="Rounded avatar"
       />
       <div class="text-black ml-2 text-sm">
-        {{ selectedOption }}
+        {{ board.selectedOption }}
         <p></p>
-        블로그 쓰는 개발자
+        {{ board.user.nickname }}
         <p></p>
-        {{ createAt }}
+        {{ board.createAt }}
       </div>
     </div>
     <h5 class="mb-2 text-2xl font-bold tracking-tight text- mt-5">
-      {{ title }}
+      {{ board.title }}
     </h5>
     <p class="font-normal text-black dark:text-gray-700 mt-5">
-      {{ description }}
+      {{ board.description }}
     </p>
 
     <div class="flex justify-between mt-7 mb-2">
@@ -52,7 +52,9 @@ const mdiIconAllPath = [
   mdiBookMarkerPath.value,
 ];
 
-// const props = defineProps<responseBoard>();
+const props = defineProps<{
+  board: responseBoard
+}>();
 </script>
 
 <style lang="scss" scoped></style>

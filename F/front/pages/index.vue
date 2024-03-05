@@ -8,14 +8,10 @@
       <br />
       <div
         class="flex justify-center items-center mt-5 mb-5"
-        v-for="{ title, description, selectedOption, createAt, updateAt, user } in response"
-        :key="title"
+        v-for="board in response"
+        :key="board.title"
       >
-        <card
-          :title="title"
-          :description="description"
-          :selectedOption="selectedOption"
-        />
+        <card :board="board"/>
       </div>
     </div>
   </div>
@@ -27,11 +23,10 @@ import type { responseBoard } from "~/types/boardtype";
 
 
 
-const response = ref({});
+const response = ref<responseBoard[]>();
 
 const getBoards = async () => {
   const response = (await Fetch("board/getBoards", {})) as responseBoard[];
-  console.log(`response : `,response)
   return response;
 };
 onMounted(async () => {
