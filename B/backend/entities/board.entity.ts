@@ -1,10 +1,16 @@
-import { IsNotEmpty } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { IsEmail, IsNotEmpty } from "class-validator";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { UserEntity } from "./user.entity";
 
 @Entity('board')
 export class BoardEntity {
     @PrimaryGeneratedColumn()
     id: number;
+
+    @IsEmail()
+    @Column()
+    @IsNotEmpty()
+    email: string
 
     @Column()
     @IsNotEmpty()
@@ -23,5 +29,9 @@ export class BoardEntity {
 
     @UpdateDateColumn()
     updateAt: Date;
+
+    @JoinColumn({name:'email',referencedColumnName:'email'})
+    @ManyToOne( ()=>UserEntity, user => user.boards, {eager:true})
+    user: UserEntity
 
 }

@@ -8,7 +8,7 @@
       <br />
       <div
         class="flex justify-center items-center mt-5 mb-5"
-        v-for="{ title, description, selectedOption } in response"
+        v-for="{ title, description, selectedOption, createAt, updateAt, user } in response"
         :key="title"
       >
         <card
@@ -24,16 +24,23 @@
 <script setup lang="ts">
 import card from "~/components/card.vue";
 
-interface responseBoard {
+export interface responseBoard {
   title: string;
   description: string;
   selectedOption: string;
+  createAt: string;
+  updateAt: string;
+  user: {
+    email: string;
+    nickname: string;
+  }
 }
 
 const response = ref({});
 
 const getBoards = async () => {
-  const response = (await Fetch("board/getBoards", {})) as responseBoard;
+  const response = (await Fetch("board/getBoards", {})) as responseBoard[];
+  console.log(`response : `,response)
   return response;
 };
 onMounted(async () => {

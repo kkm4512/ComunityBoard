@@ -1,12 +1,13 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BoardEntity } from "./board.entity";
 
 @Entity('user')
 export class UserEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({unique:true})
     @IsEmail()
     @IsNotEmpty()
     email: string;
@@ -24,5 +25,8 @@ export class UserEntity {
 
     @UpdateDateColumn()
     updateAt: Date;
+
+    @OneToMany( ()=> BoardEntity, board => board.user)
+    boards: BoardEntity[]
 
 }

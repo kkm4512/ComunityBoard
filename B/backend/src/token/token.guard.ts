@@ -26,6 +26,7 @@ export class TokenGuard implements CanActivate {
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
       request['user'] = payload;
+
     } catch {
       throw new UnauthorizedException('유효하지않은 토큰입니다.');
     }

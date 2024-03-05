@@ -1,4 +1,4 @@
-const piniaCookieCheck = (useCookieAccessTokenStore:any) => {
+export const piniaCookieCheck = (useCookieAccessTokenStore:any) => {
   const cookieAccessTokenStore = useCookieAccessTokenStore();
   const accessToken = computed(() => cookieAccessTokenStore.accessToken);
   return {

@@ -13,7 +13,7 @@
         <p></p>
         블로그 쓰는 개발자
         <p></p>
-        15시간 전
+        {{ createAt }}
       </div>
     </div>
     <h5 class="mb-2 text-2xl font-bold tracking-tight text- mt-5">
@@ -27,7 +27,7 @@
       <div
         class="cursor-pointer hover:bg-gray-300 ml-2"
         v-for="icon in mdiIconAllPath"
-        :key="iocn"
+        :key="icon"
       >
         <svg-icon type="mdi" :path="icon" class="w-[20px]"></svg-icon>
       </div>
@@ -35,7 +35,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 
@@ -51,11 +51,7 @@ const mdiIconAllPath = [
   mdiBookMarkerPath.value,
 ];
 
-defineProps({
-  title: String,
-  description: String,
-  selectedOption: String,
-});
+const props = defineProps<responseBoard>();
 </script>
 
 <style lang="scss" scoped></style>

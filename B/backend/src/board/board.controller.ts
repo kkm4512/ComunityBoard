@@ -1,4 +1,4 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardEntity } from 'entities/board.entity';
 import { TokenGuard } from 'src/token/token.guard';
@@ -10,9 +10,10 @@ export class BoardController {
   @UseGuards(TokenGuard)
   @Post('create')
   boardCreate(
-    @Body() data:BoardEntity
+    @Body() data:BoardEntity,
+    @Req() req:any
     ){
-    return this.boardService.boardCreateService(data)
+    return this.boardService.boardCreateService(data,req)
   }
 
   @Post('getBoards')
