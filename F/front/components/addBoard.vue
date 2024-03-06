@@ -2,7 +2,7 @@
   <div>
     <div class="flex justify-center h-[50%] mt-[2rem]">
       <div
-        class="flex flex-col border-2 border-black mt-2 items-center w-[70rem] h-[45rem] bg-slate-200 rounded-xl"
+        class="flex flex-col mt-2 items-center w-[70rem] h-[45rem] bg-slate-200 rounded-xl"
       >
         <input
           type="text"

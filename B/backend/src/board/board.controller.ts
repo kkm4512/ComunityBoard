@@ -26,6 +26,6 @@ export class BoardController {
   patchBoard(
     @Body() data:BoardEntity,
   ){
-    console.log(data)
+    
   }
 }
