@@ -67,7 +67,6 @@ const props = defineProps<{
 const router = useRouter();
 const handlePatchClicked = async () => {
   const response = (await patchFetch("board/patch", props)) as BaseResponse;
-  console.log(response);
   successError(response, router, "", "/", response.message, "error");
 };
 
@@ -75,4 +74,4 @@ const handleRemoveClicked = () => {};
 </script>
 
 <style lang="scss" scoped></style>
-./dropDownMenu.vue
+

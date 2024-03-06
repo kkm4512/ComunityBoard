@@ -3,13 +3,13 @@ import type { BaseResponse } from "~/types/basetype";
 
 export const Fetch = async (endPoint: string, bodyData: Object) => {
   try {
-    const cookie = await getCookieFetch()
+    const cookie = await getCookieFetch();
     const response = await $fetch(endPoint, {
       baseURL: "http://localhost:3001",
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${cookie}`,
+        Authorization: `Bearer ${cookie}`,
       },
       body: bodyData,
     });
@@ -29,13 +29,13 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
 
 export const patchFetch = async (endPoint: string, bodyData: Object) => {
   try {
-    const cookie = await getCookieFetch()
+    const cookie = await getCookieFetch();
     const response = await $fetch(endPoint, {
       baseURL: "http://localhost:3001",
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${cookie}`,
+        Authorization: `Bearer ${cookie}`,
       },
       body: bodyData,
     });
@@ -55,12 +55,12 @@ export const patchFetch = async (endPoint: string, bodyData: Object) => {
 
 export const jwtFetch = async (endPoint: string) => {
   try {
-    const cookie = await getCookieFetch()
+    const cookie = await getCookieFetch();
     const response = await $fetch(endPoint, {
       baseURL: "http://localhost:3001",
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${cookie}`,
+        Authorization: `Bearer ${cookie}`,
       },
     });
 
@@ -82,8 +82,8 @@ export const jwtFetch = async (endPoint: string) => {
 export const setCookieFetch = async (
   cookieResponse: BaseResponse
 ): Promise<void> => {
-  if (!cookieResponse.accessToken){
-    return
+  if (!cookieResponse.accessToken) {
+    return;
   }
   await $fetch("/api/cookie", {
     baseURL: "http://localhost:3000",
