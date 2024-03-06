@@ -52,6 +52,7 @@ const mdiIconAllPath = [
   mdiBookMarkerPath.value,
 ];
 
+
 const props = defineProps<{
   board: responseBoard
 }>();

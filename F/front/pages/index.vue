@@ -27,6 +27,7 @@ const response = ref<responseBoard[]>();
 
 const getBoards = async () => {
   const response = (await Fetch("board/getBoards", {})) as responseBoard[];
+  console.log(response)
   return response;
 };
 onMounted(async () => {
