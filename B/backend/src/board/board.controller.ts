@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardEntity } from 'entities/board.entity';
 import { TokenGuard } from 'src/token/token.guard';
@@ -21,4 +21,11 @@ export class BoardController {
     return this.boardService.getBoardsService()
   }
 
+  @UseGuards(TokenGuard)
+  @Patch('patch')
+  patchBoard(
+    @Body() data:BoardEntity,
+  ){
+    console.log(data)
+  }
 }

@@ -15,6 +15,12 @@
         <p></p>
         {{ board.createAt }}
       </div>
+      <div class="ml-[65%]">
+        <dropDownMenu
+          @patch-clicked="handlePatchClicked"
+          @remove-clicked="handleRemoveClicked"
+        />
+      </div>
     </div>
     <h5 class="mb-2 text-2xl font-bold tracking-tight text- mt-5">
       {{ board.title }}
@@ -39,6 +45,8 @@
 import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 import type { responseBoard } from "~/types/boardtype";
+import dropDownMenu from "./dropDownMenu.vue";
+import type { BaseResponse } from "~/types/basetype";
 
 const mdiThumbUpPath = ref(mdiThumbUp);
 const mdiCommentPath = ref(mdiComment);
@@ -52,10 +60,19 @@ const mdiIconAllPath = [
   mdiBookMarkerPath.value,
 ];
 
-
 const props = defineProps<{
-  board: responseBoard
+  board: responseBoard;
 }>();
+
+const router = useRouter();
+const handlePatchClicked = async () => {
+  const response = (await patchFetch("board/patch", props)) as BaseResponse;
+  console.log(response);
+  successError(response, router, "", "/", response.message, "error");
+};
+
+const handleRemoveClicked = () => {};
 </script>
 
 <style lang="scss" scoped></style>
+./dropDownMenu.vue

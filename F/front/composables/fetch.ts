@@ -27,6 +27,32 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
+export const patchFetch = async (endPoint: string, bodyData: Object) => {
+  try {
+    const cookie = await getCookieFetch()
+    const response = await $fetch(endPoint, {
+      baseURL: "http://localhost:3001",
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${cookie}`,
+      },
+      body: bodyData,
+    });
+
+    return response;
+  } catch (error: unknown) {
+    if (error instanceof Error && "response" in error) {
+      const typedError = error.response as ErrorType;
+      return {
+        error: typedError._data.error,
+        statusCode: typedError._data.statusCode,
+        message: typedError._data.message,
+      };
+    }
+  }
+};
+
 export const jwtFetch = async (endPoint: string) => {
   try {
     const cookie = await getCookieFetch()
