@@ -39,6 +39,13 @@
       </div>
     </div>
   </div>
+  <div>
+    <patchCard
+      :board="props.board"
+      v-if="patchOpen"
+      :style="patchCardStyle"
+    />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -47,6 +54,9 @@ import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 import type { responseBoard } from "~/types/boardtype";
 import dropDownMenu from "./dropDownMenu.vue";
 import type { BaseResponse } from "~/types/basetype";
+
+const patchOpen = ref(false);
+const patchCardStyle = ref({});
 
 const mdiThumbUpPath = ref(mdiThumbUp);
 const mdiCommentPath = ref(mdiComment);
@@ -65,13 +75,17 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
-const handlePatchClicked = async () => {
-  const response = (await patchFetch("board/patch", props)) as BaseResponse;
-  successError(response, router, "", "/", response.message, "error");
+const handlePatchClicked = async (event: any) => {
+  const { top, left } = event.target.getBoundingClientRect();
+  patchOpen.value = !patchOpen.value;
+  patchCardStyle.value = {
+    position: "fixed",
+    top: `${top}px`,
+    left: `${left - 550}px`,
+  };
 };
 
 const handleRemoveClicked = () => {};
 </script>
 
 <style lang="scss" scoped></style>
-

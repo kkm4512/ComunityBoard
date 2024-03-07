@@ -32,16 +32,14 @@
         <li>
           <a
             @click="patch"
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600"
+            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer z-20"
             >수정</a
           >
         </li>
         <li>
           <a
             @click="remove"
-            href="#"
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500"
+            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 text-red-500 cursor-pointer"
             >삭제</a
           >
         </li>
@@ -64,8 +62,8 @@ const toggleDropdown = () => {
  */
 
 const emit = defineEmits(['patchClicked','removeClicked']);
-const patch = () => {
-  emit('patchClicked')
+const patch = (event:any) => {
+  emit('patchClicked',event)
 }
 
 const remove = () => {

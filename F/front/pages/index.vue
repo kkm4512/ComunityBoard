@@ -20,10 +20,12 @@
 <script setup lang="ts">
 import card from "~/components/card.vue";
 import type { responseBoard } from "~/types/boardtype";
+import { useBoardsStore } from "~/stores/boards";
+
+const { boardsStore } = handlePiniaboards(useBoardsStore)
 
 
-
-const response = ref<responseBoard[]>();
+const response = ref<{boards:responseBoard}>()
 
 const getBoards = async () => {
   const response = (await Fetch("board/getBoards", {})) as responseBoard[];
@@ -31,7 +33,8 @@ const getBoards = async () => {
 };
 onMounted(async () => {
   const getResponse = await getBoards();
-  response.value = getResponse;
+  boardsStore.boards = getResponse
+  response.value = boardsStore.boards
 });
 </script>
 
