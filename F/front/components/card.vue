@@ -53,8 +53,10 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 import type { responseBoard } from "~/types/boardtype";
 import dropDownMenu from "./dropDownMenu.vue";
-import type { BaseResponse } from "~/types/basetype";
+import { usePatchStateStore } from '~/stores/patchState'
 
+
+const {patchStateStore} = handlePiniaPatchState(usePatchStateStore)
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
 
@@ -83,6 +85,7 @@ const handlePatchClicked = async (event: any) => {
     top: `${top}px`,
     left: `${left - 550}px`,
   };
+  patchStateStore.patchState = !patchStateStore.patchState
 };
 
 const handleRemoveClicked = () => {};
