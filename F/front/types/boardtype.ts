@@ -1,4 +1,5 @@
 export interface responseBoard {
+  id: number
   title: string;
   description: string;
   selectedOption: string;

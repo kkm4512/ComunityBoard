@@ -1,5 +1,3 @@
-import type { responseBoard } from "~/types/boardtype";
-
 export const handlePiniaCookie = (useCookieAccessTokenStore: any) => {
   const cookieAccessTokenStore = useCookieAccessTokenStore();
   const accessToken = computed(() => cookieAccessTokenStore.accessToken);
@@ -26,3 +24,12 @@ export const handlePiniaPatchState = (usePatchStateStore: any) => {
     patchState,
   };
 };
+
+export const handlePiniaPatchXState = (usePatchXStateStore:any) => {
+  const patchXStateStore = usePatchXStateStore()
+  const patchXState = computed(() => patchXStateStore.patchXState);
+  return {
+    patchXStateStore,
+    patchXState
+  }
+}

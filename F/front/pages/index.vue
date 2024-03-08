@@ -30,7 +30,9 @@
 import card from "~/components/card.vue";
 import type { responseBoard } from "~/types/boardtype";
 import { useBoardsStore } from "~/stores/boards";
-import { usePatchStateStore } from "#imports";
+import { usePatchXStateStore } from "~/stores/patchCardXState";
+const { patchXStateStore, patchXState } = handlePiniaPatchXState(usePatchXStateStore)
+import { usePatchStateStore } from "~/stores/patchState";
 
 const { boardsStore } = handlePiniaboards(useBoardsStore);
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
@@ -42,6 +44,10 @@ const getBoards = async () => {
   const response = (await Fetch("board/getBoards", {})) as responseBoard[];
   return response;
 };
+
+
+
+
 onMounted(async () => {
   const getResponse = await getBoards();
   boardsStore.boards = getResponse;
@@ -50,6 +56,13 @@ onMounted(async () => {
     bgStyle.value = {};
   }
 });
+
+
+/**
+ * 1. patchPiniaXState를 피니아 저장소에 만듬
+ * 2. c컴포넌트에서 X버튼이 클릭되면 
+ */
+
 </script>
 
 <style lang="scss" scoped></style>

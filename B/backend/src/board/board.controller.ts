@@ -9,23 +9,21 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Post('create')
-  boardCreate(
-    @Body() data:BoardEntity,
-    @Req() req:any
-    ){
-    return this.boardService.boardCreateService(data,req)
+  boardCreate(@Body() data: BoardEntity, @Req() req: any) {
+    return this.boardService.boardCreateService(data, req);
   }
 
   @Post('getBoards')
-  getBoards(){
-    return this.boardService.getBoardsService()
+  getBoards() {
+    return this.boardService.getBoardsService();
   }
 
   @UseGuards(TokenGuard)
   @Patch('patch')
-  patchBoard(
-    @Body() data:BoardEntity,
-  ){
-    console.log(data)
+  patchBoard(@Body() data: BoardEntity) {
+    /**
+     * [id,title,description,selectoption 받아옴]
+     */
+    console.log(data);
   }
 }

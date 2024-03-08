@@ -21,7 +21,7 @@
       </svg>
     </button>
     <div
-      v-if="isOpen"
+      v-if="patchXStateCondtion"
       class="absolute z-10 w-44 mt-2 bg-white rounded-md shadow-lg dark:bg-gray-700"
       id="dropdownDots"
     >
@@ -49,7 +49,16 @@
 </template>
 
 <script setup lang="ts">
+import { usePatchXStateStore } from '~/stores/patchCardXState';
+const { patchXStateStore, patchXState } = handlePiniaPatchXState(usePatchXStateStore)
+
 const isOpen = ref(false);
+
+const patchXStateCondtion = computed(() => {
+  return patchXStateStore.patchXState ? !isOpen.value : isOpen.value
+})
+
+
 
 const toggleDropdown = () => {
   isOpen.value = !isOpen.value;
