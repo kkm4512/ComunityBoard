@@ -20,10 +20,10 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Patch('patch')
-  patchBoard(@Body() data: BoardEntity) {
+  patchBoard(@Body() user: BoardEntity) {
     /**
      * [id,title,description,selectoption 받아옴]
      */
-    console.log(data);
+    return this.boardService.patchedBoard(user)
   }
 }

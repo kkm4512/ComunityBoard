@@ -52,4 +52,29 @@ export class BoardService {
     });
     return updatedUsers;
   }
+
+  /**
+   * 1. patch할 user의 info를 받아옴
+   * 2. 그 형태는 [id,title,des,selectOption]
+   * 3. id를 찾고
+   * 4. 그 id에 해당하는 게시물의 id,title,des를 변경시킴
+   * 
+   */
+  async patchedBoard(user:BoardEntity){
+    const patchedUserFind = await this.boardRepository.findOne({
+      where: {id : user.id}
+    })
+
+    const patchedBoardData = Object.assign(patchedUserFind,{
+      title: user.title,
+      description: user.description,
+      selectedOption: user.selectedOption
+    })    
+
+    await this.boardRepository.save(patchedBoardData)
+    return {
+      success: true,
+      message: '정상적으로 수정 되었습니다.',
+    };
+  }
 }

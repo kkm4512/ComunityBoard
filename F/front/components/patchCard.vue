@@ -67,11 +67,13 @@
 import type { responseBoard } from "~/types/boardtype";
 import { usePatchXStateStore } from "~/stores/patchCardXState";
 import { usePatchStateStore } from "~/stores/patchState";
+import type { BaseResponse } from "~/types/basetype";
 
 const { patchXStateStore, patchXState } =
   handlePiniaPatchXState(usePatchXStateStore);
 const { patchStateStore, patchState } =
   handlePiniaPatchState(usePatchStateStore);
+const router = useRouter()
 
 const selectedOption = ref("");
 
@@ -82,10 +84,20 @@ const selectedOption = ref("");
 const patchCardXStateChange = () => {
   patchXStateStore.patchXState = !patchXStateStore.patchXState;
   patchStateStore.patchState = !patchStateStore.patchState;
+  location.reload();
 
   //이거 진짜맘에안듬
-  location.reload();
+  
 };
+
+
+const props = defineProps<{
+  board: responseBoard;
+}>();
+
+const boardTitle = ref(props.board.title);
+const boardDescription = ref(props.board.description);
+const boardSelectedOption = ref(props.board.selectedOption || "undefined"); 
 
 const patchedData = async (id: number) => {
   const userBoardData = {
@@ -94,15 +106,12 @@ const patchedData = async (id: number) => {
     description: boardDescription.value,
     selectedOption: boardSelectedOption.value,
   };
-  const response = await patchFetch("board/patch", userBoardData);
+  const response = await patchFetch("board/patch", userBoardData) as BaseResponse
+  successError(response,router,response.message,"success",response.error,"error")
+  location.reload();
+  console.log(response)
 };
-const props = defineProps<{
-  board: responseBoard;
-}>();
 
-const boardTitle = ref(props.board.title);
-const boardDescription = ref(props.board.description);
-const boardSelectedOption = ref(props.board.selectedOption || "undefined"); // 'undefined'를 기본값으로 사용, 필요에 따라 조정
 </script>
 
 <style scoped></style>
