@@ -57,7 +57,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
 
 const email = ref("");
@@ -80,6 +79,7 @@ const checked = async () => {
 
   //쿠키 pinia 저장
   await setCookieStore();
+
 
   successError(
     response,

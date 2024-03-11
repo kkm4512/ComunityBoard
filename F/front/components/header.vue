@@ -66,13 +66,13 @@
           </li>
           <li>
             <a
-              v-if="!cookieAccessToken"
+              v-if="!cookieAccessTokenStore.accessToken"
               href="/login"
               class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >로그인 / 회원가입</a
             >
             <a
-              v-if="cookieAccessToken"
+              v-if="cookieAccessTokenStore.accessToken"
               class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent cursor-pointer"
               @click="signOut"
               >로그아웃</a
@@ -88,13 +88,8 @@
 import { useCookieAccessTokenStore } from "~/stores/cookie";
 const {accessToken,cookieAccessTokenStore} = handlePiniaCookie(useCookieAccessTokenStore)
 
-const cookieAccessToken = ref(await getCookieFetch())
-console.log(cookieAccessToken.value)
 
-onMounted(()=>{
-  cookieAccessTokenStore.accessToken = getCookieFetch()
 
-})
 
 /**
  * 1. 로그인에 실패해도 쿠키에 accessToken 부분이 undefined로 채워짐

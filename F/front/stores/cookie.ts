@@ -29,4 +29,5 @@ export const useCookieAccessTokenStore = defineStore('accessToken',{
       this.accessToken = accessToken
     }
   },
+  persist:true
 })
