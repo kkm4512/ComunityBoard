@@ -20,14 +20,16 @@
 //   }
 // });
 
-export const useCookieAccessTokenStore = defineStore('accessToken',{
+import { defineStore } from 'pinia'
+
+export const useCookieAccessTokenStore = defineStore("accessToken", {
   state: () => ({
-    accessToken: '',
+    accessToken: "",
   }),
   actions: {
-    updateCookieAccessToken(accessToken:string){
-      this.accessToken = accessToken
-    }
+    updateCookieAccessToken(accessToken: string) {
+      this.accessToken = accessToken;
+    },
   },
-  persist:true
-})
+  persist: true,
+});
