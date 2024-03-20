@@ -49,6 +49,10 @@
 </template>
 
 <script setup lang="ts">
+
+/**
+ * 1. 피니아로 ㄴㄴ 피니아로 상태관리하면 모든 버튼이 클릭될떄 수정/삭제버튼 나옴
+ */
 import { usePatchXStateStore } from '~/stores/patchCardXState';
 const { patchXStateStore, patchXState } = handlePiniaPatchXState(usePatchXStateStore)
 

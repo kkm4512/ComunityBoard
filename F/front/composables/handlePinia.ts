@@ -25,11 +25,11 @@ export const handlePiniaPatchState = (usePatchStateStore: any) => {
   };
 };
 
-export const handlePiniaPatchXState = (usePatchXStateStore:any) => {
-  const patchXStateStore = usePatchXStateStore()
+export const handlePiniaPatchXState = (usePatchXStateStore: any) => {
+  const patchXStateStore = usePatchXStateStore();
   const patchXState = computed(() => patchXStateStore.patchXState);
   return {
     patchXStateStore,
-    patchXState
-  }
-}
+    patchXState,
+  };
+};

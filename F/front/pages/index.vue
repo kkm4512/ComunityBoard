@@ -30,8 +30,6 @@
 import card from "~/components/card.vue";
 import type { responseBoard } from "~/types/boardtype";
 import { useBoardsStore } from "~/stores/boards";
-import { usePatchXStateStore } from "~/stores/patchCardXState";
-const { patchXStateStore, patchXState } = handlePiniaPatchXState(usePatchXStateStore)
 import { usePatchStateStore } from "~/stores/patchState";
 
 const { boardsStore } = handlePiniaboards(useBoardsStore);

@@ -68,12 +68,15 @@ import type { responseBoard } from "~/types/boardtype";
 import { usePatchXStateStore } from "~/stores/patchCardXState";
 import { usePatchStateStore } from "~/stores/patchState";
 import type { BaseResponse } from "~/types/basetype";
+import { useIsCompleteStateStore } from "~/stores/isComplete";
 
 const { patchXStateStore, patchXState } =
   handlePiniaPatchXState(usePatchXStateStore);
 const { patchStateStore, patchState } =
   handlePiniaPatchState(usePatchStateStore);
-const router = useRouter()
+const router = useRouter();
+const isCompleteStateStore = useIsCompleteStateStore();
+let isComplete = isCompleteStateStore.isComplete;
 
 const selectedOption = ref("");
 
@@ -81,15 +84,17 @@ const selectedOption = ref("");
  * 1. X버튼을 클릭하면 patchCard가 꺼지고, dropDownMenu도 꺼져야함.. 내일하자 어휴
  */
 
+// X 버튼이 눌렸을때
 const patchCardXStateChange = () => {
-  patchXStateStore.patchXState = !patchXStateStore.patchXState;
-  patchStateStore.patchState = !patchStateStore.patchState;
-  location.reload();
+  isCompleteStateStore.updateIsCompleteState(!isComplete);
+  isComplete = isCompleteStateStore.isComplete;
+  patchXStateStore.patchXState = false;
+  patchStateStore.patchState = false;
+  isCompleteStateStore.updateIsCompleteState(!isComplete);
+  isComplete = isCompleteStateStore.isComplete;
 
   //이거 진짜맘에안듬
-  
 };
-
 
 const props = defineProps<{
   board: responseBoard;
@@ -97,7 +102,7 @@ const props = defineProps<{
 
 const boardTitle = ref(props.board.title);
 const boardDescription = ref(props.board.description);
-const boardSelectedOption = ref(props.board.selectedOption || "undefined"); 
+const boardSelectedOption = ref(props.board.selectedOption || "undefined");
 
 const patchedData = async (id: number) => {
   const userBoardData = {
@@ -106,12 +111,20 @@ const patchedData = async (id: number) => {
     description: boardDescription.value,
     selectedOption: boardSelectedOption.value,
   };
-  const response = await patchFetch("board/patch", userBoardData) as BaseResponse
-  successError(response,router,response.message,"success",response.error,"error")
+  const response = (await patchFetch(
+    "board/patch",
+    userBoardData
+  )) as BaseResponse;
+  successError(
+    response,
+    router,
+    response.message,
+    "success",
+    response.message,
+    "error"
+  );
   location.reload();
-  console.log(response)
 };
-
 </script>
 
 <style scoped></style>
