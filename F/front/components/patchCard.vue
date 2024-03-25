@@ -86,12 +86,13 @@ const selectedOption = ref("");
 
 // X 버튼이 눌렸을때
 const patchCardXStateChange = () => {
-  isCompleteStateStore.updateIsCompleteState(!isComplete);
-  isComplete = isCompleteStateStore.isComplete;
-  patchXStateStore.patchXState = false;
-  patchStateStore.patchState = false;
-  isCompleteStateStore.updateIsCompleteState(!isComplete);
-  isComplete = isCompleteStateStore.isComplete;
+  location.reload()
+  // isCompleteStateStore.updateIsCompleteState(!isComplete);
+  // isComplete = isCompleteStateStore.isComplete;
+  // patchXStateStore.patchXState = false;
+  // patchStateStore.patchState = false;
+  // isCompleteStateStore.updateIsCompleteState(!isComplete);
+  // isComplete = isCompleteStateStore.isComplete;
 
   //이거 진짜맘에안듬
 };
