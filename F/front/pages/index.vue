@@ -44,7 +44,11 @@ const getBoards = async () => {
 };
 
 
-
+computed(async() => {
+  const getResponse = await getBoards();
+  boardsStore.boards = getResponse;
+  response.value = boardsStore.boards;
+})
 
 onMounted(async () => {
   const getResponse = await getBoards();

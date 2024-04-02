@@ -44,7 +44,7 @@
         >
           <li>
             <a
-              href="#"
+              href="/"
               class="block py-2 px-3 text-black bg-blue-700 rounded md:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:text-blue-500"
               aria-current="page"
               >인기글</a

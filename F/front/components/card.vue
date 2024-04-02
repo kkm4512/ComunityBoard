@@ -18,7 +18,7 @@
       <div class="ml-[65%]">
         <dropDownMenu
           @patch-clicked="handlePatchClicked"
-          @remove-clicked="handleRemoveClicked"
+          @remove-clicked="handleRemoveClicked(board)"
         />
       </div>
     </div>
@@ -54,6 +54,8 @@ import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 import type { responseBoard } from "~/types/boardtype";
 import dropDownMenu from "./dropDownMenu.vue";
 import { usePatchStateStore } from '~/stores/patchState'
+import { useRouter } from "vue-router";
+import type { BaseResponse } from "~/types/basetype";
 
 
 const {patchStateStore} = handlePiniaPatchState(usePatchStateStore)
@@ -88,7 +90,9 @@ const handlePatchClicked = async (event: any) => {
   patchStateStore.patchState = !patchStateStore.patchState
 };
 
-const handleRemoveClicked = () => {};
+const handleRemoveClicked = async(user:responseBoard) => {
+  const response = await jwtDeleteFetch('board/delete',user) as BaseResponse
+};
 </script>
 
 <style lang="scss" scoped></style>

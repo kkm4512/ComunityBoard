@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardEntity } from 'entities/board.entity';
+import { UserService } from 'src/user/user.service';
 import { BoardType } from 'type/boardType';
 import { Repository } from 'typeorm';
 
@@ -76,5 +77,19 @@ export class BoardService {
       success: true,
       message: '정상적으로 수정 되었습니다.',
     };
+  }
+
+  async deleteBoardService(user:BoardEntity){
+    console.log(user)
+
+    const userFind = await this.boardRepository.findOne({
+      where: {id : user.id}
+    })
+
+
+
+    await this.boardRepository.remove(userFind) 
+
+    return true
   }
 }

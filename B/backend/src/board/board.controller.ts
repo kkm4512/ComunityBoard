@@ -1,4 +1,4 @@
-import { Body, Controller, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Patch, Post, Req, UseGuards } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardEntity } from 'entities/board.entity';
 import { TokenGuard } from 'src/token/token.guard';
@@ -25,5 +25,11 @@ export class BoardController {
      * [id,title,description,selectoption 받아옴]
      */
     return this.boardService.patchedBoard(user)
+  }
+
+  @UseGuards(TokenGuard)
+  @Delete('delete')
+  deleteBoard(@Body() user: BoardEntity){
+    return this.boardService.deleteBoardService(user)
   }
 }
