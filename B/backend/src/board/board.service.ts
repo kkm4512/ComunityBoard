@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardEntity } from 'entities/board.entity';
-import { UserService } from 'src/user/user.service';
+import { BoardOption } from 'entities/boardOption.entity';
 import { BoardType } from 'type/boardType';
 import { Repository } from 'typeorm';
 
@@ -10,12 +10,15 @@ export class BoardService {
   constructor(
     @InjectRepository(BoardEntity)
     private boardRepository: Repository<BoardEntity>,
+    // @InjectRepository(BoardOption)
+    // private boardOptionRepository: Repository<BoardOption>
   ) {}
 
   async boardCreateService(data: BoardEntity, req: BoardType) {
     const board = Object.assign(data, {
       email: req.user.email,
     });
+
 
     await this.boardRepository.save(board);
     return {
@@ -79,17 +82,11 @@ export class BoardService {
     };
   }
 
-  async deleteBoardService(user:BoardEntity){
-    console.log(user)
+  async deleteBoardService(user:any){
+    await this.boardRepository.delete(user.id) 
 
-    const userFind = await this.boardRepository.findOne({
-      where: {id : user.id}
-    })
-
-
-
-    await this.boardRepository.remove(userFind) 
-
-    return true
+    return {
+      success:true
+    }
   }
 }
