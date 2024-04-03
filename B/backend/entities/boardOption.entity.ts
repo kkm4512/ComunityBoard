@@ -1,23 +1,14 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BoardEntity } from "./board.entity";
 
 @Entity()
-export class BoardOption {
+export class BoardOptionEntity{
   @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
-  like: Boolean;
+  like: number;
 
-  @Column()
-  commnet: Boolean;
-
-  @Column()
-  share: Boolean;
-
-  @Column()
-  bookmark: Boolean
-
-  @OneToOne(()=> BoardEntity, board => board.option)
-  board: BoardEntity;
+  @ManyToOne( () => BoardEntity, board => board.boardOptions )
+  board: BoardEntity
 }

@@ -35,7 +35,7 @@
         v-for="icon in mdiIconAllPath"
         :key="icon"
       >
-        <svg-icon type="mdi" :path="icon" class="w-[20px]" @click="buttonIcon(icon,board.id)"></svg-icon>
+        <svg-icon type="mdi" :path="icon" class="w-[20px]"></svg-icon>
       </div>
     </div>
   </div>
@@ -56,13 +56,12 @@ import dropDownMenu from "./dropDownMenu.vue";
 import { usePatchStateStore } from '~/stores/patchState'
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
-import { useIconsStore } from '~/stores/icons'
 
 
 const {patchStateStore} = handlePiniaPatchState(usePatchStateStore)
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
-const iconsStore = useIconsStore()
+
 const mdiThumbUpPath = ref(mdiThumbUp);
 const mdiCommentPath = ref(mdiComment);
 const mdiSharePath = ref(mdiShare);
@@ -79,21 +78,6 @@ const props = defineProps<{
   board: responseBoard;
 }>();
 
-
-/**
- * 1. 만약 이게클릭됐을때 그 클릭된 게시판의 id도 같이 백엔드로 보내야함.
- */
-const buttonIcon = async(icon:any,id:any) => {
-  if (icon[0] + icon[1] + icon[2] === 'M23'){ //GoodIcon
-    iconsStore.updatelikeIcon(!iconsStore.like)
-    console.log(iconsStore.like)
-    console.log(id)
-    const response = await jwtFetchData('board/create/option',{
-      like: iconsStore.like,
-      id
-    })
-  }
-}
 const router = useRouter();
 const handlePatchClicked = async (event: any) => {
   const { top, left } = event.target.getBoundingClientRect();
@@ -108,7 +92,7 @@ const handlePatchClicked = async (event: any) => {
 
 const handleRemoveClicked = async(user:responseBoard) => {
   const response = await jwtDeleteFetch('board/delete',user) as BaseResponse
-  successError(response,router,'삭제에 성공하였습니다.','success','삭제실패','error')
+  successError(response,router,'삭제에 성공했습니다.','success','삭제실패','error')
 };
 </script>
 

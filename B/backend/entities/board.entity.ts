@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty } from "class-validator";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { UserEntity } from "./user.entity";
-import { BoardOption } from "./boardOption.entity";
+import { BoardOptionEntity } from "./boardOption.entity";
 
 @Entity('board')
 export class BoardEntity {
@@ -37,7 +37,9 @@ export class BoardEntity {
     @ManyToOne( ()=>UserEntity, user => user.boards, {eager:true})
     user: UserEntity
 
-    @OneToOne( ()=> BoardOption, boardOption => boardOption.board, { cascade: true })
-    option: BoardOption;
+
+    @OneToMany( () => BoardOptionEntity, boardOption => boardOption.board )
+    boardOptions: BoardOptionEntity[]
+
 
 }

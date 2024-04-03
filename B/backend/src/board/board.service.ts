@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardEntity } from 'entities/board.entity';
-import { BoardOption } from 'entities/boardOption.entity';
+import { BoardOptionEntity } from 'entities/boardOption.entity';
+import { UserService } from 'src/user/user.service';
 import { BoardType } from 'type/boardType';
 import { Repository } from 'typeorm';
 
@@ -10,8 +11,8 @@ export class BoardService {
   constructor(
     @InjectRepository(BoardEntity)
     private boardRepository: Repository<BoardEntity>,
-    // @InjectRepository(BoardOption)
-    // private boardOptionRepository: Repository<BoardOption>
+    @InjectRepository(BoardOptionEntity)
+    private boardOptionRepository: Repository<BoardOptionEntity>,
   ) {}
 
   async boardCreateService(data: BoardEntity, req: BoardType) {
@@ -19,8 +20,7 @@ export class BoardService {
       email: req.user.email,
     });
 
-
-    await this.boardRepository.save(board);
+    const boardOption = await this.boardRepository.save(board);
     return {
       success: true,
       message: '정상적으로 저장 되었습니다.',
@@ -29,9 +29,9 @@ export class BoardService {
 
   async getBoardsService() {
     const users = await this.boardRepository.find({
-      order:{
-        createAt: 'DESC'
-      }
+      order: {
+        createAt: 'DESC',
+      },
     });
     const updatedUsers = users.map((user) => {
       const utcDate = new Date(user.createAt.toString());
@@ -62,31 +62,37 @@ export class BoardService {
    * 2. 그 형태는 [id,title,des,selectOption]
    * 3. id를 찾고
    * 4. 그 id에 해당하는 게시물의 id,title,des를 변경시킴
-   * 
+   *
    */
-  async patchedBoard(user:BoardEntity){
+  async patchedBoard(user: BoardEntity) {
     const patchedUserFind = await this.boardRepository.findOne({
-      where: {id : user.id}
-    })
+      where: { id: user.id },
+    });
 
-    const patchedBoardData = Object.assign(patchedUserFind,{
+    const patchedBoardData = Object.assign(patchedUserFind, {
       title: user.title,
       description: user.description,
-      selectedOption: user.selectedOption
-    })    
+      selectedOption: user.selectedOption,
+    });
 
-    await this.boardRepository.save(patchedBoardData)
+    await this.boardRepository.save(patchedBoardData);
     return {
       success: true,
       message: '정상적으로 수정 되었습니다.',
     };
   }
 
-  async deleteBoardService(user:any){
-    await this.boardRepository.delete(user.id) 
+  async deleteBoardService(user: BoardEntity): Promise<{ success: boolean }> {
+    const userFind = await this.boardRepository.findOne({
+      where: { id: user.id },
+    });
+
+    console.log(userFind);
+
+    await this.boardRepository.remove(userFind);
 
     return {
-      success:true
-    }
+      success: true,
+    };
   }
 }

@@ -16,7 +16,7 @@ export class TokenGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
 
-    if (!token || token === undefined) {
+    if (!token) {
       throw new UnauthorizedException('토큰이 존재하지 않습니다.');
     }
     try {
