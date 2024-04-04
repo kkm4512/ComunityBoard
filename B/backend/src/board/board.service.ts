@@ -30,12 +30,15 @@ export class BoardService {
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
   async boardOptionCreateService(data: { userId: number }) {
 
-    const userFind = await this.boardRepository.findOne({where: {id:data.userId}})
+    const userFind = await this.boardOptionRepository.findOne({where: {userBoardId:data.userId}})
 
     //이미 like를 눌렀음
 
     if (userFind) {
-      throw new UnauthorizedException('이미 좋아요를 눌렀습니다.')
+      await this.boardOptionRepository.remove(userFind)
+      return {
+        success:false
+      }
     }
 
     const boardOption = this.boardOptionRepository.create({
@@ -43,9 +46,12 @@ export class BoardService {
       like: 1,
     });
 
-    console.log(boardOption)
-
     await this.boardOptionRepository.save(boardOption);
+
+    return {
+      success:true,
+      boardOption
+    }
   }
 
   async getBoardsService() {

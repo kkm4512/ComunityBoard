@@ -32,14 +32,14 @@
     <div class="flex justify-between mt-7 mb-2">
       <div
         class="cursor-pointer hover:bg-gray-300 ml-2"
-        v-for="icon in mdiIconAllPath"
-        :key="icon"
+        v-for="icon in mdiIcons"
+        :key="icon.id"
       >
         <svg-icon
           type="mdi"
-          :path="icon"
-          class="w-[20px]"
-          @click="clickedIcon(icon, board.id)"
+          :path="icon.path"
+          :class="{ 'w-[20px]': true, 'text-blue-500': icon.clicked }"
+          @click="clickedIcon(icon.id, board.id)"
         ></svg-icon>
       </div>
     </div>
@@ -62,17 +62,12 @@ const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
 
-const mdiThumbUpPath = ref(mdiThumbUp);
-const mdiCommentPath = ref(mdiComment);
-const mdiSharePath = ref(mdiShare);
-const mdiBookMarkerPath = ref(mdiBookMarker);
-
-const mdiIconAllPath = [
-  mdiThumbUpPath.value,
-  mdiCommentPath.value,
-  mdiSharePath.value,
-  mdiBookMarkerPath.value,
-];
+const mdiIcons = ref([
+  { id: "mdiThumbUp", path: mdiThumbUp, clicked: false },
+  { id: "mdiComment", path: mdiComment, clicked: false },
+  { id: "mdiShare", path: mdiShare, clicked: false },
+  { id: "mdiBookMarker", path: mdiBookMarker, clicked: false },
+]);
 
 const props = defineProps<{
   board: responseBoard;
@@ -81,9 +76,22 @@ const props = defineProps<{
 const router = useRouter();
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
-async function clickedIcon(icon: any, userId: number) {
-  if (icon[0] + icon[1] + icon[2] === "M23") {
-    const response = await jwtDataFetch("board/create/option", {userId});
+async function clickedIcon(iconId: string, boardId: number) {
+  if (iconId === "mdiThumbUp") {
+    const response = (await jwtDataFetch("board/create/option", {
+      userId: boardId,
+    })) as {
+      success: boolean;
+      boardOption: { userBoardId: number; like: number; id: number };
+    };
+    if (response) {
+      console.log(response.boardOption?.like);
+      const icon = mdiIcons.value.find((icon) => icon.id === iconId);
+
+      if (icon) {
+        icon.clicked = !icon.clicked;
+      }
+    }
   }
 }
 const handlePatchClicked = async (event: any) => {
