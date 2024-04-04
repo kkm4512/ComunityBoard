@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { BoardEntity } from "./board.entity";
 
 @Entity()
@@ -7,8 +7,11 @@ export class BoardOptionEntity{
   id: number;
 
   @Column()
+  userBoardId: number;
+
+  @Column()
   like: number;
 
-  @ManyToOne( () => BoardEntity, board => board.boardOptions )
+  @ManyToOne( () => BoardEntity, board => board.boardOptions, {eager:true} )
   board: BoardEntity
 }

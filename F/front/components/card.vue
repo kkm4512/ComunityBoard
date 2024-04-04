@@ -35,16 +35,17 @@
         v-for="icon in mdiIconAllPath"
         :key="icon"
       >
-        <svg-icon type="mdi" :path="icon" class="w-[20px]"></svg-icon>
+        <svg-icon
+          type="mdi"
+          :path="icon"
+          class="w-[20px]"
+          @click="clickedIcon(icon, board.id)"
+        ></svg-icon>
       </div>
     </div>
   </div>
   <div>
-    <patchCard
-      :board="props.board"
-      v-if="patchOpen"
-      :style="patchCardStyle"
-    />
+    <patchCard :board="props.board" v-if="patchOpen" :style="patchCardStyle" />
   </div>
 </template>
 
@@ -53,12 +54,11 @@ import SvgIcon from "@jamescoyle/vue-icon";
 import { mdiThumbUp, mdiComment, mdiShare, mdiBookMarker } from "@mdi/js";
 import type { responseBoard } from "~/types/boardtype";
 import dropDownMenu from "./dropDownMenu.vue";
-import { usePatchStateStore } from '~/stores/patchState'
+import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
 
-
-const {patchStateStore} = handlePiniaPatchState(usePatchStateStore)
+const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
 
@@ -79,6 +79,13 @@ const props = defineProps<{
 }>();
 
 const router = useRouter();
+
+//좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
+async function clickedIcon(icon: any, userId: number) {
+  if (icon[0] + icon[1] + icon[2] === "M23") {
+    const response = await jwtDataFetch("board/create/option", {userId});
+  }
+}
 const handlePatchClicked = async (event: any) => {
   const { top, left } = event.target.getBoundingClientRect();
   patchOpen.value = !patchOpen.value;
@@ -87,12 +94,19 @@ const handlePatchClicked = async (event: any) => {
     top: `${top}px`,
     left: `${left - 550}px`,
   };
-  patchStateStore.patchState = !patchStateStore.patchState
+  patchStateStore.patchState = !patchStateStore.patchState;
 };
 
-const handleRemoveClicked = async(user:responseBoard) => {
-  const response = await jwtDeleteFetch('board/delete',user) as BaseResponse
-  successError(response,router,'삭제에 성공했습니다.','success','삭제실패','error')
+const handleRemoveClicked = async (user: responseBoard) => {
+  const response = (await jwtDeleteFetch("board/delete", user)) as BaseResponse;
+  successError(
+    response,
+    router,
+    "삭제에 성공했습니다.",
+    "success",
+    "삭제실패",
+    "error"
+  );
 };
 </script>
 

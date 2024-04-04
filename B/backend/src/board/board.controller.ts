@@ -13,6 +13,12 @@ export class BoardController {
     return this.boardService.boardCreateService(data, req);
   }
 
+  @UseGuards(TokenGuard)
+  @Post('create/option')
+  boardOptionCreate(@Body() data:{userId:number}) {
+    return this.boardService.boardOptionCreateService(data)
+  }  
+
   @Post('getBoards')
   getBoards() {
     return this.boardService.getBoardsService();

@@ -1,10 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { BoardEntity } from 'entities/board.entity';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
-import { UserService } from 'src/user/user.service';
 import { BoardType } from 'type/boardType';
-import { Repository } from 'typeorm';
+import { Like, Repository } from 'typeorm';
 
 @Injectable()
 export class BoardService {
@@ -20,11 +19,33 @@ export class BoardService {
       email: req.user.email,
     });
 
-    const boardOption = await this.boardRepository.save(board);
+    const createBoard = await this.boardRepository.save(board);
+
     return {
       success: true,
       message: '정상적으로 저장 되었습니다.',
     };
+  }
+
+  //like눌리면 해당 엔티티에 라이크 숫자 1더하기
+  async boardOptionCreateService(data: { userId: number }) {
+
+    const userFind = await this.boardRepository.findOne({where: {id:data.userId}})
+
+    //이미 like를 눌렀음
+
+    if (userFind) {
+      throw new UnauthorizedException('이미 좋아요를 눌렀습니다.')
+    }
+
+    const boardOption = this.boardOptionRepository.create({
+      userBoardId: data.userId,
+      like: 1,
+    });
+
+    console.log(boardOption)
+
+    await this.boardOptionRepository.save(boardOption);
   }
 
   async getBoardsService() {
