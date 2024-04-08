@@ -78,6 +78,9 @@
               >로그아웃</a
             >
           </li>
+          <li v-if="accessToken">
+            {{ accessToken.email }}
+          </li>
         </ul>
       </div>
     </div>
@@ -86,11 +89,22 @@
 
 <script setup lang="ts">
 import { useCookieAccessTokenStore } from "~/stores/cookie";
-const {accessToken,cookieAccessTokenStore} = handlePiniaCookie(useCookieAccessTokenStore)
+import { jwtDecode } from "jwt-decode";
 
+interface AccessToken {
+  email: string;
+  iat: number;
+  exp: number;
+}
 
+//id값 db에서 받아오기
+const accessToken = ref<AccessToken | null>(null);
 
+const { cookieAccessTokenStore } = handlePiniaCookie(useCookieAccessTokenStore);
 
+if (cookieAccessTokenStore.accessToken) {
+  accessToken.value = jwtDecode(cookieAccessTokenStore.accessToken);
+}
 
 /**
  * 1. 로그인에 실패해도 쿠키에 accessToken 부분이 undefined로 채워짐
@@ -99,7 +113,6 @@ const {accessToken,cookieAccessTokenStore} = handlePiniaCookie(useCookieAccessTo
 const signOut = async () => {
   await removeCookieFetch();
   cookieAccessTokenStore.accessToken = "";
-  
 };
 </script>
 

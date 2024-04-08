@@ -28,6 +28,7 @@ export class UserController {
     @Res() res: Response,
   ) {
     const result = await this.userService.checkedUserSignIn(user);
+    console.log(result)
     res.send(result);
   }
 

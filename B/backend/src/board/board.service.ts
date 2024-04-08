@@ -41,6 +41,13 @@ export class BoardService {
       }
     }
 
+    const [findBoards,count] = await this.boardOptionRepository.findAndCount({
+      where: userFind,
+    })
+
+    console.log('findBoards :',findBoards)
+    console.log('count :',count)
+
     const boardOption = this.boardOptionRepository.create({
       userBoardId: data.userId,
       like: 1,

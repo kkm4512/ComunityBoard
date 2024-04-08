@@ -132,6 +132,7 @@ export class UserService {
    */
 
   async createJwtToken(user: Payload): Promise<{}> {
+    console.log(user)
     const payload = { email: user.email, nickname: user.nickname };
     const accessToken = this.jwtService.sign(payload, {
       secret: JWT_SCREATE_KEY,
