@@ -85,7 +85,6 @@ async function clickedIcon(iconId: string, boardId: number) {
       boardOption: { userBoardId: number; like: number; id: number };
     };
     if (response) {
-      console.log(response.boardOption?.like);
       const icon = mdiIcons.value.find((icon) => icon.id === iconId);
 
       if (icon) {

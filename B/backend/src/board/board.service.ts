@@ -45,9 +45,6 @@ export class BoardService {
       where: userFind,
     })
 
-    console.log('findBoards :',findBoards)
-    console.log('count :',count)
-
     const boardOption = this.boardOptionRepository.create({
       userBoardId: data.userId,
       like: 1,
@@ -121,12 +118,20 @@ export class BoardService {
       where: { id: user.id },
     });
 
-    console.log(userFind);
-
     await this.boardRepository.remove(userFind);
 
     return {
       success: true,
     };
   }
+
+  async getBoardsUserIdService(id:number): Promise<any>{
+    const userFind = await this.boardRepository.findOne({where: {id}})
+    const boards = await this.boardRepository.find({
+      where: {email: userFind.email}
+    })
+    return boards
+  }
 }
+
+

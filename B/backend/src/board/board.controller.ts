@@ -25,6 +25,12 @@ export class BoardController {
   }
 
   @UseGuards(TokenGuard)
+  @Post('getBoardsUserId')
+  geetBoardsuserId(@Body() data:{id:number}){
+    return this.boardService.getBoardsUserIdService(data.id)  
+  }
+
+  @UseGuards(TokenGuard)
   @Patch('patch')
   patchBoard(@Body() user: BoardEntity) {
     /**

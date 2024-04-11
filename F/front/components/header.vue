@@ -78,9 +78,11 @@
               >로그아웃</a
             >
           </li>
-          <li v-if="accessToken">
-            {{ accessToken.email }}
-          </li>
+          <NuxtLink :to="`${accessToken.id}/detail`" v-if="accessToken">
+            <li class="cursor-pointer hover:text-blue-500">
+              {{ accessToken.nickname }}
+            </li>
+          </NuxtLink>
         </ul>
       </div>
     </div>
@@ -92,19 +94,24 @@ import { useCookieAccessTokenStore } from "~/stores/cookie";
 import { jwtDecode } from "jwt-decode";
 
 interface AccessToken {
+  id: number;
   email: string;
+  nickname: string;
   iat: number;
   exp: number;
 }
 
 //id값 db에서 받아오기
 const accessToken = ref<AccessToken | null>(null);
-
 const { cookieAccessTokenStore } = handlePiniaCookie(useCookieAccessTokenStore);
 
-if (cookieAccessTokenStore.accessToken) {
-  accessToken.value = jwtDecode(cookieAccessTokenStore.accessToken);
-}
+watch(() => cookieAccessTokenStore.accessToken, (newAccessToken) => {
+  if (newAccessToken) {
+    accessToken.value = jwtDecode(newAccessToken);
+  } else {
+    accessToken.value = null;
+  }
+}, { immediate: true });
 
 /**
  * 1. 로그인에 실패해도 쿠키에 accessToken 부분이 undefined로 채워짐

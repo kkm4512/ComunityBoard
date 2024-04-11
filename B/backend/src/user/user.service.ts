@@ -66,7 +66,7 @@ export class UserService {
       );
     }
 
-    const accessToken = await this.createJwtToken(user);
+    const accessToken = await this.createJwtToken(userFind);
     return {
       success: true,
       message: '로그인에 성공하였습니다.',
@@ -132,8 +132,7 @@ export class UserService {
    */
 
   async createJwtToken(user: Payload): Promise<{}> {
-    console.log(user)
-    const payload = { email: user.email, nickname: user.nickname };
+    const payload = { email: user.email, nickname: user.nickname, id:user.id };
     const accessToken = this.jwtService.sign(payload, {
       secret: JWT_SCREATE_KEY,
       expiresIn: '24h'
