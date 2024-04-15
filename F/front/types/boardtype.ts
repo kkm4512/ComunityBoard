@@ -5,6 +5,7 @@ export interface responseBoard {
   selectedOption: string;
   createAt: string;
   updateAt: string;
+  nickname: string;
   user: {
     email: string;
     nickname: string;

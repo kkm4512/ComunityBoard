@@ -11,7 +11,7 @@
       <div class="text-black ml-2 text-sm">
         {{ board.selectedOption }}
         <p></p>
-        {{ board.user.nickname }}
+        {{ board.nickname }}
         <p></p>
         {{ board.createAt }}
       </div>
