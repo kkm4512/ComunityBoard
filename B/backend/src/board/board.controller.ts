@@ -1,15 +1,18 @@
-import { Body, Controller, Delete, Patch, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardEntity } from 'entities/board.entity';
 import { TokenGuard } from 'src/token/token.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('board')
 export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   @UseGuards(TokenGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Post('create')
-  boardCreate(@Body() data: BoardEntity, @Req() req: any) {
+  boardCreate(@Body() data: BoardEntity, @Req() req: any, @UploadedFile() file?: Express.Multer.File) {
+    console.log(file)
     return this.boardService.boardCreateService(data, req);
   }
 

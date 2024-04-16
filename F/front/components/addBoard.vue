@@ -33,10 +33,11 @@
           <option value="backend">BACKEND</option>
         </select>
         <input
-          type="tel"
-          id="phone"
+          @change="changedImage"
+          type="file"
+          id="image"
+          accept="image/*"
           class="bg-gray-50 border border-gray-500 text-gray-900 text-sm rounded-xl focus:ring-blue-500 focus:border-blue-500 block w-[50%] p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500mb-2 text-center h-[50px] mt-[0.5rem] mb-[1rem]"
-          placeholder="사진"
         />
         <button
           @click="check"
@@ -61,11 +62,21 @@ const router = useRouter();
 const title = ref("");
 const description = ref("");
 const selectedOption = ref("");
+const image = ref<string | null>("")
 
+function changedImage(e:Event){
+  if (e.target) {
+    const inputElement = e.target as HTMLInputElement
+    if (inputElement.files) {
+      image.value = inputElement.files[0].name
+    }
+  }
+}
 const check = async () => {
   const data = {
     title: title.value,
     description: description.value,
+    image: image.value,
     selectedOption: selectedOption.value === "" ? "Any" : selectedOption.value,
   };
 
@@ -78,10 +89,7 @@ const check = async () => {
     return;
   }
 
-  const response: BaseResponse = (await Fetch(
-    "board/create",
-    data
-  )) as BaseResponse;
+  const response: BaseResponse = (await Fetch("board/create",data)) as BaseResponse;
   successError(
     response,
     router,

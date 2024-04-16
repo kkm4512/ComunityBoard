@@ -8,6 +8,9 @@ export class BoardEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
+    @Column()
+    image: string;
+
     @IsEmail()
     @Column()
     @IsNotEmpty()
