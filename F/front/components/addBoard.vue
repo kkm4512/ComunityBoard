@@ -73,12 +73,13 @@ function changedImage(e:Event){
   }
 }
 const check = async () => {
-  const data = {
-    title: title.value,
-    description: description.value,
-    image: image.value,
-    selectedOption: selectedOption.value === "" ? "Any" : selectedOption.value,
-  };
+  const formData = new FormData();
+  formData.append('title', title.value);
+  formData.append('description', description.value);
+  formData.append('selectedOption', selectedOption.value === "" ? "Any" : selectedOption.value);
+  if (image.value) {
+    formData.append('image', image.value);
+  }
 
   /**
    * 1. 근데 여기 부분은 errorNoResponse해서 error페이지로 넘길게아니라, 이전페이지인 addBoard페이지로 다시 넘기면될거같은데 확인하기
@@ -89,7 +90,7 @@ const check = async () => {
     return;
   }
 
-  const response: BaseResponse = (await Fetch("board/create",data)) as BaseResponse;
+  const response: BaseResponse = (await Fetch("board/create",formData)) as BaseResponse;
   successError(
     response,
     router,

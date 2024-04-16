@@ -12,7 +12,7 @@ export class BoardController {
   @UseInterceptors(FileInterceptor('image'))
   @Post('create')
   boardCreate(@Body() data: BoardEntity, @Req() req: any, @UploadedFile() file?: Express.Multer.File) {
-    console.log(file)
+    console.log(req.body)
     return this.boardService.boardCreateService(data, req);
   }
 

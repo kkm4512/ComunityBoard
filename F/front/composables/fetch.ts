@@ -27,6 +27,38 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
+export const imageFetch = async (endPoint: string, bodyData: {}, file: File | null) => {
+  try {
+    const cookie = await getCookieFetch();
+
+    const formData = new FormData();
+    for (const key in bodyData) {
+      formData.append(key, bodyData[key]);
+    }
+    if (file) {
+      formData.append('image', file);
+    }
+
+    const response = await fetch(`http://localhost:3001${endPoint}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${cookie}`,
+      },
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+
+
 export const patchFetch = async (endPoint: string, bodyData: Object) => {
   try {
     const cookie = await getCookieFetch();
