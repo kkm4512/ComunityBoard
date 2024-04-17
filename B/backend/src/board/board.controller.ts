@@ -19,15 +19,14 @@ export class BoardController {
   constructor(private readonly boardService: BoardService) {}
 
   @UseGuards(TokenGuard)
-  // @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   @Post('create')
   boardCreate(
     @Body() data: BoardEntity,
     @Req() req: any,
     @UploadedFile() file?: Express.Multer.File,
   ) {
-    console.log(req);
-    return this.boardService.boardCreateService(data, req);
+    return this.boardService.boardCreateService(data, req, file);
   }
 
   @UseGuards(TokenGuard)

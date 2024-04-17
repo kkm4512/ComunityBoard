@@ -77,11 +77,13 @@ const selectedOption = ref("");
 const image = ref<string | null>("");
 const fileName = ref<string | null>(null);
 const imageSrc = ref<null | any>(null); // 이미지 미리보기 URL을 저장
+const files = ref<File | null>(null)
 
 function changedImage(e: Event) {
   const inputElement = e.target as HTMLInputElement; // 타입 단언
   if (inputElement && inputElement.files && inputElement.files.length > 0) {
     const file = inputElement.files[0]; // 파일 가져오기
+    files.value = file
     image.value = file.name; // 파일 이름 설정
     fileName.value = image.value; // 파일 이름 설정
 
@@ -107,8 +109,11 @@ const check = async () => {
     "selectedOption",
     selectedOption.value === "" ? "Any" : selectedOption.value
   );
-  if (image.value) {
+
+  if (image.value && files.value) {
     formData.append("image", image.value);
+    formData.append("file", files.value);
+    
   }
 
   /**
@@ -124,6 +129,8 @@ const check = async () => {
     "board/create",
     formData
   )) as BaseResponse;
+
+  console.log(response);
   successError(
     response,
     router,

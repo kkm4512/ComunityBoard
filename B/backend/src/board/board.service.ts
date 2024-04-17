@@ -14,9 +14,10 @@ export class BoardService {
     private boardOptionRepository: Repository<BoardOptionEntity>,
   ) {}
 
-  async boardCreateService(data: BoardEntity, req: BoardType) {
+  async boardCreateService(data: BoardEntity, req: any,file?:Express.Multer.File) {
     const board = Object.assign(data, {
       email: req.user.email,
+      image : file?.filename
     });
 
     const createBoard = await this.boardRepository.save(board);

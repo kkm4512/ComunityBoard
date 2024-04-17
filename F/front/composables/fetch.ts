@@ -34,7 +34,7 @@ interface BodyData {
   image: string;
 }
 
-export const imageFetch = async (endPoint: string, bodyData: FormData) => {
+export const imageFetch = async (endPoint: string, bodyData: FormData) => { 
   try {
     const cookie = await getCookieFetch();
 
@@ -46,6 +46,8 @@ export const imageFetch = async (endPoint: string, bodyData: FormData) => {
       },
       body: bodyData, // 이미 완성된 FormData 사용
     });
+
+    console.log(response)
 
     if (!response.ok) {
       throw new Error("Network response was not ok");

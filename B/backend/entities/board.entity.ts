@@ -9,7 +9,7 @@ export class BoardEntity {
     id: number;
 
     @Column({
-        nullable: false
+        nullable: true
     })
 
     image: string;

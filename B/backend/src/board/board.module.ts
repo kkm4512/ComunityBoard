@@ -6,9 +6,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
-import * as multer from 'multer'
+import * as multer from 'multer';
 import { POST_IMAGE_PATH } from 'const/paths';
-import { v4 as uuid } from 'uuid'
+import { v4 as uuid } from 'uuid';
 
 @Module({
   imports: [
@@ -26,23 +26,23 @@ import { v4 as uuid } from 'uuid'
          */
         const ext = extname(file.originalname);
 
-        if (ext !== '.jpg' && ext !== '.png' && ext !== '.jepg') {
+        if (ext !== '.jpg' && ext !== '.png' && ext !== '.jpeg') {
           return cb(
             new BadRequestException('올바른 사진 형식이 아닙니다.'),
             false,
           );
         }
 
-        return cb(null,true)
+        return cb(null, true);
       },
       storage: multer.diskStorage({
-        destination: function(req,res,cb){
+        destination: function (req, res, cb) {
           cb(null, POST_IMAGE_PATH);
         },
-        filename: function(req,file,cb){
-          cb(null,`${uuid()}${file.originalname}`)
-        }
-      })
+        filename: function (req, file, cb) {
+          cb(null, `${uuid()}${extname(file.originalname)}`);
+        },
+      }),
     }),
   ],
   controllers: [BoardController],

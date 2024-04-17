@@ -13,6 +13,7 @@ export const PUBILC_FOLDER_PATH = join(
 
 export const POST_IMAGE_PATH = join(
   PROJECT_ROOT_PATH,
+  PUBLIC_FOLDER_NAME,
   POSTS_FOLDER_NAME
 )
 
