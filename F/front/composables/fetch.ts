@@ -27,7 +27,11 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
-export const imageFetch = async (endPoint: string, bodyData: {}, file: File | null) => {
+export const imageFetch = async (
+  endPoint: string,
+  bodyData: {},
+  file: File | null
+) => {
   try {
     const cookie = await getCookieFetch();
 
@@ -36,7 +40,7 @@ export const imageFetch = async (endPoint: string, bodyData: {}, file: File | nu
       formData.append(key, bodyData[key]);
     }
     if (file) {
-      formData.append('image', file);
+      formData.append("image", file);
     }
 
     const response = await fetch(`http://localhost:3001${endPoint}`, {
@@ -48,16 +52,14 @@ export const imageFetch = async (endPoint: string, bodyData: {}, file: File | nu
     });
 
     if (!response.ok) {
-      throw new Error('Network response was not ok');
+      throw new Error("Network response was not ok");
     }
     return await response.json();
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     throw error;
   }
 };
-
-
 
 export const patchFetch = async (endPoint: string, bodyData: Object) => {
   try {
@@ -109,7 +111,7 @@ export const jwtFetch = async (endPoint: string) => {
   }
 };
 
-export const jwtDataFetch = async (endPoint: string,bodydata:{}) => {
+export const jwtDataFetch = async (endPoint: string, bodydata: {}) => {
   try {
     const cookie = await getCookieFetch();
     const response = await $fetch(endPoint, {
@@ -118,7 +120,7 @@ export const jwtDataFetch = async (endPoint: string,bodydata:{}) => {
       headers: {
         Authorization: `Bearer ${cookie}`,
       },
-      body:bodydata
+      body: bodydata,
     });
 
     return response;

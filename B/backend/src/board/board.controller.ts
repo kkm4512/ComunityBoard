@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Patch, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Patch,
+  Post,
+  Req,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { BoardService } from './board.service';
 import { BoardEntity } from 'entities/board.entity';
 import { TokenGuard } from 'src/token/token.guard';
@@ -11,16 +21,20 @@ export class BoardController {
   @UseGuards(TokenGuard)
   @UseInterceptors(FileInterceptor('image'))
   @Post('create')
-  boardCreate(@Body() data: BoardEntity, @Req() req: any, @UploadedFile() file?: Express.Multer.File) {
-    console.log(req.body)
+  boardCreate(
+    @Body() data: BoardEntity,
+    @Req() req: any,
+    @UploadedFile() file?: Express.Multer.File,
+  ) {
+    console.log(req.body);
     return this.boardService.boardCreateService(data, req);
   }
 
   @UseGuards(TokenGuard)
   @Post('create/option')
-  boardOptionCreate(@Body() data:{userId:number}) {
-    return this.boardService.boardOptionCreateService(data)
-  }  
+  boardOptionCreate(@Body() data: { userId: number }) {
+    return this.boardService.boardOptionCreateService(data);
+  }
 
   @Post('getBoards')
   getBoards() {
@@ -29,8 +43,8 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Post('getBoardsUserId')
-  geetBoardsuserId(@Body() data:{id:number}){
-    return this.boardService.getBoardsUserIdService(data.id)  
+  geetBoardsuserId(@Body() data: { id: number }) {
+    return this.boardService.getBoardsUserIdService(data.id);
   }
 
   @UseGuards(TokenGuard)
@@ -39,12 +53,12 @@ export class BoardController {
     /**
      * [id,title,description,selectoption 받아옴]
      */
-    return this.boardService.patchedBoard(user)
+    return this.boardService.patchedBoard(user);
   }
 
   @UseGuards(TokenGuard)
   @Delete('delete')
-  deleteBoard(@Body() user: BoardEntity){
-    return this.boardService.deleteBoardService(user)
+  deleteBoard(@Body() user: BoardEntity) {
+    return this.boardService.deleteBoardService(user);
   }
 }
