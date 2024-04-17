@@ -27,28 +27,24 @@ export const Fetch = async (endPoint: string, bodyData: Object) => {
   }
 };
 
-export const imageFetch = async (
-  endPoint: string,
-  bodyData: {},
-  file: File | null
-) => {
+interface BodyData {
+  title: string;
+  description: string;
+  selectedOption: string;
+  image: string;
+}
+
+export const imageFetch = async (endPoint: string, bodyData: FormData) => {
   try {
     const cookie = await getCookieFetch();
 
-    const formData = new FormData();
-    for (const key in bodyData) {
-      formData.append(key, bodyData[key]);
-    }
-    if (file) {
-      formData.append("image", file);
-    }
-
-    const response = await fetch(`http://localhost:3001${endPoint}`, {
+    const response = await fetch(`http://localhost:3001/${endPoint}`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${cookie}`,
+        // 'Content-Type': 'multipart/form-data'는 자동으로 설정됩니다. 직접 지정하지 않는 것이 좋습니다.
       },
-      body: formData,
+      body: bodyData, // 이미 완성된 FormData 사용
     });
 
     if (!response.ok) {
@@ -56,7 +52,6 @@ export const imageFetch = async (
     }
     return await response.json();
   } catch (error) {
-    console.error("Error:", error);
     throw error;
   }
 };

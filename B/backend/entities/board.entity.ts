@@ -8,7 +8,10 @@ export class BoardEntity {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
+
     image: string;
 
     @IsEmail()
