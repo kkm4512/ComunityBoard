@@ -1,8 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { POST_PUBLIC_IMAGE_PATH } from 'const/paths';
 import { BoardEntity } from 'entities/board.entity';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
-import { BoardType } from 'type/boardType';
+import { join } from 'path';
 import { Like, Repository } from 'typeorm';
 
 @Injectable()
@@ -14,13 +15,16 @@ export class BoardService {
     private boardOptionRepository: Repository<BoardOptionEntity>,
   ) {}
 
-  async boardCreateService(data: BoardEntity, req: any,file?:Express.Multer.File) {
-    const board = Object.assign(data, {
-      email: req.user.email,
-      image : file?.filename
-    });
+  async boardCreateService(data: BoardEntity, req: {user: {email: string}},file?:Express.Multer.File) {
+    const board = this.boardRepository.create({
+      title: data.title,
+      description: data.description,
+      image: `/${join(POST_PUBLIC_IMAGE_PATH, file.filename)}`,
+      email: req.user.email
+    })
 
-    const createBoard = await this.boardRepository.save(board);
+
+    await this.boardRepository.save(board);
 
     return {
       success: true,

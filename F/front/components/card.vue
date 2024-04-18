@@ -25,6 +25,9 @@
     <h5 class="mb-2 text-2xl font-bold tracking-tight text- mt-5">
       {{ board.title }}
     </h5>
+    <div class="mt-5 mb-5">
+      <img :src="`http://localhost:3001${board.image}`">
+    </div>
     <p class="font-normal text-black dark:text-gray-700 mt-5">
       {{ board.description }}
     </p>

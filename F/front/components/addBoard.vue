@@ -110,8 +110,7 @@ const check = async () => {
     selectedOption.value === "" ? "Any" : selectedOption.value
   );
 
-  if (image.value && files.value) {
-    formData.append("image", image.value);
+  if (files.value) {
     formData.append("file", files.value);
     
   }

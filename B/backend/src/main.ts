@@ -8,6 +8,7 @@ async function bootstrap() {
     exposedHeaders: ['Authorization'],
   });
   app.use(cookieParser());
+
   await app.listen(3001);
 }
 bootstrap();
