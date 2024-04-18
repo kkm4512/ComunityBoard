@@ -100,7 +100,7 @@ export class BoardService {
    * 4. 그 id에 해당하는 게시물의 id,title,des를 변경시킴
    *
    */
-  async patchedBoard(user: BoardEntity) {
+  async patchedBoard(user: BoardEntity,image: Express.Multer.File) {
     const patchedUserFind = await this.boardRepository.findOne({
       where: { id: user.id },
     });
@@ -109,6 +109,7 @@ export class BoardService {
       title: user.title,
       description: user.description,
       selectedOption: user.selectedOption,
+      image: `/${join(POST_PUBLIC_IMAGE_PATH, image.filename)}`,
     });
 
     await this.boardRepository.save(patchedBoardData);

@@ -48,11 +48,16 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Patch('patch')
-  patchBoard(@Body() user: BoardEntity) {
+  @UseInterceptors(FileInterceptor('image'))
+  patchBoard(
+    @Body() user: BoardEntity,
+    @UploadedFile() image?: Express.Multer.File
+  ) {
     /**
      * [id,title,description,selectoption 받아옴]
      */
-    return this.boardService.patchedBoard(user);
+    console.log(user)
+    return this.boardService.patchedBoard(user,image);
   }
 
   @UseGuards(TokenGuard)
@@ -60,4 +65,9 @@ export class BoardController {
   deleteBoard(@Body() user: BoardEntity) {
     return this.boardService.deleteBoardService(user);
   }
+}
+
+function changedImageEvent(e:Event){
+  const inputElement = e.target as HTMLInputElement
+  return inputElement ? inputElement.files[0] : false
 }

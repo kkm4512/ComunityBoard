@@ -55,12 +55,16 @@
       </select>
     </div>
     <input
+      @change="changedImage"
       class="hidden"
       id="file_input"
       type="file"
       accept="image/*"
     />
-    <label for="file_input" class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 px-4 py-2 text-center">
+    <label
+      for="file_input"
+      class="block text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 px-4 py-2 text-center"
+    >
       파일첨부
     </label>
     <input
@@ -86,8 +90,16 @@ const { patchStateStore, patchState } =
 const router = useRouter();
 const isCompleteStateStore = useIsCompleteStateStore();
 let isComplete = isCompleteStateStore.isComplete;
-
+const image = ref<File | string | null | boolean>(null);
 const selectedOption = ref("");
+
+//프론트에서 백엔드로 파일 보내는데 크기가 너무크다고함 왜지 ㅅㅂ;;
+
+function changedImage(e: Event) {
+  const eventImage = changedImageEvent(e);
+  image.value = eventImage;
+  console.log(image.value);
+}
 
 /**
  * 1. X버튼을 클릭하면 patchCard가 꺼지고, dropDownMenu도 꺼져야함.. 내일하자 어휴
@@ -120,11 +132,12 @@ const patchedData = async (id: number) => {
     title: boardTitle.value,
     description: boardDescription.value,
     selectedOption: boardSelectedOption.value,
+    image: image.value,
   };
-  const response = (await patchFetch(
-    "board/patch",
-    userBoardData
-  )) as BaseResponse;
+
+  const formData = formDatasArray(userBoardData);
+
+  const response = (await patchFetch("board/patch", formData)) as BaseResponse;
   successError(
     response,
     router,
