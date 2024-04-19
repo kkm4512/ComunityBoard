@@ -15,14 +15,17 @@ export class BoardService {
     private boardOptionRepository: Repository<BoardOptionEntity>,
   ) {}
 
-  async boardCreateService(data: BoardEntity, req: {user: {email: string}},file?:Express.Multer.File) {
+  async boardCreateService(
+    data: BoardEntity,
+    req: { user: { email: string } },
+    file?: Express.Multer.File,
+  ) {
     const board = this.boardRepository.create({
       title: data.title,
       description: data.description,
       image: `/${join(POST_PUBLIC_IMAGE_PATH, file.filename)}`,
-      email: req.user.email
-    })
-
+      email: req.user.email,
+    });
 
     await this.boardRepository.save(board);
 
@@ -34,32 +37,23 @@ export class BoardService {
 
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
   async boardOptionCreateService(data: { userId: number }) {
+    const userFind = await this.boardRepository.findOne({
+      where: { id: data.userId },
+    });
 
-    const userFind = await this.boardOptionRepository.findOne({where: {userBoardId:data.userId}})
-
-    const likeAddUserFindBoard = Object.assign(userFind, {
-      like:1
-    })
-
-    if ( userFind.like === 0 ) {
-      await this.boardRepository.save(likeAddUserFindBoard)
-      return {
-        sucess:true
-      }
+    if (userFind.like === 0) {
+      const likeAddUserFindBoard = Object.assign(userFind, {
+        like: 1,
+      });
+      await this.boardRepository.save(likeAddUserFindBoard);
+      return likeAddUserFindBoard;
     } else {
       const likeMinusUserFindBoard = Object.assign(userFind, {
-        like:0
-      })      
-      await this.boardRepository.save(likeMinusUserFindBoard)
-      return {
-        success:true
-      }
+        like: 0,
+      });
+      await this.boardRepository.save(likeMinusUserFindBoard);
+      return likeMinusUserFindBoard;
     }
-    
-
-
-
-
   }
 
   async getBoardsService() {
@@ -99,7 +93,7 @@ export class BoardService {
    * 4. 그 id에 해당하는 게시물의 id,title,des를 변경시킴
    *
    */
-  async patchedBoard(user: BoardEntity,image: Express.Multer.File) {
+  async patchedBoard(user: BoardEntity, image: Express.Multer.File) {
     const patchedUserFind = await this.boardRepository.findOne({
       where: { id: user.id },
     });
@@ -130,13 +124,11 @@ export class BoardService {
     };
   }
 
-  async getBoardsUserIdService(id:number): Promise<any>{
-    const userFind = await this.boardRepository.findOne({where: {id}})
+  async getBoardsUserIdService(id: number): Promise<any> {
+    const userFind = await this.boardRepository.findOne({ where: { id } });
     const boards = await this.boardRepository.find({
-      where: {email: userFind.email}
-    })
-    return boards
+      where: { email: userFind.email },
+    });
+    return boards;
   }
 }
-
-

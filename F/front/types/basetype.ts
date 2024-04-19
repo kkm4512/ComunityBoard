@@ -8,4 +8,5 @@ export interface BaseResponse {
     message?: string;
     data?: string
     accessToken?: string; 
+    like: number
   }

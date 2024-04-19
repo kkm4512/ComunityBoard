@@ -81,13 +81,16 @@ const router = useRouter();
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number) {
   if (iconId === "mdiThumbUp") {
-    const response = (await jwtDataFetch("board/create/option", {userId: boardId}))
-    console.log(response)
+    const response = (await jwtDataFetch("board/create/option", {
+      id: boardId,
+    })) as BaseResponse;
 
     if (response) {
       const icon = mdiIcons.value.find((icon) => icon.id === iconId);
 
-      if (icon) {
+      if (response.like === 1 && icon) {
+        icon.clicked = !icon.clicked;
+      } else if (response.like === 0 && icon) {
         icon.clicked = !icon.clicked;
       }
     }
