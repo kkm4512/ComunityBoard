@@ -54,6 +54,12 @@ export class BoardEntity {
   @ManyToOne(() => UserEntity, (user) => user.boards, { eager: true })
   user: UserEntity;
 
+  @Column({
+    nullable: true,
+    default: 0
+  })
+  like: number
+
   @OneToMany(() => BoardOptionEntity, (boardOption) => boardOption.board)
   boardOptions: BoardOptionEntity[];
 }

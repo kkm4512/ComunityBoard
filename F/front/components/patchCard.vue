@@ -137,7 +137,8 @@ const patchedData = async (id: number) => {
 
   const formData = formDatasArray(userBoardData);
 
-  const response = (await patchFetch("board/patch", formData)) as BaseResponse;
+
+  const response = (await imagePatchFetch("board/patch", formData)) as BaseResponse;
   successError(
     response,
     router,

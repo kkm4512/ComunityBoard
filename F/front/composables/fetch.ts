@@ -56,6 +56,28 @@ export const imageFetch = async (endPoint: string, bodyData: FormData) => {
   }
 };
 
+export const imagePatchFetch = async (endPoint: string, bodyData: FormData) => {
+  try {
+    const cookie = await getCookieFetch();
+
+    const response = await fetch(`http://localhost:3001/${endPoint}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${cookie}`,
+        // 'Content-Type': 'multipart/form-data'는 자동으로 설정됩니다. 직접 지정하지 않는 것이 좋습니다.
+      },
+      body: bodyData, // 이미 완성된 FormData 사용
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const patchFetch = async (endPoint: string, bodyData: Object) => {
   try {
     const cookie = await getCookieFetch();
@@ -207,7 +229,6 @@ export const formDatasArray = (formData: { [key: string]: any }) => {
     formDats.append(i, value);
   }
 
-  //
 
   return formDats;
 };

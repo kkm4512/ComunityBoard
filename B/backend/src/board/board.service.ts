@@ -37,30 +37,29 @@ export class BoardService {
 
     const userFind = await this.boardOptionRepository.findOne({where: {userBoardId:data.userId}})
 
-    //이미 like를 눌렀음
-
-    if (userFind) {
-      await this.boardOptionRepository.remove(userFind)
-      return {
-        success:false
-      }
-    }
-
-    const [findBoards,count] = await this.boardOptionRepository.findAndCount({
-      where: userFind,
+    const likeAddUserFindBoard = Object.assign(userFind, {
+      like:1
     })
 
-    const boardOption = this.boardOptionRepository.create({
-      userBoardId: data.userId,
-      like: 1,
-    });
-
-    await this.boardOptionRepository.save(boardOption);
-
-    return {
-      success:true,
-      boardOption
+    if ( userFind.like === 0 ) {
+      await this.boardRepository.save(likeAddUserFindBoard)
+      return {
+        sucess:true
+      }
+    } else {
+      const likeMinusUserFindBoard = Object.assign(userFind, {
+        like:0
+      })      
+      await this.boardRepository.save(likeMinusUserFindBoard)
+      return {
+        success:true
+      }
     }
+    
+
+
+
+
   }
 
   async getBoardsService() {

@@ -53,10 +53,10 @@ export class BoardController {
     @Body() user: BoardEntity,
     @UploadedFile() image?: Express.Multer.File
   ) {
+    console.log(user)
     /**
      * [id,title,description,selectoption 받아옴]
      */
-    console.log(user)
     return this.boardService.patchedBoard(user,image);
   }
 

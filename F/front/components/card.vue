@@ -26,7 +26,7 @@
       {{ board.title }}
     </h5>
     <div class="mt-5 mb-5">
-      <img :src="`http://localhost:3001${board.image}`">
+      <img :src="`http://localhost:3001${board.image}`" />
     </div>
     <p class="font-normal text-black dark:text-gray-700 mt-5">
       {{ board.description }}
@@ -81,12 +81,9 @@ const router = useRouter();
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number) {
   if (iconId === "mdiThumbUp") {
-    const response = (await jwtDataFetch("board/create/option", {
-      userId: boardId,
-    })) as {
-      success: boolean;
-      boardOption: { userBoardId: number; like: number; id: number };
-    };
+    const response = (await jwtDataFetch("board/create/option", {userId: boardId}))
+    console.log(response)
+
     if (response) {
       const icon = mdiIcons.value.find((icon) => icon.id === iconId);
 
