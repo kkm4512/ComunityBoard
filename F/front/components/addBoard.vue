@@ -129,7 +129,6 @@ const check = async () => {
     formData
   )) as BaseResponse;
 
-  console.log(response);
   successError(
     response,
     router,

@@ -20,14 +20,28 @@ export class BoardService {
     req: { user: { email: string } },
     file?: Express.Multer.File,
   ) {
-    const board = this.boardRepository.create({
-      title: data.title,
-      description: data.description,
-      image: `/${join(POST_PUBLIC_IMAGE_PATH, file.filename)}`,
-      email: req.user.email,
-    });
 
-    await this.boardRepository.save(board);
+    if (file) {
+      const board = this.boardRepository.create({
+        title: data.title,
+        description: data.description,
+        selectedOption: data.selectedOption,
+        image: `/${join(POST_PUBLIC_IMAGE_PATH, file.filename)}`,
+        email: req.user.email,
+      });
+  
+      await this.boardRepository.save(board);
+    } else {
+      const board = this.boardRepository.create({
+        title: data.title,
+        description: data.description,
+        selectedOption: data.selectedOption,
+        email: req.user.email,
+      });
+  
+      await this.boardRepository.save(board);      
+    }
+
 
     return {
       success: true,
@@ -83,6 +97,8 @@ export class BoardService {
         createAt: kstTimeStr,
       };
     });
+
+    console.log(updatedUsers)
     return updatedUsers;
   }
 
