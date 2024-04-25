@@ -31,7 +31,7 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Post('create/option')
-  boardOptionCreate(@Body() data: { userId: number }) {
+  boardOptionCreate(@Body() data: { id: number }) {
     return this.boardService.boardOptionCreateService(data);
   }
 
@@ -53,7 +53,6 @@ export class BoardController {
     @Body() user: BoardEntity,
     @UploadedFile() image?: Express.Multer.File
   ) {
-    console.log(user)
     /**
      * [id,title,description,selectoption 받아옴]
      */

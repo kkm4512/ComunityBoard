@@ -4,7 +4,8 @@ import { POST_PUBLIC_IMAGE_PATH } from 'const/paths';
 import { BoardEntity } from 'entities/board.entity';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
 import { join } from 'path';
-import { Like, Repository } from 'typeorm';
+import { Success } from 'type/successType';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class BoardService {
@@ -20,7 +21,6 @@ export class BoardService {
     req: { user: { email: string } },
     file?: Express.Multer.File,
   ) {
-
     if (file) {
       const board = this.boardRepository.create({
         title: data.title,
@@ -29,7 +29,7 @@ export class BoardService {
         image: `/${join(POST_PUBLIC_IMAGE_PATH, file.filename)}`,
         email: req.user.email,
       });
-  
+
       await this.boardRepository.save(board);
     } else {
       const board = this.boardRepository.create({
@@ -38,10 +38,9 @@ export class BoardService {
         selectedOption: data.selectedOption,
         email: req.user.email,
       });
-  
-      await this.boardRepository.save(board);      
-    }
 
+      await this.boardRepository.save(board);
+    }
 
     return {
       success: true,
@@ -50,23 +49,30 @@ export class BoardService {
   }
 
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
-  async boardOptionCreateService(data: { userId: number }) {
-    const userFind = await this.boardRepository.findOne({
-      where: { id: data.userId },
+  async boardOptionCreateService(data: { id: number }): Promise<Success> {
+    const boardFind = await this.boardOptionRepository.findOne({
+      where: { userBoardId: data.id },
     });
 
-    if (userFind.like === 0) {
-      const likeAddUserFindBoard = Object.assign(userFind, {
+    if (!boardFind) {
+      const boardOptionCreate = this.boardOptionRepository.create({
+        userBoardId: data.id,
         like: 1,
       });
-      await this.boardRepository.save(likeAddUserFindBoard);
-      return likeAddUserFindBoard;
+
+      await this.boardOptionRepository.save(boardOptionCreate);
+
+      return {
+        success:true
+      }
+
     } else {
-      const likeMinusUserFindBoard = Object.assign(userFind, {
-        like: 0,
+      await this.boardOptionRepository.delete({
+        userBoardId: data.id,
       });
-      await this.boardRepository.save(likeMinusUserFindBoard);
-      return likeMinusUserFindBoard;
+      return {
+        success: false
+      }
     }
   }
 
@@ -98,7 +104,6 @@ export class BoardService {
       };
     });
 
-    console.log(updatedUsers)
     return updatedUsers;
   }
 

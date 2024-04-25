@@ -147,7 +147,8 @@ const patchedData = async (id: number) => {
     response.message,
     "error"
   );
-  location.reload();
+
+  location.reload()
 };
 </script>
 

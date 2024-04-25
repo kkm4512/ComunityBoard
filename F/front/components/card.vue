@@ -41,7 +41,7 @@
         <svg-icon
           type="mdi"
           :path="icon.path"
-          :class="{ 'w-[20px]': true, 'text-blue-500': response.like === 1 }"
+          :class="{ 'w-[20px]': true, 'text-blue-500': icon.clicked = liked }"
           @click="clickedIcon(icon.id, board.id)"
         ></svg-icon>
       </div>
@@ -61,6 +61,7 @@ import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
 
+
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
@@ -78,26 +79,19 @@ const props = defineProps<{
 
 const router = useRouter();
 
-const getBoards = async () => {
-  const response = (await Fetch("board/getBoards", {})) as responseBoard[];
-  return response;
-};
+
+const liked = ref<boolean>(false);
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number) {
   if (iconId === "mdiThumbUp") {
     const response = (await jwtDataFetch("board/create/option", {
       id: boardId,
-    })) as BaseResponse;
-
-    if (response) {
-      const icon = mdiIcons.value.find((icon) => icon.id === iconId);
-
-      if (response.like === 1 && icon) {
-        icon.clicked = !icon.clicked;
-      } else if (response.like === 0 && icon) {
-        icon.clicked = !icon.clicked;
-      }
+    })) as { success: boolean };
+    if (response.success === true){
+      liked.value = true
+    } else {
+      liked.value = false
     }
   }
 }
@@ -114,6 +108,7 @@ const handlePatchClicked = async (event: any) => {
 
 const handleRemoveClicked = async (user: responseBoard) => {
   const response = (await jwtDeleteFetch("board/delete", user)) as BaseResponse;
+
   successError(
     response,
     router,

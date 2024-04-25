@@ -64,7 +64,6 @@ export const imagePatchFetch = async (endPoint: string, bodyData: FormData) => {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${cookie}`,
-        // 'Content-Type': 'multipart/form-data'는 자동으로 설정됩니다. 직접 지정하지 않는 것이 좋습니다.
       },
       body: bodyData, // 이미 완성된 FormData 사용
     });

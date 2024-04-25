@@ -1,6 +1,7 @@
 export interface responseBoard {
   id: number
   title: string;
+  like: number;
   image: string
   description: string;
   selectedOption: string;
