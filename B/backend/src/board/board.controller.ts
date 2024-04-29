@@ -35,6 +35,12 @@ export class BoardController {
     return this.boardService.boardOptionCreateService(data);
   }
 
+  @UseGuards(TokenGuard)
+  @Post('getUsersBoardLiked')
+  async getUsersBoardLiked() {
+    const req = await this.boardService.getUsersBoardLikedService();
+  }
+
   @Post('getBoards')
   getBoards() {
     return this.boardService.getBoardsService();
@@ -51,12 +57,12 @@ export class BoardController {
   @UseInterceptors(FileInterceptor('image'))
   patchBoard(
     @Body() user: BoardEntity,
-    @UploadedFile() image?: Express.Multer.File
+    @UploadedFile() image?: Express.Multer.File,
   ) {
     /**
      * [id,title,description,selectoption 받아옴]
      */
-    return this.boardService.patchedBoard(user,image);
+    return this.boardService.patchedBoard(user, image);
   }
 
   @UseGuards(TokenGuard)
@@ -66,7 +72,7 @@ export class BoardController {
   }
 }
 
-function changedImageEvent(e:Event){
-  const inputElement = e.target as HTMLInputElement
-  return inputElement ? inputElement.files[0] : false
+function changedImageEvent(e: Event) {
+  const inputElement = e.target as HTMLInputElement;
+  return inputElement ? inputElement.files[0] : false;
 }

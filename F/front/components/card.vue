@@ -25,7 +25,7 @@
     <h5 class="mb-2 text-2xl font-bold tracking-tight text- mt-5">
       {{ board.title }}
     </h5>
-    <div class="mt-5 mb-5" v-if="board.image">
+    <div class="mt-5 mb-5 flex justify-center" v-if="board.image">
       <img :src="`http://localhost:3001${board.image}`" />
     </div>
     <p class="font-normal text-black dark:text-gray-700 mt-5">
@@ -41,7 +41,7 @@
         <svg-icon
           type="mdi"
           :path="icon.path"
-          :class="{ 'w-[20px]': true, 'text-blue-500': icon.clicked = liked }"
+          :class="{ 'w-[20px]': true, 'text-blue-500': (icon.clicked = liked) }"
           @click="clickedIcon(icon.id, board.id)"
         ></svg-icon>
       </div>
@@ -61,7 +61,6 @@ import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
 
-
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
@@ -79,8 +78,11 @@ const props = defineProps<{
 
 const router = useRouter();
 
-
 const liked = ref<boolean>(false);
+
+async function getUsersBoardLiked() {
+  const response = await jwtFetch("board/getUsersBoardLiked");
+}
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number) {
@@ -88,10 +90,10 @@ async function clickedIcon(iconId: string, boardId: number) {
     const response = (await jwtDataFetch("board/create/option", {
       id: boardId,
     })) as { success: boolean };
-    if (response.success === true){
-      liked.value = true
+    if (response.success === true) {
+      liked.value = true;
     } else {
-      liked.value = false
+      liked.value = false;
     }
   }
 }

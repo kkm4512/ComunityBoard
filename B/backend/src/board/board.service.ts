@@ -48,6 +48,10 @@ export class BoardService {
     };
   }
 
+  getUsersBoardLikedService(){
+    return this.boardOptionRepository.find()
+  }
+
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
   async boardOptionCreateService(data: { id: number }): Promise<Success> {
     const boardFind = await this.boardOptionRepository.findOne({
@@ -82,6 +86,7 @@ export class BoardService {
         createAt: 'DESC',
       },
     });
+
     const updatedUsers = users.map((user) => {
       const utcDate = new Date(user.createAt.toString());
       const kstOptions: any = {
