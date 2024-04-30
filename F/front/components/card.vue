@@ -41,7 +41,7 @@
         <svg-icon
           type="mdi"
           :path="icon.path"
-          :class="{ 'w-[20px]': true, 'text-blue-500': (icon.clicked = liked) }"
+          :class="{ 'w-[20px]': true, 'text-blue-500': (board.boardFind[0]?.like || icon.clicked === true) }"
           @click="clickedIcon(icon.id, board.id)"
         ></svg-icon>
       </div>
@@ -79,10 +79,6 @@ const props = defineProps<{
 const router = useRouter();
 
 const liked = ref<boolean>(false);
-
-async function getUsersBoardLiked() {
-  const response = await jwtFetch("board/getUsersBoardLiked");
-}
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number) {

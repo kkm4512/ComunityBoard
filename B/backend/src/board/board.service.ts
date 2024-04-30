@@ -87,6 +87,8 @@ export class BoardService {
       },
     });
 
+    const boardFind = await this.boardOptionRepository.find()
+
     const updatedUsers = users.map((user) => {
       const utcDate = new Date(user.createAt.toString());
       const kstOptions: any = {
@@ -106,6 +108,7 @@ export class BoardService {
       return {
         ...user,
         createAt: kstTimeStr,
+        boardFind
       };
     });
 

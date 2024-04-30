@@ -1,4 +1,11 @@
 export interface responseBoard {
+  boardFind: [
+    {
+      id: number;
+      like: number;
+      userBoardId: number
+    }
+  ]
   id: number
   title: string;
   like: number;
