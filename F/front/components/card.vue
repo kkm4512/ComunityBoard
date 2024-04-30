@@ -41,8 +41,8 @@
         <svg-icon
           type="mdi"
           :path="icon.path"
-          :class="{ 'w-[20px]': true, 'text-blue-500': (board.boardFind[0]?.like || icon.clicked === true) }"
-          @click="clickedIcon(icon.id, board.id)"
+          :class="{ 'w-[20px]': true, 'text-blue-500': (board.boardFind[0]?.like,icon.clicked === liked)  }"
+          @click="clickedIcon(icon.id, board.id,icon)"
         ></svg-icon>
       </div>
     </div>
@@ -81,11 +81,12 @@ const router = useRouter();
 const liked = ref<boolean>(false);
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
-async function clickedIcon(iconId: string, boardId: number) {
+async function clickedIcon(iconId: string, boardId: number,icon:any) {
   if (iconId === "mdiThumbUp") {
     const response = (await jwtDataFetch("board/create/option", {
       id: boardId,
     })) as { success: boolean };
+    icon.clicked = true
     if (response.success === true) {
       liked.value = true;
     } else {
