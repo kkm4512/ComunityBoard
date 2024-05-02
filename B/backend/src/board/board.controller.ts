@@ -35,12 +35,11 @@ export class BoardController {
     return this.boardService.boardOptionCreateService(data);
   }
 
-  // @UseGuards(TokenGuard)
-  // @Post('getUsersBoardLiked')
-  // async getUsersBoardLiked() {
-  //   const req = await this.boardService.getUsersBoardLikedService();
-  //   console.log(req)
-  // }
+  @UseGuards(TokenGuard)
+  @Post('getUsersBoardLiked')
+  getUsersBoardLiked(@Body() data:{id:number}) {
+    return this.boardService.getUsersBoardLikedService(data);
+  }
 
   @Post('getBoards')
   getBoards() {

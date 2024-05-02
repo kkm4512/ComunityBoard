@@ -48,6 +48,25 @@
           placeholder="John"
           required
         />
+        <label
+          for="file_input"
+          class="mb-2 mt-5 text-sm font-medium text-gray-900 dark:text-white border-2 flex justify-center"
+          >{{ "Profile" }}</label
+        >
+        <input
+          @change="changedImage"
+          type="file"
+          id="file_input"
+          class="hidden"
+          accept="image/*"
+        />
+        <div v-if="imgSrc" class="mt-4 flex justify-center">
+          <img
+            :src="imgSrc"
+            alt="Image Preview"
+            class="w-1/3 rounded-lg border-2 caret-transparent"
+          />
+        </div>
       </div>
       <div class="flex justify-between p-2">
         <NuxtLink to="/passwordFind">
@@ -72,19 +91,33 @@
 </template>
 
 <script setup lang="ts">
+import { mdiImageSearch } from "@mdi/js";
 import type { BaseResponse } from "~/types/basetype";
 
 const userEmail = ref("");
 const userPassword = ref("");
 const userNickname = ref("");
 const router = useRouter();
+const imgSrc = ref();
+function changedImage(e: Event) {
+  const inputElement = e.target as HTMLInputElement;
+  const file = inputElement.files ? inputElement.files[0] : null;
+  const reader = new FileReader();
+  reader.onload = (e: ProgressEvent<FileReader>) => {
+    imgSrc.value = e.target?.result;
+  };
+  if (file) reader.readAsDataURL(file);
+}
 
 const checked = async () => {
   const userInfo = {
     email: userEmail.value,
     password: userPassword.value,
     nickname: userNickname.value,
+    imgSrc : imgSrc.value
   };
+
+  const formData = formDatasArray(userInfo)
 
   const response: BaseResponse = (await Fetch(
     "user/signUp",
@@ -106,8 +139,6 @@ const checked = async () => {
     "error"
   );
 };
-
-
 </script>
 
 <style lang="scss" scoped></style>

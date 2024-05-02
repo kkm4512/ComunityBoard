@@ -41,8 +41,9 @@
         <svg-icon
           type="mdi"
           :path="icon.path"
-          :class="{ 'w-[20px]': true, 'text-blue-500': (board.boardFind[0]?.like,icon.clicked === liked)  }"
+          :class="{ liked: icon.clicked }"
           @click="clickedIcon(icon.id, board.id,icon)"
+          
         ></svg-icon>
       </div>
     </div>
@@ -60,10 +61,17 @@ import dropDownMenu from "./dropDownMenu.vue";
 import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
+import type { BoardOptionEntity } from "~/types/boardtype"
 
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
 const patchCardStyle = ref({});
+
+const props = defineProps<{
+  board: responseBoard;
+}>();
+
+const response = ref<BoardOptionEntity>()
 
 const mdiIcons = ref([
   { id: "mdiThumbUp", path: mdiThumbUp, clicked: false },
@@ -72,13 +80,22 @@ const mdiIcons = ref([
   { id: "mdiBookMarker", path: mdiBookMarker, clicked: false },
 ]);
 
-const props = defineProps<{
-  board: responseBoard;
-}>();
+onMounted( async() => {
+  const res = await jwtDataFetch("board/getUsersBoardLiked",{id:props.board.id}) as BoardOptionEntity
+  //여기서 확인할떄 사용자인지 아닌지 체크해야할듯?
+  //이거 왜안돼 ㅅㅂ
+  const cookie = await getCookieFetch()
+  const decoded = jwedecoded(cookie) as {email: string, nickname: string, id: number}
+  mdiIcons.value[0].clicked = res.like && res.board.user.id === decoded.id ? true : false
+  
+} )
+
 
 const router = useRouter();
 
-const liked = ref<boolean>(false);
+//onMounted를 했을때 각 게시글에 해당하는 like의 유무를 가져오게하기
+
+
 
 //좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
 async function clickedIcon(iconId: string, boardId: number,icon:any) {
@@ -86,11 +103,10 @@ async function clickedIcon(iconId: string, boardId: number,icon:any) {
     const response = (await jwtDataFetch("board/create/option", {
       id: boardId,
     })) as { success: boolean };
-    icon.clicked = true
     if (response.success === true) {
-      liked.value = true;
+      icon.clicked = !icon.clicked
     } else {
-      liked.value = false;
+      icon.clicked = !icon.clicked
     }
   }
 }
@@ -119,4 +135,9 @@ const handleRemoveClicked = async (user: responseBoard) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+
+.liked {
+  color : blue;
+}
+</style>

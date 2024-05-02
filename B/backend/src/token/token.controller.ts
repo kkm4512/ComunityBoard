@@ -1,11 +1,6 @@
-import {
-  Controller,
-  Post,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, UseGuards } from '@nestjs/common';
 import { TokenService } from './token.service';
 import { TokenGuard } from './token.guard';
-
 
 @Controller('token')
 export class TokenController {

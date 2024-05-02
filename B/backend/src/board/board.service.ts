@@ -48,8 +48,14 @@ export class BoardService {
     };
   }
 
-  getUsersBoardLikedService(){
-    return this.boardOptionRepository.find()
+  async getUsersBoardLikedService(data: { id: number }){
+    //여기좀 수정해보기
+    const boardFind = await this.boardOptionRepository.findOne({
+      where: {
+        userBoardId: data.id
+      }
+    })
+    return boardFind
   }
 
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
@@ -67,7 +73,8 @@ export class BoardService {
       await this.boardOptionRepository.save(boardOptionCreate);
 
       return {
-        success:true
+        success:true,
+        id: data.id
       }
 
     } else {
@@ -108,7 +115,6 @@ export class BoardService {
       return {
         ...user,
         createAt: kstTimeStr,
-        boardFind
       };
     });
 

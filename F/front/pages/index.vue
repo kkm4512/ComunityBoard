@@ -38,6 +38,8 @@ const bgStyle = ref({});
 
 const response = ref<{ boards: responseBoard }>();
 
+
+
 const getBoards = async () => {
   const response = (await Fetch("board/getBoards", {})) as responseBoard[];
   return response;
