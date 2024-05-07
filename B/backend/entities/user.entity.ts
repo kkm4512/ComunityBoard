@@ -20,6 +20,11 @@ export class UserEntity {
     @IsNotEmpty()
     nickname: string;
 
+    @Column({
+        nullable:true
+    })
+    image: string;
+
     @CreateDateColumn()
     createAt: Date;
 

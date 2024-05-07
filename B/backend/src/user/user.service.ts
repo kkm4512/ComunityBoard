@@ -30,8 +30,14 @@ export class UserService {
 
     user.password = await bcrypt.hash(user.password, 10);
 
+    const userCreate = this.userRepository.create({
+      email: user.email,
+      password: user.password,
+      nickname: user.nickname,
+    })
+
     if (!userFind) {
-      await this.userRepository.save(user);
+      await this.userRepository.save(userCreate);
       const accessToken = await this.createJwtToken(user);
       return {
         success: true,

@@ -220,8 +220,13 @@ export const removeCookieFetch = async (): Promise<void> => {
   });
 };
 
+interface FormDatas {
+  formData: {
+    [key:string] : string | Blob
+  }
+}
 //이미지포함 데이터 보낼때 
-export const formDatasArray = (formData: { [key: string]: any }) => {
+export const formDatasArray = (formData: { [key: string]: string | Blob }) => {
   const formDats = new FormData();
 
   for (let i in formData) {

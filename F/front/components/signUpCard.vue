@@ -99,9 +99,13 @@ const userPassword = ref("");
 const userNickname = ref("");
 const router = useRouter();
 const imgSrc = ref();
+const files = ref<File | null>(null)
+
+const image =
 function changedImage(e: Event) {
   const inputElement = e.target as HTMLInputElement;
   const file = inputElement.files ? inputElement.files[0] : null;
+  files.value = file
   const reader = new FileReader();
   reader.onload = (e: ProgressEvent<FileReader>) => {
     imgSrc.value = e.target?.result;
@@ -114,14 +118,19 @@ const checked = async () => {
     email: userEmail.value,
     password: userPassword.value,
     nickname: userNickname.value,
-    imgSrc : imgSrc.value
+    files : files.value
   };
 
-  const formData = formDatasArray(userInfo)
+  const formData = new FormData();
+
+  formData.append("email",userInfo.email)
+  formData.append("password",userInfo.password)
+  formData.append("nickname",userInfo.nickname)
+  formData.append("files",userInfo.files)
 
   const response: BaseResponse = (await Fetch(
     "user/signUp",
-    userInfo
+    formData
   )) as BaseResponse;
 
   //쿠키 세팅

@@ -3,6 +3,8 @@ import {
   Controller,
   Post,
   Res,
+  UploadedFile,
+  UseInterceptors,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -10,14 +12,21 @@ import { UserService } from './user.service';
 import { UserEntity } from 'entities/user.entity';
 import { Response } from 'express';
 import { UserDtoFirstSecnodPassword } from 'dto/userDto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signUp')
+  @UseInterceptors(FileInterceptor('image'))
   @UsePipes(new ValidationPipe())
-  async signUp(@Body() user: UserEntity, @Res() res: Response) {
+  async signUp(
+    @Body() user: UserEntity,
+    @Res() res: Response,
+    @UploadedFile() file?: Express.Multer.File,    
+  ) {
+    console.log(user)
     const result = await this.userService.registerUser(user);
     res.send(result);
   }
