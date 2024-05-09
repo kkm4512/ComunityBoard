@@ -26,7 +26,6 @@ export class UserController {
     @Res() res: Response,
     @UploadedFile() file?: Express.Multer.File,    
   ) {
-    console.log(user)
     const result = await this.userService.registerUser(user);
     res.send(result);
   }

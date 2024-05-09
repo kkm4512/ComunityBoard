@@ -101,7 +101,7 @@ const router = useRouter();
 const imgSrc = ref();
 const files = ref<File | null>(null)
 
-const image =
+
 function changedImage(e: Event) {
   const inputElement = e.target as HTMLInputElement;
   const file = inputElement.files ? inputElement.files[0] : null;
@@ -118,7 +118,7 @@ const checked = async () => {
     email: userEmail.value,
     password: userPassword.value,
     nickname: userNickname.value,
-    files : files.value
+    file : files.value
   };
 
   const formData = new FormData();
@@ -126,7 +126,8 @@ const checked = async () => {
   formData.append("email",userInfo.email)
   formData.append("password",userInfo.password)
   formData.append("nickname",userInfo.nickname)
-  formData.append("files",userInfo.files)
+  if (files.value) formData.append("files",userInfo.file)
+  
 
   const response: BaseResponse = (await Fetch(
     "user/signUp",
