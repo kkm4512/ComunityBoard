@@ -114,6 +114,7 @@ const check = async () => {
     formData.append("file", files.value);
   }
 
+
   /**
    * 1. 근데 여기 부분은 errorNoResponse해서 error페이지로 넘길게아니라, 이전페이지인 addBoard페이지로 다시 넘기면될거같은데 확인하기
    */

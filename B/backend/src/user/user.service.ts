@@ -5,6 +5,8 @@ import { UserEntity } from 'entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
+import { POST_PUBILC_PROFILE_PATH, POST_PUBLIC_IMAGE_PATH } from 'const/paths';
+import { join } from 'path';
 
 @Injectable()
 export class UserService {
@@ -20,7 +22,7 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserDto) {
+  async registerUser(user: UserDto, file:Express.Multer.File) {
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -33,6 +35,7 @@ export class UserService {
       email: user.email,
       password: user.password,
       nickname: user.nickname,
+      image: `/${join(POST_PUBILC_PROFILE_PATH, file.filename)}`
     })
 
     if (!userFind) {

@@ -99,13 +99,12 @@ const userPassword = ref("");
 const userNickname = ref("");
 const router = useRouter();
 const imgSrc = ref();
-const files = ref<File | null>(null)
-
+const files = ref<File | null>(null);
 
 function changedImage(e: Event) {
   const inputElement = e.target as HTMLInputElement;
   const file = inputElement.files ? inputElement.files[0] : null;
-  files.value = file
+  files.value = file;
   const reader = new FileReader();
   reader.onload = (e: ProgressEvent<FileReader>) => {
     imgSrc.value = e.target?.result;
@@ -114,20 +113,14 @@ function changedImage(e: Event) {
 }
 
 const checked = async () => {
-  const userInfo = {
-    email: userEmail.value,
-    password: userPassword.value,
-    nickname: userNickname.value,
-    file : files.value
-  };
-
   const formData = new FormData();
 
-  formData.append("email",userInfo.email)
-  formData.append("password",userInfo.password)
-  formData.append("nickname",userInfo.nickname)
-  if (files.value) formData.append("files",userInfo.file)
-  
+  formData.append("email", userEmail.value);
+  formData.append("password", userPassword.value);
+  formData.append("nickname", userNickname.value);
+  if (files.value) {
+    formData.append("file", files.value);
+  }
 
   const response: BaseResponse = (await Fetch(
     "user/signUp",

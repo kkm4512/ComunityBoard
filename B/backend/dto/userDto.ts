@@ -15,6 +15,8 @@ export class UserDto {
   @IsNotEmpty()
   @IsString()
   nickname?: string;
+
+  file?: Express.Multer.File
 }
 
 export class UserDtoFirstSecnodPassword extends UserDto {
