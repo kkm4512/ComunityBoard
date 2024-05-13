@@ -5,7 +5,6 @@ import { UserEntity } from 'entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
 
 @Injectable()
 export class UserService {
@@ -140,7 +139,7 @@ export class UserService {
   async createJwtToken(user: Payload): Promise<{}> {
     const payload = { email: user.email, nickname: user.nickname, id:user.id };
     const accessToken = this.jwtService.sign(payload, {
-      secret: JWT_SCREATE_KEY,
+      secret: process.env.JWT_SCREATE_KEY,
       expiresIn: '24h'
     });
     return accessToken;

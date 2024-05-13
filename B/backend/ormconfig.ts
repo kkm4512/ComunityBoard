@@ -2,7 +2,6 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { BoardEntity } from 'entities/board.entity';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
 import { UserEntity } from 'entities/user.entity';
-import { POSTGRES_DB, POSTGRES_PASSWORD, POSTGRES_PORT, POSTGRES_USER } from 'envIntelliJIDE/envIntellJ';
 
 function ormConfig(): TypeOrmModuleOptions {
   const commonConf = {
@@ -13,11 +12,11 @@ function ormConfig(): TypeOrmModuleOptions {
   return {
     name: 'default',
     type: 'postgres',
-    database: POSTGRES_DB,
+    database: process.env.POSTGRES_DB,
     host: 'localhost',
-    port: parseInt(POSTGRES_PORT),
-    username: POSTGRES_USER,
-    password: POSTGRES_PASSWORD,
+    port: parseInt(process.env.POSTGRES_PORT),
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
     synchronize: commonConf.SYNCRONIZE,
     entities: commonConf.ENTITIES,
   };
