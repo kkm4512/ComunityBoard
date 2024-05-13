@@ -80,7 +80,12 @@
           </li>
           <NuxtLink :to="`${accessToken.id}/detail`" v-if="accessToken">
             <li class="cursor-pointer hover:text-blue-500">
-              {{ accessToken.nickname }}
+              <div class="w-1/3" v-if="profile">
+                <img :src="profile"/>
+              </div>
+              <div v-else>
+                {{ accessToken.email }}
+              </div>
             </li>
           </NuxtLink>
         </ul>
@@ -92,6 +97,7 @@
 <script setup lang="ts">
 import { useCookieAccessTokenStore } from "~/stores/cookie";
 import { jwtDecode } from "jwt-decode";
+let profile = ref<null | string>(null)
 
 interface AccessToken {
   id: number;
@@ -104,6 +110,17 @@ interface AccessToken {
 //id값 db에서 받아오기
 const accessToken = ref<AccessToken | null>(null);
 const { cookieAccessTokenStore } = handlePiniaCookie(useCookieAccessTokenStore);
+
+onMounted( () => {
+  getProfile()
+} )
+
+
+async function getProfile(){
+  const email = jwtDecode<{email:string}>(cookieAccessTokenStore.accessToken).email
+  const response = await Fetch("user/getProfile",{email})
+  profile.value = 'http://localhost:3001' + response
+}
 
 watch(() => cookieAccessTokenStore.accessToken, (newAccessToken) => {
   if (newAccessToken) {

@@ -147,4 +147,11 @@ export class UserService {
     });
     return accessToken;
   }
+
+  async getProfile(data:{email:string}){
+    const userFind = await this.userRepository.findOne({
+      where: {email:data.email}
+    })
+    return userFind.image
+  }
 }
