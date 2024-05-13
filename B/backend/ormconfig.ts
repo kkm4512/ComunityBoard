@@ -17,7 +17,7 @@ function ormConfig(): TypeOrmModuleOptions {
     host: 'localhost',
     port: parseInt(POSTGRES_PORT),
     username: POSTGRES_USER,
-    password: String(POSTGRES_PASSWORD),
+    password: POSTGRES_PASSWORD,
     synchronize: commonConf.SYNCRONIZE,
     entities: commonConf.ENTITIES,
   };
