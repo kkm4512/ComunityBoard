@@ -163,6 +163,9 @@ export class BoardService {
     const userFind = await this.boardRepository.findOne({ where: { id } });
     const boards = await this.boardRepository.find({
       where: { email: userFind.email },
+      order: {
+        createAt: 'DESC',
+      },      
     });
     return boards;
   }

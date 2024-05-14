@@ -3,11 +3,19 @@
     class="block w-[700px] p-6 bg-white border border-gray-300 rounded-lg shadow hover:bg-gray-100"
   >
     <div class="flex">
+      
       <img
+        v-if="board.user.image"
         class="w-10 h-10 rounded-full mt-2"
-        src="../static/images/profile.jpg"
+        :src="`http://localhost:3001` + board.user.image"
         alt="Rounded avatar"
       />
+      <img
+        v-else
+        class="w-10 h-10 rounded-full mt-2"
+        src="http://localhost:3001/public/default/default.jpg"
+        alt="Rounded avatar"
+      />      
       <div class="text-black ml-2 text-sm">
         {{ board.selectedOption }}
         <p></p>

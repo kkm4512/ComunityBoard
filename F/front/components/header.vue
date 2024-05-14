@@ -80,11 +80,8 @@
           </li>
           <NuxtLink :to="`${accessToken.id}/detail`" v-if="accessToken">
             <li class="cursor-pointer hover:text-blue-500">
-              <div class="w-1/3" v-if="profile">
+              <div class="w-1/5" v-if="profile">
                 <img :src="profile"/>
-              </div>
-              <div v-else>
-                {{ accessToken.email }}
               </div>
             </li>
           </NuxtLink>
@@ -97,6 +94,8 @@
 <script setup lang="ts">
 import { useCookieAccessTokenStore } from "~/stores/cookie";
 import { jwtDecode } from "jwt-decode";
+import { useRoute } from "vue-router"
+const route = useRoute()
 let profile = ref<null | string>(null)
 
 interface AccessToken {
@@ -115,11 +114,17 @@ onMounted( () => {
   getProfile()
 } )
 
+watch( () => route.path, (newPath, oldPath) => {
+    if (newPath !== oldPath) {
+      getProfile()
+    }
+} )
+
 
 async function getProfile(){
   const email = jwtDecode<{email:string}>(cookieAccessTokenStore.accessToken).email
   const response = await Fetch("user/getProfile",{email})
-  profile.value = 'http://localhost:3001' + response
+  response ? profile.value = 'http://localhost:3001' + response : profile.value = "http://localhost:3001/public/default/default.jpg"
 }
 
 watch(() => cookieAccessTokenStore.accessToken, (newAccessToken) => {

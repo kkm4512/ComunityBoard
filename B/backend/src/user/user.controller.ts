@@ -15,7 +15,6 @@ import { Response } from 'express';
 import { UserDtoFirstSecnodPassword } from 'dto/userDto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TokenGuard } from 'src/token/token.guard';
-import { emit } from 'process';
 
 @Controller('user')
 export class UserController {

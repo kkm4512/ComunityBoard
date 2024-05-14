@@ -22,7 +22,8 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserDto, file:Express.Multer.File) {
+  async registerUser(user: UserDto, file?:Express.Multer.File) {
+    let userCreate;
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -31,16 +32,28 @@ export class UserService {
 
     user.password = await bcrypt.hash(user.password, 10);
 
-    const userCreate = this.userRepository.create({
-      email: user.email,
-      password: user.password,
-      nickname: user.nickname,
-      image: `/${join(POST_PUBILC_PROFILE_PATH, file.filename)}`
-    })
+    if (file) {
+      userCreate = this.userRepository.create({
+        email: user.email,
+        password: user.password,
+        nickname: user.nickname,
+        image: `/${join(POST_PUBILC_PROFILE_PATH, file.filename)}`
+      })
+    } else {
+      userCreate = this.userRepository.create({
+        email: user.email,
+        password: user.password,
+        nickname: user.nickname,
+      })    
+    }
+    
 
-    if (!userFind) {
-      await this.userRepository.save(userCreate);
-      const accessToken = await this.createJwtToken(user);
+
+
+
+    if (!userFind) {  
+      const result = await this.userRepository.save(userCreate);
+      const accessToken = await this.createJwtToken(result);
       return {
         success: true,
         message: '회원가입에 성공 하였습니다.',

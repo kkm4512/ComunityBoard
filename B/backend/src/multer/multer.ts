@@ -35,8 +35,11 @@ import { v4 as uuid } from 'uuid';
       },
       storage: multer.diskStorage({
         destination: function (req, res, cb) {
-          console.log(req.route.path)
-          req.route.path === "/board/create" ? cb(null, POST_IMAGE_PATH) : cb(null, POST_IMAGE_PROFILE_PATH)
+          if (req.route.path === "/board/create"){
+            cb(null, POST_IMAGE_PATH)
+          }  else {
+            cb(null, POST_IMAGE_PROFILE_PATH)
+          } 
         },
         filename: function (req, file, cb) {
           cb(null, `${uuid()}${extname(file.originalname)}`);
