@@ -3,7 +3,6 @@
     class="block w-[700px] p-6 bg-white border border-gray-300 rounded-lg shadow hover:bg-gray-100"
   >
     <div class="flex">
-      
       <img
         v-if="board.user.image"
         class="w-10 h-10 rounded-full mt-2"
@@ -15,7 +14,7 @@
         class="w-10 h-10 rounded-full mt-2"
         src="http://localhost:3001/public/default/default.jpg"
         alt="Rounded avatar"
-      />      
+      />
       <div class="text-black ml-2 text-sm">
         {{ board.selectedOption }}
         <p></p>
@@ -50,8 +49,7 @@
           type="mdi"
           :path="icon.path"
           :class="{ liked: icon.clicked }"
-          @click="clickedIcon({iconId:icon.id, boardId:board.id})"
-          
+          @click="clickedIcon({ icon, iconId: icon.id, boardId: board.id })"
         ></svg-icon>
       </div>
     </div>
@@ -69,8 +67,8 @@ import dropDownMenu from "./dropDownMenu.vue";
 import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
-import type { BoardOptionEntity } from "~/types/boardtype"
-import { inlineConfig } from "#build/types/app.config";
+import type { BoardOptionEntity } from "~/types/boardtype";
+import { jwtDecode } from "jwt-decode";
 
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
@@ -80,7 +78,13 @@ const props = defineProps<{
   board: responseBoard;
 }>();
 
-const response = ref<BoardOptionEntity>()
+const cookie = await getCookieFetch();
+const loginUser = jwtDecode(cookie) as {
+  email: string;
+  nickname: string;
+  id: number;
+};
+const response = ref<BoardOptionEntity>();
 
 const mdiIcons = ref([
   { id: "mdiThumbUp", path: mdiThumbUp, clicked: false },
@@ -89,20 +93,32 @@ const mdiIcons = ref([
   { id: "mdiBookMarker", path: mdiBookMarker, clicked: false },
 ]);
 
-onMounted( () => {
-  getBoardsUserIdIncludes()
-} )
+onMounted(() => {
+  getBoardsUserIdIncludes();
+});
 
-async function getBoardsUserIdIncludes(){
-  const response = await jwtDataFetch("board/getBoardsUserId",{id:props.board.id})
-  props.board.id === response.userBoardId ? console.log(response.userBoardId) : console.log(false)
+/**
+1. getBoardsUserIdIncludes 함수를 통해 각 게시글의 아이디에 대해 like 여부를 알 수 있음
+*/
+
+async function getBoardsUserIdIncludes() {
+  const response = (await jwtDataFetch("board/getBoardsUserId", {
+    id: props.board.id,
+  })) as { userBoardId: number };
+  //이 게시글을 작성한 유저의 id와 현재 로그인되어있는 사용자의 id도 일치해야함
+
+  if (
+    props.board.id === response.userBoardId &&
+    response.board.user.id === loginUser.id
+  ) {
+    const icon = mdiIcons.value.find((icon) => icon.id === "mdiThumbUp");
+    if (icon) icon.clicked = !icon.clicked;
+  }
 }
-
 
 const router = useRouter();
 
 //onMounted를 했을때 각 게시글에 해당하는 like의 유무를 가져오게하기
-
 
 /**
 1. 프론트에서 좋아요를 누른다.
@@ -115,17 +131,19 @@ const router = useRouter();
 */
 
 class Ids {
-  // icon:any;
+  icon: any;
   iconId: string;
   boardId: number;
 }
 
-function clickedIcon(ids:Ids){
-  const response = jwtDataFetch('board/create/option',{boardId:ids.boardId})
-  // ids.icon.clicked = !ids.icon.clicked
-  // console.log(ids.icon.clicked)
+function clickedIcon(ids: Ids) {
+  //근데 이거 할때 아이디가 서로 일치하지않으면 그냥 전송못하게 막기
+  //내일하자 ㅇㅅㅇ;
+  const response = jwtDataFetch("board/create/option", {
+    boardId: ids.boardId,
+  });
+  ids.icon.clicked = !ids.icon.clicked;
 }
-
 
 const handlePatchClicked = async (event: any) => {
   const { top, left } = event.target.getBoundingClientRect();
@@ -153,8 +171,7 @@ const handleRemoveClicked = async (user: responseBoard) => {
 </script>
 
 <style>
-
 .liked {
-  color : blue;
+  color: blue;
 }
 </style>
