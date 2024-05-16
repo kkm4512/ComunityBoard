@@ -14,4 +14,5 @@ import { MulterConfigModule } from 'src/multer/multer';
   controllers: [UserController],
   providers: [UserService],
 })
+
 export class UserModule {}

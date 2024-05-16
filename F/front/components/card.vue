@@ -50,7 +50,7 @@
           type="mdi"
           :path="icon.path"
           :class="{ liked: icon.clicked }"
-          @click="clickedIcon(icon.id, board.id,icon)"
+          @click="clickedIcon({iconId:icon.id, boardId:board.id})"
           
         ></svg-icon>
       </div>
@@ -70,6 +70,7 @@ import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
 import type { BoardOptionEntity } from "~/types/boardtype"
+import { inlineConfig } from "#build/types/app.config";
 
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
@@ -88,15 +89,14 @@ const mdiIcons = ref([
   { id: "mdiBookMarker", path: mdiBookMarker, clicked: false },
 ]);
 
-onMounted( async() => {
-  const res = await jwtDataFetch("board/getUsersBoardLiked",{id:props.board.id}) as BoardOptionEntity
-  //여기서 확인할떄 사용자인지 아닌지 체크해야할듯?
-  //이거 왜안돼 ㅅㅂ
-  const cookie = await getCookieFetch()
-  const decoded = jwedecoded(cookie) as {email: string, nickname: string, id: number}
-  mdiIcons.value[0].clicked = res.like && res.board.user.id === decoded.id ? true : false
-  
+onMounted( () => {
+  getBoardsUserIdIncludes()
 } )
+
+async function getBoardsUserIdIncludes(){
+  const response = await jwtDataFetch("board/getBoardsUserId",{id:props.board.id})
+  props.board.id === response.userBoardId ? console.log(response.userBoardId) : console.log(false)
+}
 
 
 const router = useRouter();
@@ -104,20 +104,29 @@ const router = useRouter();
 //onMounted를 했을때 각 게시글에 해당하는 like의 유무를 가져오게하기
 
 
+/**
+1. 프론트에서 좋아요를 누른다.
+2. 백엔드로 해당 좋아요가 눌린 게시글의 (id)를 보내준다.
+3. 백엔드의 boardOption DB에 해당 id와 함께 liked++ 후에 DB저장
+4. 프론트의 getBoard 하는 함수에 같이 실어다줌
+5. 프론트에서는 board.user.liked 여부로 해당 좋아요가 눌린지 판단함
+6. 근데 이러면 프론트에서는 좋아요를 눌렀을때를 감지하지못하기때문에 이거는 프론트에서 그냥 자체적으로 처리하기
+7. 어차피 프론트에서 새로고침이나 화면로딩(onMounted)할때 백엔드의 게시물들을 가져오고 그때는 좋아요가 눌린지 판단 할 수 있기 때문
+*/
 
-//좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
-async function clickedIcon(iconId: string, boardId: number,icon:any) {
-  if (iconId === "mdiThumbUp") {
-    const response = (await jwtDataFetch("board/create/option", {
-      id: boardId,
-    })) as { success: boolean };
-    if (response.success === true) {
-      icon.clicked = !icon.clicked
-    } else {
-      icon.clicked = !icon.clicked
-    }
-  }
+class Ids {
+  // icon:any;
+  iconId: string;
+  boardId: number;
 }
+
+function clickedIcon(ids:Ids){
+  const response = jwtDataFetch('board/create/option',{boardId:ids.boardId})
+  // ids.icon.clicked = !ids.icon.clicked
+  // console.log(ids.icon.clicked)
+}
+
+
 const handlePatchClicked = async (event: any) => {
   const { top, left } = event.target.getBoundingClientRect();
   patchOpen.value = !patchOpen.value;

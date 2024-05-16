@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { POST_PUBLIC_IMAGE_PATH } from 'const/paths';
 import { BoardEntity } from 'entities/board.entity';
 import { BoardOptionEntity } from 'entities/boardOption.entity';
+import { UserEntity } from 'entities/user.entity';
 import { join } from 'path';
 import { Success } from 'type/successType';
 import { Repository } from 'typeorm';
@@ -14,6 +15,8 @@ export class BoardService {
     private boardRepository: Repository<BoardEntity>,
     @InjectRepository(BoardOptionEntity)
     private boardOptionRepository: Repository<BoardOptionEntity>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
   ) {}
 
   async boardCreateService(
@@ -48,25 +51,26 @@ export class BoardService {
     };
   }
 
-  async getUsersBoardLikedService(data: { id: number }){
-    //여기좀 수정해보기
-    const boardFind = await this.boardOptionRepository.findOne({
-      where: {
-        userBoardId: data.id
-      }
-    })
-    return boardFind
-  }
+  // async getUsersBoardLikedService(boardId:number){
+  //   const boardOptionFind = await this.boardOptionRepository.findOne({
+  //     where: {
+  //       userBoardId: boardId
+  //     }
+  //   })
+  //   return boardOptionFind
+  // }
 
   //like눌리면 해당 엔티티에 라이크 숫자 1더하기
-  async boardOptionCreateService(data: { id: number }): Promise<Success> {
+  async boardOptionCreateService(boardId:number): Promise<Success> {
     const boardFind = await this.boardOptionRepository.findOne({
-      where: { userBoardId: data.id },
+      where: { userBoardId: boardId },
     });
+
+    
 
     if (!boardFind) {
       const boardOptionCreate = this.boardOptionRepository.create({
-        userBoardId: data.id,
+        userBoardId: boardId,
         like: 1,
       });
 
@@ -74,12 +78,12 @@ export class BoardService {
 
       return {
         success:true,
-        id: data.id
+        id: boardId
       }
 
     } else {
       await this.boardOptionRepository.delete({
-        userBoardId: data.id,
+        userBoardId: boardId,
       });
       return {
         success: false
@@ -160,13 +164,9 @@ export class BoardService {
   }
 
   async getBoardsUserIdService(id: number): Promise<any> {
-    const userFind = await this.boardRepository.findOne({ where: { id } });
-    const boards = await this.boardRepository.find({
-      where: { email: userFind.email },
-      order: {
-        createAt: 'DESC',
-      },      
-    });
-    return boards;
+    const userFind = await this.boardOptionRepository.findOne({ where: {
+       userBoardId : id
+    } });
+    return userFind;
   }
 }

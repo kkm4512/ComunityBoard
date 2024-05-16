@@ -31,15 +31,15 @@ export class BoardController {
 
   @UseGuards(TokenGuard)
   @Post('create/option')
-  boardOptionCreate(@Body() data: { id: number }) {
-    return this.boardService.boardOptionCreateService(data);
+  boardOptionCreate(@Body() data: { boardId: number }) {
+    return this.boardService.boardOptionCreateService(data.boardId);
   }
 
-  @UseGuards(TokenGuard)
-  @Post('getUsersBoardLiked')
-  getUsersBoardLiked(@Body() data:{id:number}) {
-    return this.boardService.getUsersBoardLikedService(data);
-  }
+  // @UseGuards(TokenGuard)
+  // @Post('getUsersBoardLiked')
+  // getUsersBoardLiked(@Body() data:{boardId:number}) {
+  //   return this.boardService.getUsersBoardLikedService(data.boardId);
+  // }
 
   @Post('getBoards')
   getBoards() {
