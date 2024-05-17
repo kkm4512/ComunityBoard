@@ -4,6 +4,7 @@ import {
   Post,
   Res,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
   UsePipes,
   ValidationPipe,
@@ -13,20 +14,21 @@ import { UserEntity } from 'entities/user.entity';
 import { Response } from 'express';
 import { UserDtoFirstSecnodPassword } from 'dto/userDto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { TokenGuard } from 'src/token/token.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('signUp')
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(FileInterceptor('file'))
   @UsePipes(new ValidationPipe())
   async signUp(
     @Body() user: UserEntity,
     @Res() res: Response,
     @UploadedFile() file?: Express.Multer.File,    
   ) {
-    const result = await this.userService.registerUser(user);
+    const result = await this.userService.registerUser(user,file);
     res.send(result);
   }
 
@@ -56,4 +58,13 @@ export class UserController {
     const result = await this.userService.userPasswordChange(user);
     res.send(result);
   }
+
+  @Post('getProfile')
+  @UseGuards(TokenGuard)
+  async getProfile(
+    @Body() data: {email:string}
+  ){
+    return this.userService.getProfile(data)
+  }
+  
 }

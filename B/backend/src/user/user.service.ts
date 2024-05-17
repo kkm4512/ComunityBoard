@@ -5,7 +5,8 @@ import { UserEntity } from 'entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { Repository } from 'typeorm';
-import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
+import { POST_PUBILC_PROFILE_PATH, POST_PUBLIC_IMAGE_PATH } from 'const/paths';
+import { join } from 'path';
 
 @Injectable()
 export class UserService {
@@ -21,7 +22,8 @@ export class UserService {
    * 3. 중복한다면 error 던져주기
    */
 
-  async registerUser(user: UserDto) {
+  async registerUser(user: UserDto, file?:Express.Multer.File) {
+    let userCreate;
     const userFind = await this.userRepository.findOne({
       where: {
         email: user.email,
@@ -30,15 +32,28 @@ export class UserService {
 
     user.password = await bcrypt.hash(user.password, 10);
 
-    const userCreate = this.userRepository.create({
-      email: user.email,
-      password: user.password,
-      nickname: user.nickname,
-    })
+    if (file) {
+      userCreate = this.userRepository.create({
+        email: user.email,
+        password: user.password,
+        nickname: user.nickname,
+        image: `/${join(POST_PUBILC_PROFILE_PATH, file.filename)}`
+      })
+    } else {
+      userCreate = this.userRepository.create({
+        email: user.email,
+        password: user.password,
+        nickname: user.nickname,
+      })    
+    }
+    
 
-    if (!userFind) {
-      await this.userRepository.save(userCreate);
-      const accessToken = await this.createJwtToken(user);
+
+
+
+    if (!userFind) {  
+      const result = await this.userRepository.save(userCreate);
+      const accessToken = await this.createJwtToken(result);
       return {
         success: true,
         message: '회원가입에 성공 하였습니다.',
@@ -140,9 +155,16 @@ export class UserService {
   async createJwtToken(user: Payload): Promise<{}> {
     const payload = { email: user.email, nickname: user.nickname, id:user.id };
     const accessToken = this.jwtService.sign(payload, {
-      secret: JWT_SCREATE_KEY,
+      secret: process.env.JWT_SCREATE_KEY,
       expiresIn: '24h'
     });
     return accessToken;
+  }
+
+  async getProfile(data:{email:string}){
+    const userFind = await this.userRepository.findOne({
+      where: {email:data.email}
+    })
+    return userFind.image
   }
 }

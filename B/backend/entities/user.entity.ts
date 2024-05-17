@@ -23,7 +23,7 @@ export class UserEntity {
     @Column({
         nullable:true
     })
-    image: string;
+    image:string;
 
     @CreateDateColumn()
     createAt: Date;

@@ -4,8 +4,15 @@
   >
     <div class="flex">
       <img
+        v-if="board.user.image"
         class="w-10 h-10 rounded-full mt-2"
-        src="../static/images/profile.jpg"
+        :src="`http://localhost:3001` + board.user.image"
+        alt="Rounded avatar"
+      />
+      <img
+        v-else
+        class="w-10 h-10 rounded-full mt-2"
+        src="http://localhost:3001/public/default/default.jpg"
         alt="Rounded avatar"
       />
       <div class="text-black ml-2 text-sm">
@@ -42,8 +49,7 @@
           type="mdi"
           :path="icon.path"
           :class="{ liked: icon.clicked }"
-          @click="clickedIcon(icon.id, board.id,icon)"
-          
+          @click="clickedIcon({ icon, iconId: icon.id, boardId: board.id })"
         ></svg-icon>
       </div>
     </div>
@@ -61,7 +67,8 @@ import dropDownMenu from "./dropDownMenu.vue";
 import { usePatchStateStore } from "~/stores/patchState";
 import { useRouter } from "vue-router";
 import type { BaseResponse } from "~/types/basetype";
-import type { BoardOptionEntity } from "~/types/boardtype"
+import type { BoardOptionEntity } from "~/types/boardtype";
+import { jwtDecode } from "jwt-decode";
 
 const { patchStateStore } = handlePiniaPatchState(usePatchStateStore);
 const patchOpen = ref(false);
@@ -71,7 +78,13 @@ const props = defineProps<{
   board: responseBoard;
 }>();
 
-const response = ref<BoardOptionEntity>()
+const cookie = await getCookieFetch();
+const loginUser = jwtDecode(cookie) as {
+  email: string;
+  nickname: string;
+  id: number;
+};
+const response = ref<BoardOptionEntity>();
 
 const mdiIcons = ref([
   { id: "mdiThumbUp", path: mdiThumbUp, clicked: false },
@@ -80,36 +93,58 @@ const mdiIcons = ref([
   { id: "mdiBookMarker", path: mdiBookMarker, clicked: false },
 ]);
 
-onMounted( async() => {
-  const res = await jwtDataFetch("board/getUsersBoardLiked",{id:props.board.id}) as BoardOptionEntity
-  //여기서 확인할떄 사용자인지 아닌지 체크해야할듯?
-  //이거 왜안돼 ㅅㅂ
-  const cookie = await getCookieFetch()
-  const decoded = jwedecoded(cookie) as {email: string, nickname: string, id: number}
-  mdiIcons.value[0].clicked = res.like && res.board.user.id === decoded.id ? true : false
-  
-} )
+onMounted(() => {
+  getBoardsUserIdIncludes();
+});
 
+/**
+1. getBoardsUserIdIncludes 함수를 통해 각 게시글의 아이디에 대해 like 여부를 알 수 있음
+*/
+
+async function getBoardsUserIdIncludes() {
+  const response = (await jwtDataFetch("board/getBoardsUserId", {
+    id: props.board.id,
+  })) as { userBoardId: number };
+  //이 게시글을 작성한 유저의 id와 현재 로그인되어있는 사용자의 id도 일치해야함
+
+  // if (
+  //   props.board.id === response.userBoardId &&
+  //   response.board.user.id === loginUser.id
+  // ) {
+    const icon = mdiIcons.value.find((icon) => icon.id === "mdiThumbUp");
+    if (icon) icon.clicked = !icon.clicked;
+  // }
+}
 
 const router = useRouter();
 
 //onMounted를 했을때 각 게시글에 해당하는 like의 유무를 가져오게하기
 
+/**
+1. 프론트에서 좋아요를 누른다.
+2. 백엔드로 해당 좋아요가 눌린 게시글의 (id)를 보내준다.
+3. 백엔드의 boardOption DB에 해당 id와 함께 liked++ 후에 DB저장
+4. 프론트의 getBoard 하는 함수에 같이 실어다줌
+5. 프론트에서는 board.user.liked 여부로 해당 좋아요가 눌린지 판단함
+6. 근데 이러면 프론트에서는 좋아요를 눌렀을때를 감지하지못하기때문에 이거는 프론트에서 그냥 자체적으로 처리하기
+7. 어차피 프론트에서 새로고침이나 화면로딩(onMounted)할때 백엔드의 게시물들을 가져오고 그때는 좋아요가 눌린지 판단 할 수 있기 때문
+*/
 
-
-//좋아요를 눌렀을경우 해당 boardId에 like 1을 추가하는거까지함
-async function clickedIcon(iconId: string, boardId: number,icon:any) {
-  if (iconId === "mdiThumbUp") {
-    const response = (await jwtDataFetch("board/create/option", {
-      id: boardId,
-    })) as { success: boolean };
-    if (response.success === true) {
-      icon.clicked = !icon.clicked
-    } else {
-      icon.clicked = !icon.clicked
-    }
-  }
+class Ids {
+  icon: any;
+  iconId: string;
+  boardId: number;
 }
+
+function clickedIcon(ids: Ids) {
+  //근데 이거 할때 아이디가 서로 일치하지않으면 그냥 전송못하게 막기
+  //내일하자 ㅇㅅㅇ;
+  const response = jwtDataFetch("board/create/option", {
+    boardId: ids.boardId,
+  });
+  ids.icon.clicked = !ids.icon.clicked;
+}
+
 const handlePatchClicked = async (event: any) => {
   const { top, left } = event.target.getBoundingClientRect();
   patchOpen.value = !patchOpen.value;
@@ -136,8 +171,7 @@ const handleRemoveClicked = async (user: responseBoard) => {
 </script>
 
 <style>
-
 .liked {
-  color : blue;
+  color: blue;
 }
 </style>

@@ -5,7 +5,7 @@ import { BoardOptionEntity } from 'entities/boardOption.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { extname } from 'path';
 import * as multer from 'multer';
-import { POST_IMAGE_PATH } from 'const/paths';
+import { POST_IMAGE_PATH, POST_IMAGE_PROFILE_PATH, PROFILE_FOLDER_NAME } from 'const/paths';
 import { v4 as uuid } from 'uuid';
 
 @Module({
@@ -35,7 +35,11 @@ import { v4 as uuid } from 'uuid';
       },
       storage: multer.diskStorage({
         destination: function (req, res, cb) {
-          cb(null, POST_IMAGE_PATH);
+          if (req.route.path === "/board/create"){
+            cb(null, POST_IMAGE_PATH)
+          }  else {
+            cb(null, POST_IMAGE_PROFILE_PATH)
+          } 
         },
         filename: function (req, file, cb) {
           cb(null, `${uuid()}${extname(file.originalname)}`);

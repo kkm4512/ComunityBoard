@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from 'ormconfig';
 import { BoardModule } from './board/board.module';
 import { JwtModule } from '@nestjs/jwt';
-import { JWT_SCREATE_KEY } from 'envIntelliJIDE/envIntellJ';
 import { TokenModule } from './token/token.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { PUBILC_FOLDER_PATH, PUBLIC_FOLDER_NAME } from 'const/paths';
@@ -28,7 +27,7 @@ import { PUBILC_FOLDER_PATH, PUBLIC_FOLDER_NAME } from 'const/paths';
       }),
       JwtModule.register({
         global: true,
-        secret: JWT_SCREATE_KEY,
+        secret: process.env.JWT_SCREATE_KEY,
         signOptions: { expiresIn: '60s' },
       }),
       BoardModule,

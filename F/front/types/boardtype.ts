@@ -18,6 +18,7 @@ export interface responseBoard {
   user: {
     email: string;
     nickname: string;
+    image: string;
   }
 }
 

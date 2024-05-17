@@ -5,7 +5,6 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { JWT_SCREATE_KEY } from '../../envIntelliJIDE/envIntellJ';
 import { Request } from 'express';
 
 @Injectable()
@@ -21,7 +20,7 @@ export class TokenGuard implements CanActivate {
     }
     try {
       const payload = await this.jwtService.verifyAsync(token, {
-        secret: JWT_SCREATE_KEY,
+        secret: process.env.JWT_SCREATE_KEY,
       });
       // 💡 We're assigning the payload to the request object here
       // so that we can access it in our route handlers
