@@ -107,13 +107,13 @@ async function getBoardsUserIdIncludes() {
   })) as { userBoardId: number };
   //이 게시글을 작성한 유저의 id와 현재 로그인되어있는 사용자의 id도 일치해야함
 
-  if (
-    props.board.id === response.userBoardId &&
-    response.board.user.id === loginUser.id
-  ) {
+  // if (
+  //   props.board.id === response.userBoardId &&
+  //   response.board.user.id === loginUser.id
+  // ) {
     const icon = mdiIcons.value.find((icon) => icon.id === "mdiThumbUp");
     if (icon) icon.clicked = !icon.clicked;
-  }
+  // }
 }
 
 const router = useRouter();
